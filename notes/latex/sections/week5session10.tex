@@ -1,0 +1,239 @@
+\chapter{Session 9: October 1, 2020}
+\label{tenth}
+From last time, we introduced the theorem
+\section{Linear Transformations of Multivariate Normal}
+$x\sim N_p(\mu,\Sigma),a_{p \times 1}$-FIXED
+\subsection{Theorem}
+\begin{equation*}
+    a^Tx=\sum a_ix_i \sim N_1(a^T\mu,a^T\Sigma)
+\end{equation*}
+
+Before we proved that the distribution statistics held. Namely, the mean and variance held with affine transformations; however, the the persistence of the normality is a property unique to the normal distribution. This is why it is such an important distribution in Statistics.
+
+Now we can actually use a fixed matrix $A_{q\times p}$ and we will find that 
+
+\subsection{Theorem}
+\begin{equation*}
+    \underset{q \times p}{A}
+    \underset{p \times 1}{x} \sim N_q(A\mu,A \Sigma A^T)
+\end{equation*}
+
+The left side represents q different linear combinations of the elements x and we find that it actually conforms to a q-dimensional normal distribution.
+
+\section{Linear Combinations of Multivariate Normal}
+Here are some other properties of Normal Distributions
+\begin{align*}
+    x &\sim N_p(\mu,\Sigma), d_{p\times 1}-const \\
+    x+d &\sim N_p(\mu+d,\Sigma)\\
+\end{align*} 
+We can see that by adding a constant vector d we are just shifting over the mean of the distribution.
+
+\section{Partitions of Randomly Distributed Variables}
+Let's say take our random vector and partition it .
+\begin{align*}
+    \underset{p\times 1}{x} = \begin{pmatrix}
+    \underset{q\times 1}{x_1}\\
+    \underset{(p-q)\times 1}{x_2}
+    \end{pmatrix}&,x\sim N_p(\mu,\Sigma)\\
+    \mu = \begin{pmatrix}
+    \underset{q\times 1}{\mu_1}\\
+    \underset{(p-q)\times 1}{\mu_1}
+    \end{pmatrix}&,\Sigma = \begin{pmatrix}
+    \underset{q \times q}{\Sigma_{11}} & \underset{q \times (p-q)}{\Sigma_{12}}\\
+    \underset{(p-q) \times q}{\Sigma_{21}} & \underset{q \times q}{\Sigma_{22}}\\
+    \end{pmatrix}
+\end{align*}
+
+\subsection{Distributions of Normal Partitions}
+We can now ask ourselves what the distributions of the partitions $x_1$ and $x_2$ are. To do that, we are going to construct a matrix $A_i$ such that when I multiply $A_ix =x_i$
+We can begin our construction
+\begin{align*}
+    \underset{q\times p}{A_1} &= \begin{pmatrix}
+    I_{q\times q} & 0_{q\times (p-q)}
+    \end{pmatrix} \\
+    A_1x &= x_1
+\end{align*}
+Here's what happens in the matrix. When we multiply, the I portion of the matrix when multiplied keeps x unchanged. But it will only multiply with the first p values of x. The last p-q values get multiplied by a matrix of 0's. so then. When we multiply it from the right we get rid of all the rows that aren't in $x_1$. When we multiply it from the right, we get rid of all the columns that aren't going to be included.
+
+\begin{align*}
+    A_1x &\sim N_q(A_1\mu,A\Sigma A_1^T)\\
+    &\sim N_(\mu_1,\Sigma_{11})
+\end{align*}
+For fun we do the same thing to the other partition
+\begin{align*}
+    \underset{(p-q)\times p}{A_2} &= \begin{pmatrix}
+    0_{0\times p} & I_{(p-q)\times p}
+    \end{pmatrix} \\
+    A_2x &= x_2\\
+    A_2x &\sim N_{(p-q)}(A_2\mu,A_2\Sigma A_2^T)\\
+    &\sim N_{(p-q)}(\mu_2,\Sigma_{11})
+\end{align*}
+
+\section{Correlation Vs. Independence}
+
+Theorem: let $\underset{q_1 \times 1}{x}$ and $\underset{q_2 \times 1}{x}$. 
+
+\subsection*{1} If they are independent, then their covariance and correlations will be 0. That is
+
+\begin{align*}
+    cov(x_1,x_2) = cor&(x_1,x_2) = 0_{q_1 \times q_2} \\
+    cov(x_1,x_2) \overset{Def}{=}E(x_1,x_2) - \mu_1\mu_2^T \\
+    \overset{ind}{=} E(x_1)E(x_2)- \mu_1\mu_2^T &= \mu_1\mu_2^T-\mu_1\mu_2^T=0
+\end{align*}
+
+This is because covariance is calculated by taking the expected value of the products minus the minus the product of the expected values. Thanks to the independence, the expectation of the product is equal to the product of the expectation.
+
+\subsection*{2}
+If \begin{align*}
+    \begin{pmatrix}
+    x_1 \\
+    x_2
+    \end{pmatrix} \sim N_{q_1+q_2} \Bigg(  
+    \begin{pmatrix}
+    \mu_1 \\
+    \mu_2
+    \end{pmatrix} ,
+    \begin{pmatrix}
+    \Sigma_{11} & \Sigma_{21} \\
+    \Sigma_{12} & \Sigma_{22}
+    \end{pmatrix}
+    \Bigg) \Rightarrow \\
+\end{align*}
+$x_1$ and $x_2$ are independent if and only if $\Sigma_{12}=0$
+
+In the multivariate case, zero correlation and independence are equivalent statements for the normal distribution. This is not the case for all distributions, so in the words of Cyril, "this result is very cool".
+
+\subsubsection{Proof}
+If $\Sigma_{12} = 0_{q_1 \times q_2}$, $\Sigma_{21} = 0_{q_2 \times q_1}$ then $x_1$ and $x_2$ are independent.
+
+Idea $\underset{joint pdf}{f(x_1,x_2)}=f(x_1) \cdot f(x_2)$ That is the joint pdf should be equal to the product of the marginal pdfs.
+\begin{gather*}
+    f(x) = \frac{1}{(2\pi)^{(q_1+q_2)/2}
+    \begin{vmatrix}
+    \Sigma_{11} & 0 \\
+    0 & \Sigma_{22}\\
+    \end{vmatrix}} \scalebox{1.5}{e}^{
+    \scalebox{0.75}{$
+    \begin{pmatrix}
+    x_1-\mu_1 & x_2-\mu_2
+    \end{pmatrix}
+    \begin{pmatrix}
+    \Sigma_{11} & 0\\
+    0& \Sigma_{22}
+    \end{pmatrix}^{-1}
+    \begin{pmatrix}
+    x_1-\mu_1 \\ x_2-\mu_2
+    \end{pmatrix}
+    $}
+    } \\
+    \begin{vmatrix}
+    \Sigma_{11} & 0 \\
+    0 & \Sigma_{22}\\
+    \end{vmatrix}= |\Sigma_{11}||\Sigma_{22}| \\
+    \begin{vmatrix}
+    \Sigma_{11} & 0 \\
+    0 & \Sigma_{22}\\
+    \end{vmatrix}^{-1}=
+    \begin{vmatrix}
+    \Sigma_{11}^{-1} & 0 \\
+    0 & \Sigma_{22}^{-1}\\
+    \end{vmatrix}\\
+    \begin{vmatrix}
+    \Sigma_{11} & 0 \\
+    0 & \Sigma_{22}\\
+    \end{vmatrix} = |\Sigma_{11}||\Sigma_{22}|\\
+    \begin{vmatrix}
+    \Sigma_{11} & 0 \\
+    0 & \Sigma_{22}
+    \end{vmatrix}^{-1} =
+    \begin{vmatrix}
+    \Sigma_{11}^{-1} & 0 \\
+    0 & \Sigma_{22}^{-1}\\
+    \end{vmatrix}\\
+    \begin{vmatrix}
+    \Sigma_{11} & 0 \\
+    0 & \Sigma_{22}\\
+    \end{vmatrix} = |\Sigma_{11}||\Sigma_{22}|\\
+    \scalebox{0.6}{$
+    \begin{pmatrix}
+    x_1-\mu_1 & x_2-\mu_2
+    \end{pmatrix}
+    \begin{pmatrix}
+    \Sigma_{11} & 0\\
+    0& \Sigma_{22}
+    \end{pmatrix}^{-1}
+    \begin{pmatrix}
+    x_1-\mu_1 \\ x_2-\mu_2
+    \end{pmatrix} =
+    \begin{pmatrix}
+    x_1-\mu_1 & x_2-\mu_2
+    \end{pmatrix}
+    \Sigma_{11}^{-1}
+    \begin{pmatrix}
+    x_1-\mu_1 \\ x_2-\mu_2
+    \end{pmatrix}
+    +
+    \begin{pmatrix}
+    x_1-\mu_1 & x_2-\mu_2
+    \end{pmatrix}
+    \Sigma_{22}^{-1}
+    \begin{pmatrix}
+    x_1-\mu_1 \\ x_2-\mu_2
+    \end{pmatrix}
+    $}\\
+    f(x) =\scalebox{0.8}{$\frac{1}{(2\pi+)^{q_1/2}
+    |\Sigma_{11}|} e ^{
+    \begin{pmatrix}
+    x_1-\mu_1 & x_2-\mu_2
+    \end{pmatrix}
+    \Sigma_{11}^{-1}
+    \begin{pmatrix}
+    x_1-\mu_1 \\ x_2-\mu_2
+    \end{pmatrix}
+    }
+    $} \times \\
+    \quad \scalebox{0.8}{$\frac{1}{(2\pi+)^{q_1/2}
+    |\Sigma_{22}|} e ^{
+    \begin{pmatrix}
+    x_1-\mu_1 & x_2-\mu_2
+    \end{pmatrix}
+    \Sigma_{22}^{-1}
+    \begin{pmatrix}
+    x_1-\mu_1 \\ x_2-\mu_2
+    \end{pmatrix}
+    }
+    $}
+\end{gather*}
+
+\section{Conditional Distributions of Normal}
+
+Theorem
+\begin{align*}
+    x = \begin{pmatrix}
+    x_1 \\
+    x_2
+    \end{pmatrix}, x \sim N(\mu,\Sigma)\\
+    \mu = \begin{pmatrix}
+    \mu_1 \\
+    \mu_2
+    \end{pmatrix} ,
+    \Sigma = 
+    \begin{pmatrix}
+    \Sigma_{11} & \Sigma_{21} \\
+    \Sigma_{12} & \Sigma_{22}
+    \end{pmatrix}, |\Sigma_22| >0
+\end{align*}
+then the Conditional Distribution of $X_1$ given that $X_2 = x_2$:
+
+\[X_1|X_2=x_2 \sim N_{q\times 12}\Big( \mu_1 + \Sigma_{12}\Sigma_{22}^{-1}(\x_2-\mu_2), \Sigma_{11}-\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}\Big)\]
+
+\section{Univariate Conditional Probability}
+Take x and y
+\[P(X|Y = y) \overset{def}{=} \frac{f(x,y)}{f(y)}\]
+That is the conditional probability is the ratio between the bivariate joint pdf and the univariate pdf.
+
+We can get the univariate by integrating out the variable you don't need out of the joing distribution.
+
+\[f(y) = \displaystyle\int^{\infty}_{\infty}f(x,y)dx\]
+
+We call this integrating x out of the joint distribution. This is where we ended for the day to be continued next lecture.

@@ -1,0 +1,105 @@
+\chapter{Session 16: October 22, 2020}
+statistical inference has three parts. 
+1. Point estimation
+2. Confidence intervals and regions
+3. Hypothesis Testing
+
+So far we've done lots of point estimation and hypothesis testing; however, we have a lot to learn about confidence intervals. We have two was of point estimation with Maximum likelihood and unbiased estimators. We also have several approaches to Hypothesis testing with the $T^2$ statistic and the Likelihood Ratio Test.
+
+We have much to learn about hypothesis testing since it's the most important part of statistics.
+
+\section{Creating confidence regions}
+Let's take $x_1,x_2,...,x_n \sim N_p (\mu,\Sigma)$
+We want to construct a 
+$(1-\alpha)*100\%$ region for the mean $\mu$ that is we construct region in which we have a $1-\alpha$ probability that alpha is within that region. it is a region and not an interval because we are doing things in multiple dimensions.
+
+We are doing this with unspecified alpha even though the standard is $\alpha=0.05$
+
+We will call our confidence region W. we want to find $W\subset \mathbb{R}^p : P(\mu \in W) = 1-\alpha$ we did this in one dimension by taking the bell curve and constructing the confidence intervals. We just want to choose an interval that has $1-\alpha*100\%$ of the mass. 
+
+Although there is no hypothesis testing in confidence intervals, our confidence interval helps us to construct the test statistic and vice versa. We will use the $T^2$ test statistic to construct our confidence region
+
+\begin{gather*}
+    T^2 = n(\overline{x}-\mu)^T S^{-1}(\overline{x}-\mu) \sim \frac{(n-1)p}{n-p}F_{p,n-p}
+\end{gather*}
+
+By definition
+$P\Big( n(\overline{x}-\mu)^T S^{-1}(\overline{x}-\mu) \Big) \leq \frac{(n-1)p}{n-p}\cdot F_{p,n-p}(1-\alpha) = 1-\alpha$
+Thus all values that satisfy the inequality $ n(\overline{x}-\mu)^T S^{-1}(\overline{x}-\mu) \leq \frac{(n-1)p}{n-p}\cdot F_{p,n-p}(1-\alpha)$
+comprise the desired $(1-\alpha)*100\%$ confidence region for $\mu$.
+
+So this will be an ellipsoid that shares the eigen vectors of the sample. Remember that all the powers of a matrix vectors. The axes of this ellipsoid will be of length $\sqrt{\frac{(n-1)\cdot p}{n(n-p)}F_{p,n-p}(1-\alpha)}$
+
+The nice thing about this is that we can get a really precise measure of confidence intervals.
+
+The downside of this method is that it's hard to imagine and visualize a p-dimensional ellipsoid and we are would need to calculate a quadratic form to calculate it.
+
+We are better off if we can get a nicer shape to imagine like an interval.
+
+The equivalent of an interval in n-dimensional space will be an n-dimensional cartesian product. In a two dimensional space that will be a rectangle. It will be a prism in a three dimensional and so on and so forth.
+
+\section{Cartesian Product of Intervals}
+Let's imagine that we have a bunch of intervals for the individual $\mu_i$'s
+
+Let's say $I_1 \times I_2 \times ... \times I_p = R$ We immediately know if a point in inside the region as long as each $\mu_i \in I_id$
+
+\subsection{A Basic Approach Midterm Question}
+The first thing that people tried doing was to project an ellipse onto the axes. They called that region the confidence region for the mean. The projection contained the ellipse, so the probability of the mean vector being in this region was greater than $1-\alpha$.
+
+How do you find the projection on the coordinate axis. That is how do you find the shadow of the ellipse on the axis. This was on a test a couple of years ago. and was on the test this year. Go back and copy and paste midterm here.
+
+\subsection{Projection of an Ellipse onto its EigenVectors}
+
+The most clear region to use is to use the eigenvectors as the axes. These get us nicer looking regions.
+
+The projection of an ellipse onto the ith eigenvector is 
+
+$\lambda_i \pm \sqrt{\frac{p(n-p)}{n(n-p)}F_{p,n-p}(1-\alpha)}\sqrt{\frac{s_ii}{n}}$
+
+\section{Bonferroni Simultaneous Confidence Intervals}
+
+The idea behind this method is to get component by component analyses of the dimensions so that we can think of things in one dimensional intervals instead of regions and projections. We want to make things look really nice and be human-readable without the drawback of being quite so conservative.
+
+We need to construct confidence intervals $c$ for each component of $\mu$ such that $\mu_i \in c_i$
+
+$c_1 \times c_2 \times ... \times c_p = (1-\alpha)100\%$ CR for $\mu$
+
+\begin{gather*}
+    \begin{pmatrix}
+    \mu_1 \\
+    \mu_2
+    \end{pmatrix}
+\end{gather*}
+We want the case to be for $\mu_1 \in c_1$ and $\mu_2 \in c_2$ we want 
+
+$P(\mu_{2\times1} \in CR=c_1 \times c_2) \overset{?}{=} 1-\alpha$
+
+So he said if you constructed standard confidence intervals for each component. If you were to check and see if your vector is inside the confidence region you would notice that as $p \rightarrow \infty$ You actually get a lower probability that the vector is inside the region.
+If you capture each individual component with 95\% confidence. You cannot expect that the product will be 95\% confidence as well.
+
+So his argument startswith bool's inequality of subadditivity.
+\[P(\bigcup_{i=1}^n A_i)\leq \sum_{i=1}^nP(A_i)\]
+
+\begin{gather*}
+    P(\mu \in c_1 \times c_2) = 1-P(\bigcup_{i=1}^{p} \mu_i \not\in c_i) \geq \\
+    1-P(\mu \not\in c_1)-P(\mu\not\in c_2)
+\end{gather*}
+ 
+ but each $P(\mu \not\in c_i)=\alpha$ so the probability that $\mu$ belongs to the two intervals in the 2D case is only 0.9 even though $\alpha$ is 0.95.
+ 
+ So he asked himself, What if we divided the alpha. By taking a smaller value, we get a better probability that all intervals are satisfied. We have to be more confident about each individual dimension to be confident about the result as a whole.
+ 
+ So if $P(\mu_1 \in c_1) = 97.5\%$ and $P(\mu_2 \in c_2) = 97.5\%$ then $P(mu \in c_1 \times c_2) = 95\%$
+ 
+ He said that each interval should be $(1-\frac{\alpha}{p}\cdot 100\%$ confidence intervals for $\mu_i$ each of these will be $c_i$. That is $P(\mu_i \in c_i =(1-\frac{\alpha}{p}\cdot 100\%$ This results in $c_1 \times c_2 \times ... \times c_p =CR$ that contains $\mu$ with a probability of $\overline{x}_i \pm t_{n-1}(1-\frac{\alpha}{2p})\sqrt{\frac{s_ii}{n}}$
+ 
+ It is similar to our first method using the $T^2$ -statistic; however it is more conservative due to the adjustment of dividing the individual alphas by $2p$.
+ 
+ \subsection*{Proof}
+\begin{gather*}
+    P(\bigcap_{i=1}^{p}\mu_i \in c_i) = 1 - P(\bigcup_{i=1}^{p}\mu_i \not\in c_i) \\
+    \geq 1- \sum_{i=1}^p P(\mu_i \not\in c_i) \\
+    \geq 1- \Big( \sum_{i=1}^p 1- P(\mu_i \in c_i) \Big) =1-\Big( \sum_{i=1}^p \frac{\alpha}{p}\Big) = 1-\alpha
+\end{gather*}
+
+There's a great picture representation of all of these methods on page 233 of the book.

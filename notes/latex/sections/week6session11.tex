@@ -1,0 +1,217 @@
+\chapter{Session 11: October 6, 2020}
+From last time we will copy and paste the theorem
+
+
+\section{Conditional Distributions of Normal}
+
+Theorem
+\begin{gather*}
+    x = \begin{pmatrix}
+    x_1 \\
+    x_2
+    \end{pmatrix}, x \sim N(\mu,\Sigma)\\
+    \mu = \begin{pmatrix}
+    \mu_1 \\
+    \mu_2
+    \end{pmatrix} ,
+    \Sigma = 
+    \begin{pmatrix}
+    \Sigma_{11} & \Sigma_{21} \\
+    \Sigma_{12} & \Sigma_{22}
+    \end{pmatrix}, |\Sigma_22| >0
+\end{gather*}
+then the Conditional Distribution of $X_1$ given that $X_2 = x_2$:
+
+\[X_1|X_2=x_2 \sim N_{q\times 12}\Big( \mu_1 + \Sigma_{12}\Sigma_{22}^{-1}(\x_2-\mu_2), \Sigma_{11}-\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}\Big)\]
+
+\begin{gather}
+f(x_1|X_2=x_2)\overset{def}{=}\frac{f(x_1,x_2}{f(x_2)}\\
+\end{gather}
+We are going to do an indirect proof with a trick. We are going to start by defining a matrix 
+\begin{gather*}
+A_{p\times p}=
+\left(
+    \begin{array}{c;{2pt/2pt}c}
+        I_{q \times q} & -\Sigma_{12}\Sigma_{22}^{-1} \\ \hdashline[2pt/2pt]
+        0 & I_{(p-q)(p-q)}
+    \end{array}
+\right) \\
+A(x-\mu) = A \left(
+    \begin{array}{c}
+        x_1 - \mu_1 \\ \hdashline[2pt/2pt]
+        x_2 - \mu_2
+    \end{array}
+\right) = \left(
+    \begin{array}{c}
+        x_1-\mu_1-\Sigma_{12}\Sigma_{22}^{-1}(x_2-\mu_2) \\ \hdashline[2pt/2pt]
+        x_2-\mu_2
+    \end{array}
+\right)\\
+x\sim N_p(\mu,\Sigma),\quad x-\mu\sim N_p(0,\Sigma)\\
+A(x-\mu) \sim N_p(0,A\Sigma A^T)\\
+A\Sigma A^T =
+    \left(
+    \begin{array}{c;{2pt/2pt}c}
+        I & -\Sigma_{12}\Sigma_{22}^{-1} \\ \hdashline[2pt/2pt]
+        0 & I
+    \end{array}
+    \right)
+    \left(
+    \begin{array}{c;{2pt/2pt}c}
+       \Sigma_{11} & \Sigma_{12}\\ \hdashline[2pt/2pt]
+        \Sigma_{21} & \Sigma_{22}
+    \end{array}
+    \right)
+    \left(
+    \begin{array}{c;{2pt/2pt}c}
+        I & 0^T\\ \hdashline[2pt/2pt]
+        (-\Sigma_{12}\Sigma_{22}^{-1})^T  & I
+    \end{array}
+    \right)\\
+    \\A\Sigma A^T=
+    \left(
+    \begin{array}{c;{2pt/2pt}c}
+       \Sigma_{11}-\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21} & \Sigma_{12}\\ \hdashline[2pt/2pt]
+        \Sigma_{21} & \Sigma_{22}
+    \end{array}
+    \right)
+    \left(
+    \begin{array}{c;{2pt/2pt}c}
+        I & 0^T\\ \hdashline[2pt/2pt]
+        (-\Sigma_{12}\Sigma_{22}^{-1})^T  & I
+    \end{array}
+    \right)\\A\Sigma A^T=
+    \left(
+    \begin{array}{c;{2pt/2pt}c}
+       \Sigma_{11}-\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}
+       & 0^T\\ \hdashline[2pt/2pt]
+        0 & \Sigma_{22}
+    \end{array}
+    \right)\Rightarrow\\
+    A(x-\mu) = \left(
+    \begin{array}{c}
+        x_1-\mu_1-\Sigma_{12}\Sigma_{22}^{-1}(x_2-\mu_2) \\ \hdashline[2pt/2pt]
+        x_2-\mu_2
+    \end{array}
+\right)\sim N_p(0,A\Sigma A^T)
+\end{gather*}
+
+From the theorem before, since we have two partitions with no covariance, this means that we have two independent vectors $x_1-\mu_1-\Sigma_{12}\Sigma_{22}^{-1}(x_2-\mu_2)$ and $x_2-\mu_2$.
+This means the following:
+
+\[x_1-\mu_1-\Sigma_{12}\Sigma_{22}^{-1}(x_2-\mu_2) \sim N_q(0,
+\Sigma_{11}-\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}\]
+
+\[x_2-\mu_2\sim N_{p-q}(0,\Sigma_{22})\]
+
+If we condition the above on $x_2$ then $x_2$ is a fixed value and the only random part is $x_1$. So we can derive the formula below.
+\begin{gather*}
+    x_1|X_2=x_2 \sim N_q(\mu_1+\Sigma_{12}\Sigma_{22}^{-1}(x_2-\mu_2) ,\Sigma_{11}-\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21})
+\end{gather*}
+
+So to summarize what happened, We chose a special fixed vector and used the properties of that fixed vector to create a new vector with a new distribution. Conveniently this new vector has two independent partitions. If we recenter the first partition, we get a distribution of $x_1$ that is independent of $x_2-\mu_2$. By definition this makes it the conditional probability. 
+
+Now you're probably wondering How we came up with this indirect proof and constructed the matrix. We basically had the end goal in mind. We did something on purpose that gave us the observation. It is the cumulative effort of generations of great minds that form mathematics.
+
+\section{Distribution of Quadratic forms}
+\subsection{chi-square distribution.}
+
+Many test statistics follow chi-square distributions. It is one of the most important distributions in statistics. Contingency tables and goodness of fit analysis statistics follow the chi-square distribution as well.
+
+It is also the building block of the T and F distributions.
+
+\begin{gather}
+    z \sim N(0,1) \Rightarrow \\
+    z^2 \sim \chi^2(1)\\
+    z^2_1 + z^2_2 + ...+ z^2_k \sim \chi^2(k)\\
+    t = \frac{N(0,1)}{\sqrt{\frac{\chi^2(1)}{v}}}\sim z(v)\\
+    F = \frac{\chi^2(v_1)/v_1}{\chi^2(v_2)/v_2}\sim F(v_1,v_2)\\
+    GAM(2,k)\sim \chi^2(2k)
+\end{gather}
+
+if \[x\sim \chi^2(n)\] then
+\[E(x) = n\]
+\[VAR(x) = 2n\]
+
+as the degrees of freedom increase, the chi-square distribution starts to look normal.
+
+It is a single parameter distribution which gives it very special properties and lets it be easily transcribed onto a table.
+\subsection{Theorem}
+The following quadratic form has a chi-square distribution
+\begin{gather*}
+    (x-\mu)^T\Sigma(x-\mu) \sim \chi^2(p)
+\end{gather*}
+
+\subsubsection{Proof}
+Remember that the sum of square normal variables is going to follow a chi square distribution. So we are going to try to use a tool in our box and represent this quadratic form as the sum of squares. The best tool we have for representing difficult matrix problems as scalar is the spectral decomposition of $\Sigma$. Remember that since it's an inverse matrix, its eigenvalues will be the inverse eigen values.
+
+Remember that X is a random variate.
+let \(\lambda_1,\lambda_2, ..., \lambda_n\) be the eigenvalues of $\Sigma$
+\begin{gather*}
+    (x-\mu)^T\Sigma^{-1}
+    (x-\mu) \overset{SD}{=} \sum_{i=1}^{p}(X-\mu)^T\lambda_i ^{-1}e_ie_i^T(X-\mu)\\
+    = \sum_{i=1}^{p}\lambda_i^{-1}(X-\mu)^T e_ie_i^T(X-\mu)\\
+    = \sum_{i=1}^{p}\lambda_i^{-1} [e_i^T(X-\mu)]^2\\
+    = \sum_{i=1}^{p}\bigg[\frac{e_i^T(X-\mu)}{\sqrt{\lambda_i}}\bigg]^2
+\end{gather*}
+
+So now we just need to verify that each term of the sum is a standard normal variable. $z \sim N(0,1)$
+
+We will use our analogy from baby statistics. when we wanted to create a standard normal we took $z=\frac{x-\mu}{\sigma} \sim N(0,1)$ This is because of the linear transformation properties of the normal distribution. We don't have division when we talk about matrices, but we have something similar.
+
+we know that $X-\mu \sim N_p(0,\Sigma)$
+
+We are going to define a matrix A
+\[A= \begin{pmatrix}
+e_1^T/\sqrt{\lambda_1} \\
+\vdots
+e_p^T/\sqrt{\lambda_p} \\
+\end{pmatrix}
+\]
+
+Now we multiply A times our vector and see our result is exactly the same as the terms we have above
+
+\begin{gather*}
+    A(X-\mu)= \begin{pmatrix}
+e_1^T/\sqrt{\lambda_1} \\
+\vdots \\
+e_p^T/\sqrt{\lambda_p} \\
+\end{pmatrix}(X-mu)\sim N_p(0,A\Sigma A^T)\\ \\
+A\Sigma A^T = 
+\begin{pmatrix}
+e_1^T/\sqrt{\lambda_1} \\
+\vdots \\
+e_p^T/\sqrt{\lambda_p} \\
+\end{pmatrix}
+\Bigg(
+\displaystyle\sum_{i=1}^p \lambda_i e_i e_i^T
+\Bigg)
+\begin{pmatrix}
+e_1/\sqrt{\lambda_1} &
+\cdots &
+e_p/\sqrt{\lambda_p}
+\end{pmatrix} \\
+A\Sigma A^T = 
+\begin{pmatrix}
+e_1^T/\sqrt{\lambda_1} \\
+\vdots \\
+e_p^T/\sqrt{\lambda_p} \\
+\end{pmatrix}
+\begin{pmatrix}
+\sqrt{\lambda_1} e_1&
+\cdots &
+\sqrt{\lambda_p}e_p
+\end{pmatrix}\\
+= I_{p \times p}
+\end{gather*}
+This the fact that the eigen-vectors disappear is because they are all orthogonal and of length 1.
+
+\[A(x-\mu) \sim N_p(0,I_{p \times p}\]
+
+So that means all of the components of the vector are independent N(0,1) random variables.
+
+Back to the proof.
+This means that the quadratic we calculated earlier follows a chi-square with p degrees of freedom
+\begin{gather*}
+    (x-\mu)^T\Sigma(x-\mu) = \sum_{i=1}^{p}\bigg[\frac{e_i^T(X-\mu)}{\sqrt{\lambda_i}}\bigg]^2 \sim \chi^2(p)
+\end{gather*}

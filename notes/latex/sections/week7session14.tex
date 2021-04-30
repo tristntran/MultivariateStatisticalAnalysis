@@ -1,0 +1,154 @@
+\chapter{Session 14: October 15, 2020}
+Today we started the chapter 5 material.
+\section{Inferences about the Mean vector}
+In statistics inference usually means 3 things.
+1) Estimation $\hat \mu$ \\
+2) Confidence Intervals and Regions\\
+3) Hypothesis Testing\\
+
+\section{Estimation}
+
+Let's take our data set
+\[x_1,...,x_n \sim N(\mu,\sigma)\]
+How to estimate $\mu$ and $\sigma^2$
+\begin{gather*}
+  \hat\mu = \overline{x},\quad \hat\sigma^2
+  = \sum \frac{x_i-\overline{x}}{n}, \quad s^2 = \sum \frac{(x_i-\overline{x})^2}{n-1}
+\end{gather*}
+
+We have two techniques that we will focus on. One is using unbiased estimators and the other is to use Maximum Likelihood Estimators.
+
+\section{Confidence Intervals}
+Confidence intervals are defined as $(1-\alpha)\cdot 100\%$ for $\mu$ and $\sigma$. Sometimes we want to give some more slack to our model. Instead of getting an exact estimate, we want to construct an interval where our population statistic has a $95\%$ chance of being somewhere inside
+
+If  $\alpha = 0.05 \Rightarrow 95\%$ CI
+
+If  $\alpha = 0.01 \Rightarrow 99\%$ CI
+
+We construct our confidence intervals like so
+
+\[(\overline{x} -t_{1-\frac{\alpha}{2}}(n-1)\frac{s}{\sqrt{n}}, \overline{x} +t_{1-\frac{\alpha}{2}}(n-1)\frac{s}{\sqrt{n}})\]
+The t statistic is represented by the $(1-\frac{\alpha}{2})^{th}$ Percentile of the t-distribution with n-1 degrees of freedom.
+
+\subsection{One-Dimensional t-Distributions}
+
+$\overline{x} \sim N(\mu, \frac{\sigma^2}{n})$
+
+\[\overline{x}-\mu \sim N(0, \frac{\sigma^2}{n})\]
+
+\[\frac{\overline{x}-\mu}{\frac{\sigma}{\sqrt{n}}} \sim N(0,1)\]
+The above are given distributions and transformations of the distribution of $\overline{x}$ from there we take the square. The square sum of a standard normal variables is a $\chi^2(p)$
+\[\Big(\frac{\overline{x}-\mu}{\frac{\sigma}{\sqrt{n}}} \Big)^2= \frac{(n-1)s^2}{\sigma^2} \sim \chi^2(n-1)\]
+From here we can construct the t-distribution. This is the ratio between a standard normal and a chi-square with v degrees of freedom.
+
+\[\frac{N(0,1)}{\sqrt{\frac{\chi^2(v)}{v}}}\sim t(v)\]
+If we were to write it out and expand it a bit more, we have
+
+\[\frac{
+    \Big(\frac{\overline{x}-\mu}{\frac{\sigma}{\sqrt{n}}} \Big)
+    }
+    {\sqrt{
+    \frac{\frac{(n-1)s^2}{\sigma^2}}{n-1}
+    }} = \frac{\overline{x}-\mu}{\frac{s}{n}}\sim t(n-1)\]
+
+This is actually our pivotal quantity that we call the t-score. We can calculate pretty much everything here and we will only have to estimate $\mu$. We are actually going to construct our confidence interval from this quantity.
+
+
+The t-distribution looks a lot like the bell curve. It is centered at zero and has symmetric tails on either end. For any value of $\alpha$, we can find the $(1-\frac{\alpha}{2})^{th}$ percentile of the curve. This means the point at which $(1-\frac{\alpha}{2})\%$ of the mass is less than or equal to that t-score. We call it $t_{1-\frac{\alpha}{2}}$
+
+By symmetry $-t_{1-\frac{\alpha}{2}}= t_\frac{\alpha}{2}$. Remember that for all of this, we are referring to the t-distribution with (n-1) degrees of freedom.
+
+So based on what we have constructed
+\[P(-t_{1-\frac{\alpha}{2}}(n-1) < \frac{\overline{x}-\mu}{\frac{s}{n}}< t_{1-\frac{\alpha}{2}}(n-1))= 1-\alpha\]
+
+Now we can rewrite the inequality leaving our unknown, $\mu$ in the middle.
+\[P(\overline{x}-t_{1-\frac{\alpha}{2}}\cdot \frac{s}{\sqrt{n}} < \mu < \overline{x} + t_{1-\frac{\alpha}{2}}\cdot \frac{s}{\sqrt{n}})= 1-\alpha\]
+
+We can also construct a confidence interval for the variance using a different distribution and pivotal quantity. To be included in the appendix. Even though the actual population statistic is not observable we can still be relatively certain that our statistic lies somewhere inside the interval. Note that we will always settle for something less than a $100\%$ confidence interval. This is because the only way to include all of the data points is if the confidence interval spans the entire space. It might be from $-\infty$ to $\infty$. This would not give us any useful information whatsoever.
+
+\section{Hypothesis Testing}
+
+This is probably the most important part of estimation. This is what we've been building up to.
+\subsection{Assume a distribution of the data}
+First we have to assume a distribution for our data.
+\[x_1,...,x_n \sim N_1(\mu,\sigma^2)\]
+
+\subsection{Identify a Hypothesis}
+In hypothesis testing we make a claim and use our statistical inference to test its validity.
+
+\begin{align*}
+    H_0: \mu &= \mu_0 \\
+    H_A: \mu &\neq \mu_0  &, \alpha = 0.05
+\end{align*}
+$H_0$ is our null hypotheis. It makes the claim that $\mu$ is equal to a particular value $\mu_0$. The $H_A$ is our alternate hypothesis.
+\subsection{Find a test statistic}
+In this case, we are going to use the one we just saw.
+\begin{gather*}
+    \frac{\overline{x}-\mu_0}{\frac{s}{\sqrt{n}}}\sim t(n-1)
+\end{gather*}
+before the $\mu$ was an unknown, but now it is a known value that was specified in our hypothesis. This test statistic will help us evaluate the probability that $\mu = \mu_0$ given our data.
+
+\subsection{Rejection Region approach}
+For this approach we create a rejection region. In our case it is the two $\frac{\alpha}{2}$ tails. We use our data to construct our t-statistic, if our falls inside of the rejection region, that is, it falls outside of our confidence interval, we reject the null hypothesis. If the t-statistic falls outside of the rejection region or inside of the confidence interval we fail to reject the null hypothesis. It is important to note that we can never be sure of anything in statistics because the world is random and uncertain.
+
+We are rejecting our hypothesis if the corresponding t-value falls within the extreme $\alpha$-percent of the distribution. We call the two endpoints of the rejection region our critical values.
+
+\subsection{P-Value Approach}
+P-Value is also called the observed significance level. 
+Intuitively we can think of the p-value as a measure for the extremity of our data. 
+
+Imagine you're walking on the street and you see someone who is 7ft tall. You would recognize that this is a tall person. How do you know that? It is because they are taller than anyone else on the street and taller than anyone you've probably seen before.
+
+This is the same idea as the test statistic. Your p-value is the percentage of the data that is less than or equal to your value. That is to say, we integrate from negative infinity to our test statistic
+
+\[ P-value = 2\cdot P(t(n-1) \leq -|t|)\]
+
+Once we compute the p-value we compare it against our alpha level. If our observed significance is less than the significance of our test that is our p value is less than $\alpha$ we reject the null hypothesis $H_0$.
+If our p-value is greater than our alpha level then we fail to reject the null. 
+
+\section{Cyril's Preference}
+Dr. Rakovski acknowledged that the both methods are pretty equivalent in the sense that rejection and failure will occur at the same values of t. He prefers the p-value method, because when you know the p-value, you know exactly how far you are from rejecting. The rejection region gives you a binary information of whether or not your answer is acceptable. 
+
+There are some caveats to this. The p-value method tends to be dangerous in the hands of inferior mathematicians. There is a lot of precedence of p-hacking. They often manipulate the alpha level a posteriori.
+
+If you would like to learn some good methods for hypothesis testing, look into the Bain and Engelhardt Probability book.
+
+\section{Simplest Multi-Dimensional Case}
+\[x_1,...,x_n \sim N_p(\mu, \Sigma)\]
+So now instead of measuring n random variables we are measuring n px1 random variates. 
+
+\begin{align*}
+    H_0: \mu &= \mu_0 \\
+    H_A: \mu &\neq \mu_0  &, \alpha = 0.05
+\end{align*}
+
+So now we need to invent some new math to make the unvariate case applicable to the multivariate
+
+\begin{gather*}
+    \overline{x} \sim N(\mu,\Sigma)\\
+    \overline{x}-\mu \sim N(0,\Sigma)\\
+    (\overline{x}-\mu)^T(\frac{\Sigma}{n})(\overline{x}-\mu) \sim \chi^2(p)\\
+\end{gather*}
+Our big problem is that $\Sigma$ is unknown. It's really difficult and expensive to generate the variance-covariance matrix.
+
+So in the univariate case our test statistic was a standard Normal
+\[\frac{\overline{x}-\mu}{\frac{\sigma}{n}}\sim N(0,1)\]
+however, when we replaced the unknown standard deviation with the sample deviation, we lost one degree of freedom.
+\[\frac{\overline{x}-\mu}{\frac{s}{n}}\sim t(n-1)\]
+So we want to use something analogous to replace the $\Sigma$ with its estimator S, the unbiased estimator $S= \frac{\displaystyle\sum_{i=1}^n(x-\overline{x})(x-\overline{x})^T}{n-1}$
+
+As a side note: 
+when we invert the matrix
+\[\big( \frac{\Sigma}{n}\big)^{-1} = n\Sigma^{-1}\]
+
+so now we want to calculate 
+
+\begin{align*}
+    (\overline{x}-\mu)^T \bigg(\frac{\Sigma}{n} \bigg)^{-1}(\overline{x}-\mu) &\sim \chi^2(p) \\
+    n(\overline{x}-\mu)^T {\Sigma}^{-1}(\overline{x}-\mu) &\sim \chi^2(p) \Rightarrow\\
+    n(\overline{x}-\mu)^T S^{-1}(\overline{x}-\mu) &\sim \frac{(n-1)p}{n-p}F_{p,n-p}
+\end{align*}
+So when we replace the variance-covariance matrix with its unbiased estimator the price we pay is that our distribution is no longer a chi-square, but instead an F distribution, which is the ratio of two chi squared distributions and their means. 
+That's fine though, we can still use the same techniques from our univariate case and construct everything we need to. 
+
+and then we did an example in R. The actual code is trivial compared to the theory, so I did not record in notes.

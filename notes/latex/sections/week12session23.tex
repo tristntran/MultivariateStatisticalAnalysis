@@ -1,0 +1,127 @@
+\chapter{Session 23: November 17, 2020}
+
+We pretty much finished chapter 6. The only thing we skipped was Growth curves, but we'll skip it.
+
+We are going to temporarily skip chapter 7 and do chapter 8 instead.
+
+\section{Chapter 8: Principal Component Analysis}
+
+This is a method to engineer new variables. We know from other classes that if your dataset has particular variables, sometimes it's a good idea to manipulate them in some way so that you can build a better model and extract the information.
+
+If you have a numerical variable you can cut it into categorical groups. For example if you have an age, you can separate them into old and young.
+
+One problem you might encounter is having highly correlated data. When you take surveys, sometimes the designers will ask the same question multiple times. This is called colinearity. The ideal situation with principal component analysis is to take the existing values transforming them using the optimal linear combinations. These new variables created are called principal components.
+
+All principal components are uncorrelated so you can feed them into statistical and machine learning models to perform optimally.
+
+The principal components are ordered and there comes a point when the principal components are so unimportant that you can ignore them, thus letting you reduce the dimensionality of your model.
+
+
+You might wonder "Why don't we always use this if it's so good?" 
+
+They can be a bit scrambled. The original variables can be very meaningful. Income, age, distance to a hospital. When you take a linear combination, all of this information is scrambled. 
+
+Let's say that we have p original variables
+ \[x = (x_1,x_2,...,x_p)\]
+ \[cov(x) = \Sigma_{p\times p}\]
+ 
+ I want to create p new variables \(y_1,y_2,..,y_p\) that are linear combinations of \(x_1,...,x_p\)
+ \begin{gather*}
+     y_1 = a_1^Tx= a_{11}x_2+...+a_{1p}x_p\\
+     y_2 = a_2^Tx= a_{21}x_1+...+a_{2p}x_p\\
+     \vdots
+     \\
+     y_p = a_p^Tx= a_{p1}x_1+...+a_{pp}x_p
+ \end{gather*}
+ \[var(y_i) = var(a^T_ix)=a_i^T\Sigma a_i\]
+ 
+ Imagine that we are trying to associate one variable to an outcome. For instance, lets try and find the association between age and a disease. If everyone in the sample is the same age, will I be able to find the correlation? The answer is no. Variability in data helps us predict things.
+ 
+ \subsection{Definition}
+ Principal Components are p uncorrelated linear combinations of $x_1,...,x_p$ That have the largest possible variance.
+ 
+ \[x^T=(x_1,x_2,..,x_p)\]
+ \[a^T = (a_1,a_2,...,a_n)\]
+ \[y=a^Tx = a_1x_1+...+a_{p \times p}\]
+ 
+ So let's look at the quadratic form that represents the variance of Y $a^T\Sigma a$. our goal is to maximize the quadratic form. Remember our lemma from the beginning of class. In order to utilize that lemma, we need to restrict the norm of the vector a $|a| =1$ That the vector a should be on the unit disc. We're doing this to prevent any cheating. We are standardizing the length of a and we are making the choice about direction and not length. *Tristan's note in statistic, size doesn't matter*
+ 
+ 
+ Our question then becomes a mission of finding the vector a on the unit shell such that we maximize variance of sigma.
+ 
+ The second principal component has to be uncorrelated with the first one that under the restriction maximizes the value of the quadratic form. 
+ 
+ Once we have created all p principal components then we will be great.
+ 
+ This is a concept from chapter 2. (page 22)
+ 
+ \subsection{Creating Principal Components}
+ thm let 
+ \[x^T = x_1,..., x_p\]
+ \[cov(x) = \Sigma, (\lambda_1,e_1),(\lambda_2,e_2),..,(\lambda_p,e_p)\] are the eigen value eigen vector pairs for $\Sigma$ with $\lambda_1 \geq \lambda_2 \geq ... \geq \lambda_p$
+ 
+ Then:
+ \[y_i = e_i^Tx, var(y_i) =\lambda_i\]
+
+This is a big result because it tells us exactly how to derive principal components. We just need to find the eigenvalues and eigenvectors of the variance matrix and they create the coefficients we need. The order of the eigenvalues then induce the order of the eigenvectors.
+
+Now we are almost done with our coverage of principal components. We're going to do a quick proof where we maximize quadratic points for points along the unit sphere.(page 22)
+
+\begin{gather*}
+    y_1 = a^Tx \quad var(y_1) = a^T \Sigma a\\
+    max a^T \Sigma a = max \frac{a^T\Sigma a}{a^Ta}\\
+    ||a|| = 1 \\
+    max = \lambda_1
+\end{gather*}
+attained iff $a=\lambda_1$ remember we proved this using svd and doing changing of variables.
+
+\subsubsection{Verfying Principal Components are Uncorrelated}
+We also know that the maximum of $a^T\Sigma a$ orthogonal to the first k eigen values will be achieved if and only if $a = e_{k+1}$
+
+remember that all of the covariances between $y_i$ and $y_j$ to be zero.
+\begin{align*}
+    cov(y_i,y_j) &= cov(e_i^Tx,e_j^Tx)\\
+    &= e_i^T cov(x,x) e_j\\
+    &= e_i^T \Sigma e_j\\
+    &= e_i^T \lambda_j e_j\\
+    &= \lambda_j e_i^T e_j\\
+    &= 0
+\end{align*}
+
+so here we use the definition of eigenvectors to get that $\Sigma e_j = \lambda_j e_j$ and the fact that eigenvectors are orthogonal with one another. So this process is guaranteed to produce uncorrelated principal components
+
+so far we have not managed to reduce the dimensions of the data; however, we have managed to create uncorrelated data.
+
+\subsection{Theorem: No Loss of Information}
+when we create new variables there is always a fear of destroying or losing some of the valuable information.
+
+Theorem
+
+\[ \displaystyle \sum _{i=1}^p VAR(x_i) = \displaystyle \sum _{i=1}^p VAR(y_i)\]
+
+so this theorem is saying that the process of principal components shifts the variance of the variables around. So that there are no co-variance terms.
+
+\begin{align*}
+    \displaystyle \sum _{i=1}^p VAR(x_i) &= 
+    \displaystyle \sum _{i=1}^p \sigma_{ii}=TR(\Sigma)\\
+    &= \displaystyle \sum \lambda_i \\
+    &= \displaystyle \sum VAR(Y_i)
+\end{align*}
+
+
+remember that \[VAR(y_i)=\lambda_i \] and the total variance is \[\lambda_1+\lambda_2+ ... + \lambda_p\]
+so 
+\[\frac{\lambda_i}{\lambda_1+\lambda_2+ ... + \lambda_p}\]
+is the proportion of the variance due to ith principal component.
+
+since the $\lambda$'s are ordered, this means that the variance due to each principal component are decreasing.
+
+Let's say we crab the first k principal components \[y_1,...,y_k\]
+
+\[\frac{\lambda_1+\lambda_2...,\lambda_k}{\lambda_1+\lambda_2...,\lambda_p}\]
+so at some point, for some k, this becomes close to 1.
+
+Some people decide that the minimum number of principal components is determined by the minimum number of principal components such that the above proportion exceeds 0.8. after that, the other principal components are negligible.
+This can shrink the dimensionality of your data set to just a couple.
+
+This heuristic is not necessarily best practices, but it is common practice. The problem is that means that 20\% of the variance is still unexplained.

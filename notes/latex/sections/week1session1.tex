@@ -1,0 +1,100 @@
+\chapter{Class: Session 1 September 1, 2020}
+
+\label{Review of Statistics}
+
+We began the class with a review of what statistics is and what are some basic concepts of statistics. We start with an nxp matrix A.
+
+\begin{equation*}
+    A_{n \times p} =
+    \begin{pmatrix}
+    x_{1,1} & x_{1,2} & \cdots & x_{1,p} \\
+    x_{2,1} & x_{1,2} & \cdots & x_{1,p} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    x_{n,1} & x_{n,2} & \cdots & x_{n,p} \\
+    \end{pmatrix}
+\end{equation*}
+For the sake of having a story behind the matrix, let's say that this is healthcare data. Each row will represent a different patient which we will call an observation. Each column represents an attribute that all of the patients will have a different value for. This could be categorical (like gender) or continuous (like systolic blood pressure).
+We generally want n to be much greater than p
+$$n>>p$$
+
+In statistics we will use several values to describe the population as a whole or to understand the data. The purpose of the is course is to get a basic understanding of classic techniques for understanding data. While it will not give us a completely modern understanding of the data (that kind of insight is non-trivial).
+
+The class then discussed several different statistics in which we would hold interest.
+
+\section{Mean}
+
+For this problem we will use $\overline{x}$ for mean since this is the mean of the sample and not of the population $\mu$. Because of this we must remember that we are estimating the population mean and must therefore make some adjustments to our formulas to make sure that we are not introducing bias into our model. The mean value of an attribute can be the single statistic that provides us with the most information about the distribution as a whole. It is a very powerful tool used in statistics.
+
+\section{Variance/Covariance Matrix}
+this is a matrix that represents the variance and covariance between all of the rows. This is forms a p x p symmetric matrix with the diagonal equalling the variance.
+\begin{equation*}
+    A_{p \times p} = 
+    \begin{pmatrix}
+    s^2_{1,1} & s^2_{1,2} & \cdots & s^2_{1,p} \\
+    s^2_{2,1} & s^2_{2,2} & \cdots & s^2_{2,p} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    s^2_{n,1} & s^2_{n,2} & \cdots & s^2_{n,p} 
+    \end{pmatrix}
+\end{equation*}
+where
+    $s^2_{i,j} = cov(x_i,x_j)$
+and
+\[
+  cov(x_i,x_j) =
+  \begin{cases}
+    \sum_{k=1}^{n}{\frac{(x_{ik}-\overline{x}_i)\cdot(x_{jk}-\overline{x}_j)}{n}} & \text{if $i \neq j$} \\
+    \sum_{k=1}^{n}\frac{x_{ik}-\overline{x}_i}{n-1} & \text{if $i=j$} 
+  \end{cases}
+\]
+
+Remember a couple of things. We use n-1 as the denominator for the variance because that makes it an unbiased estimator. This comes from the fact that we are using the sample mean instead of the population mean so we have to take away one degree of freedom from our model. We end up using n as our denominator for the sample covariance because it makes it a maximum likelihood estimator of the actual covariance.
+\todo[inline]{Add proof of MLE and Unbiased estimator in appendix}
+
+\section{Correlation Matrix}
+The Correlation matrix is another useful tool to use
+remember correlation $r(x,y) =\frac{cov(x,y)}{\sqrt{Var(x)Var(y}} $
+
+\begin{equation*}
+    A_{p \times p} = 
+    \begin{pmatrix}
+    1 & r_{1,2} & \cdots & r_{1,p} \\
+    r_{2,1} & 1 & \cdots & r_{2,p} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    r_{n,1} & r_{n,2} & \cdots & 1
+    \end{pmatrix}
+\end{equation*}
+
+There are many cases where a cell in the correlation matrix will not give us any useful information. This will be the case along the diagonal since the correlation between any number and itself is 1. The other case is when one attribute is the transformation of another. For instance in medical data, they will often report the unit count of bacteria and the log scale of bacteria cultures. They may also provide the age of a patient in years, months, and days. Only one of these columns will be necessary for our model and the use of multiple would be redundant.
+
+\section{Quartiles:}
+
+Another important statistic is the median, or the data point in the middle of the dataset. To calculate the median, we place the dataset in sorted order and then count toward the middle of the dataset, until we only have one or two numbers remaining. If there is one number remaining, then that is the median. If there are two numbers remaining, then the average of those two numbers is the median. We will discuss the concept of averages further in the next module, but for now, just know that to calculate an average, you can sum the two numbers and divide the sum by 2.
+
+$50^{th}$ Percentile - Median
+
+$25^{th}$ percentile - Lower Quartile
+
+Once we have calculated the median, we can calculate the quartiles of a dataset. The first quartile is the median of the first half of the dataset, or the point at which the first quarter of the dataset lies. When we calculate the first quartile, we only consider the first half of the dataset. If the median of the dataset was cleanly one number in the middle of the dataset, then it does not get included in the count for the first quartile. However, if you had to take an average to find the median, then the smaller number in that calculation is included in the count for the first quartile
+
+$75^{th}$ percentile - Upper 
+
+Similar rules apply to the third quartile, which is the median of the second half of the dataset, or the point at which the third quarter of the dataset lies.
+
+Minimum: smallest value in the data set
+Maximum: the largest
+
+We are also interested in different ways that we can display our data such as
+
+\section{Box-Whisker plots}
+These are plots that can display continuous data against categorical data. The thick bold line in the center represents the median. The two edges of the box represent the upper and lower quartiles. The two whiskers represent the maximum and minimum. This is a useful way to visualize the skewedness of the data.
+
+Violin plots are another stylized variation of the box and whisker plot that is difficult to draw by hand, but made possible thanks to technology. The frequency of each observation is shown in the thickness of the violin curve.
+
+
+\section{Histograms \& Bar Plots}
+Histograms and bar plots are similar but often mistaken for one another. Both are used to visualize the frequency of an attribute value. In a Bar plot we take the x-axis to be categorical data and the height of the bars represent the number of observations with the corresponding categorical data. With histograms, we create bins to represent possible values for a continuous variable. We then use the height of the bar to represent the frequency with which observations have attribute values within those bins.
+
+\section{Scatter Plots}
+Scatter plots are the most common and effective way to plot continuous data attributes against each other. Using these even without regression can identify patterns and trends in the data.
+
+The following are all very good forms of exploratory data analysis that can give a statistician or data scientist insight as to which models would yield useful or interesting results.

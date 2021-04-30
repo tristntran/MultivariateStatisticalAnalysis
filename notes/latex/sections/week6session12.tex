@@ -1,0 +1,205 @@
+\chapter{Session 12: October 8, 2020}
+We starterd with a quick review of an old theorem of Linear Combinations of Vectors
+\section{Theorem 4.8}
+If we have two vectors that are orthogonal c and b, we have that
+
+\[v_1 = c_1x_1 + c_2x_2 + ...+ c_n x_n \]
+
+\[v_2 = b_1x_1 + b_2x_2 + ...+ b_n x_n \]
+
+\[\begin{pmatrix}
+v_1 \\ v_2
+\end{pmatrix} \sim
+\N_{2p}\Bigg(\begin{pmatrix}
+\sum c_i \mu \\ \sum b_i \mu
+\end{pmatrix},
+\begin{pmatrix}
+\big(\sum c_i^2\big)\Sigma & \big(\sum b_ic_i\big) \Sigma \\
+\big(\sum b_ic_i\big) \Sigma  &
+\big(\sum b_i^2\big)\Sigma
+\end{pmatrix}
+\Bigg)
+\]
+
+If we were to stack the x's ontop of each other we would get the following vector. Each x is a px1 vector.
+
+\begin{gather*}
+    \begin{pmatrix}
+    x_1\\
+    x_2\\
+    \vdots\\
+    x_n\\
+    \end{pmatrix} \sim
+    N_{np} \Bigg(
+    \begin{pmatrix}
+    \mu \\ \mu \\ \vdots \\ \mu \\
+    \end{pmatrix},
+    \begin{pmatrix}
+    \Sigma & 0 & \cdots & 0 \\
+    0 & \Sigma & \cdots & 0 \\
+    \vdots & \vdots & \ddots & \vdots \\
+    0 & 0 & \cdots & \Sigma \\
+    \end{pmatrix}
+    \Bigg)
+\end{gather*}
+
+So we're going to multiply this by a matrix.
+
+Find a matrix A such that
+
+\begin{gather*}
+    A_{2p \times np}\begin{pmatrix}
+    x_1\\
+    x_2\\
+    \vdots\\
+    x_n\\
+    \end{pmatrix}_{np \times 1} = \begin{pmatrix}
+    v_1 \\ v_2
+    \end{pmatrix}_{2p \times 1} = \begin{pmatrix}
+    c_1x_1 + c_2x_2 + ...+ c_n x_n \\ b_1x_1 + b_2x_2 + ...+ b_n x_n
+    \end{pmatrix} \\
+    A =\begin{pmatrix}
+    c_1I & c_2I & ...& c_nI \\ b_1 &  b_2I & ...& b_n I
+    \end{pmatrix} \\
+    Ax = \begin{pmatrix}
+    v_1 \\v_2
+    \end{pmatrix}\sim N_{2p}(A\mu_x,A\Sigma A^T)
+    \\
+    A\Sigma A^T = \begin{pmatrix}
+\big(\sum c_i^2\big)\Sigma & \big(\sum b_ic_i\big) \Sigma \\
+\big(\sum b_ic_i\big) \Sigma  &
+\big(\sum b_i^2\big)\Sigma
+\end{pmatrix}
+\end{gather*}
+
+\section{Maximum Likelihood Estimation for Mutlivariate Normal Distribution pg. 168}
+The idea is that when you collect data
+\[x_1,x_2,...,x_n \sim \underset{unknown}{N_p(\mu,\Sigma)}\]
+
+Your job as a statistician is to estimate the population statistics \(\mu,\Sigma\). So far we've already been doing that by taking 
+\begin{gather*}
+    \hat \mu =\overline{x}, 
+    \hat\Sigma = S = \frac{\sum_{i=1}^n(x_i-\overline{x})(x_i-\overline{x})^T}{n-1}
+\end{gather*}
+Now we've already calculated this before and verified that these values are unbiased estimators. We did this by taking the $E(\overline{x})=\mu$ and $E(S)=\Sigma$.
+
+In statistics estimators come from a deeper place. For this purpose we define something called a maximum likelihood estimator.
+
+\subsection{Likelihood}
+The likelihood is the probability that we have observed our given data set as a function of the unknown parameters $\mu$ and $\Sigma$
+
+Likelihood = $L(\mu,\Sigma)$
+
+The parameters that we choose, we are able to define our estimators as the values that maximize the likelihood given our parameters.
+
+\[f(x_1,x_2,...,x_n) = \displaystyle\prod_{i=1}^{n}f(x_i)\]
+We write likelihood function by taking the product of the individual probability functions of the vectors. They are random variates, so they are independent from one another.
+
+\subsection{Maximizing likelihood}
+
+\begin{gather*}
+    f(x_1,x_2,...,x_n) = \displaystyle\prod_{i=1}^{n}f(x_i)\\
+    =\displaystyle\prod_{i=1}^{n} \frac{1}{(2\pi)^{p/2}\Sigma|^{1/2} 
+    }e^{-(x_i-\mu)^T\Sigma^{-1}(x_i-\mu)/2}
+\end{gather*}
+The x's are observed and we are looking at this as a function of$\mu$ and $\Sigma$. We are effectively estimating p parameters for $\mu$ and $p(p+1)/2$ for $\Sigma$. It is a very complicated function with a lot of variables and it will be  impossible to do with pure calculus.
+
+In order to maximize this function with so many unknowns and a lot of tedious calculation, we're going to use a little trick and do it without any derivatives.
+
+We're going to use just matrix inequalities and matrix algebra to maximize this likelihood.
+
+\subsection{Review of Linear Algebra}
+Let's say we have a quadratic form
+\begin{gather*}
+    x^TAx = TR(x^TAx) = TR(Axx^T)
+\end{gather*}
+The quadratic form is equal to its trace, because it is a one dimensional object. We cal also remind ourselves that
+
+\begin{gather*}
+    TR(A) = \sum \lambda_i \\
+    TR(A) = TR(P^T\Lambda P) = TR(\Lambda P^TP)=TR(\Lambda)=\sum\lambda_i
+\end{gather*}
+
+\subsection{Trace Trick}
+\begin{align*}
+    (x_j-\mu)^T\Sigma^{-1}(x_j-\mu) &= TR((x_j-\mu)^T\Sigma^{-1}(x_j-\mu))\\
+    &=TR(\Sigma^{-1}(x_j-\mu)^T(x_j-\mu))\\
+    \sum (x_j-\mu)^T\Sigma^{-1}(x_j-\mu) &= \sum TR(\Sigma^{-1}(x_j-\mu)^T(x_j-\mu))\\
+    &=
+    TR\Bigg(\Sigma^{-1}\bigg[\sum(x_j-\mu)(x_j-\mu)^T\bigg]\Bigg)
+\end{align*}
+
+So this is a good stopping point to ltalk about what's going on. We're just manipulating the quadratic form part and figuring out what happens when you have a sum of these guys, because a product of an exponent is the sum of powers.
+We are now going to just explore the sum now.
+
+\begin{gather*}
+    \sum(x_j-\mu)(x_j-\mu)^T = \sum(x_j-\overline{x}+\overline{x}-\mu)(x_j-\overline{x}+\overline{x}-\mu)^T\\
+    = \sum \big((x_j-\overline{x})+(\overline{x}-\mu) \big) \big((x_j-\overline{x})+(\overline{x}-\mu) \big)^T\\
+    = \scalebox{0.8}{$
+    \sum(x_j-\overline{x})(x_j-\overline{x})^T
+    + \cancel{\sum(x_j-\overline{x})(\overline{x}-\mu)^T}
+    + \cancel{\sum(\overline{x}-\mu)(x_j-\overline{x})^T}
+    + \sum (\overline{x}-\mu)(\overline{x}-\mu)^T $}
+\end{gather*}
+
+so in the end we have
+\begin{gather*}
+    \sum(x_j-\mu)(x_j-\mu)^T = \sum(x_j-\overline{x})(x_j-\overline{x})^T+\sum (\overline{x}-\mu)(\overline{x}-\mu)^T
+\end{gather*}
+
+So now we can rewrite our original likelihood function using our new constructed identities.
+\begin{gather*}
+    L(\mu,\Sigma)=(2\pi)^{-np/2}|\Sigma|^{-n/2}e^{TR \Bigg(\Sigma^{-1} \Big[ \sum(x_j-\overline{x})(x_j-\overline{x})^T+n
+    (\overline{x}-\mu)(\overline{x}-\mu)^T \Big] \Bigg)}\\
+    =
+    (2\pi)^{-np/2}|\Sigma|^{-n/2}e^{
+    TR \big(\Sigma^{-1} \sum(x_j-\overline{x})(x_j-\overline{x})^T \big)
+    +
+    TR \big( \Sigma^{-1} n (\overline{x}-\mu)(\overline{x}-\mu)^T \big)
+    }\\
+    =
+    (2\pi)^{-np/2}|\Sigma|^{-n/2}e^{
+    TR \big(\Sigma^{-1} \sum(x_j-\overline{x})(x_j-\overline{x})^T \big)
+    +
+    TR \big( (\overline{x}-\mu)^T\Sigma^{-1} n (\overline{x}-\mu) \big)
+    }\\
+    =
+    (2\pi)^{-np/2}|\Sigma|^{-n/2}e^{
+    TR \big(\Sigma^{-1} \sum(x_j-\overline{x})(x_j-\overline{x})^T \big)
+    +
+    (\overline{x}-\mu)^T\Sigma^{-1} n (\overline{x}-\mu)
+    }
+\end{gather*}
+
+Now this looks worse than our original result... buuut, we have a different theorem that will help nus out. 
+
+\subsection{Maximization of Quadratic forms}
+Let $B_{p \times p}$ be a positive definite matrix and b-real number then,
+\begin{gather*}
+    \frac{1}{|\Sigma|^b}e^{-TR(\Sigma^{-1}B)/2} \leq \frac{1}{|B|^b}(2b)^{bp}e^{-bp}
+\end{gather*}
+For all positive definite matrices $\Sigma_{p \times p}$ equality only holds for $\Sigma=B\frac{1}{2b}$
+
+so this theorem is exactly what we need to maximize our function without any calculus. It seems like the best possible function; however, it also seems very difficult still. It actually has p less parameters than our original. We only  need to prove this and then we're in the clear.
+
+\begin{gather*}
+    \frac{1}{|\Sigma|^b}e^{-TR(\Sigma^{-1}B)/2} \leq \frac{1}{|B|^b}(2b)^{bp}e^{-bp}
+\end{gather*}
+
+We know two facts
+
+\begin{gather*}
+    TR(A) = \sum \lambda_i \\
+    |B| = \prod \lambda_i
+\end{gather*}
+We now need to choose one of the two matrices to get the eigen values.
+
+Let $\eta_1, \eta_2 ... \eta_p$ be the eigen vectors of $B^{1/2}\Sigma B^{1/2}$. We choose this because it lets us use one substitution for both variables due to the properties of trace.
+\begin{gather*}
+    TR(B^{1/2}\Sigma B^{1/2}) =TR(\Sigma B) \\
+    B^{-1/2}\Sigma^{-1} B^{-1/2} \\
+    = |B^{-1/2}||\Sigma^{-1}||B^{-1/2}| 
+    = \frac{|B|}{|\Sigma|}
+    = \prod \eta_i \rightarrow\\ \frac{1}{|\Sigma|} = \frac{\prod \eta_i}{|B|}
+\end{gather*}
+Cool so we're almost there. we have a really handy identity that gives us most of what we need. We used acouple of tricks that will let us substitute and use our proofs to get a solution.

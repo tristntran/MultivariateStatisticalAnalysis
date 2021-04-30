@@ -1,0 +1,134 @@
+\chapter{Session 7: September 22, 2020}
+\label{seventh}
+Starting today we start the material in Chapter 3. We are going to use simple geometry to understand samples and some of their properties.
+
+\section{Projection of y onto x}
+If we take a vector y, and project it onto x, we get the vector
+
+$yprojx = \frac{y^T x}{x^T x}x$
+
+We get a vector in the direction of x with just the component of y that is in the same direction as x. We can think of this as the shadow that y casts onto x.
+
+We are going to choose particular vectors to project and make this interesting.
+
+We will be projecting a data matrix.
+\begin{align*}
+    x &= \begin{bmatrix}[c|c|c|c]
+    x_{11} & x_{12} & \cdots & x_{1p} \\
+    x_{21} & x_{22} & \cdots & x_{2p} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    x_{n1} & x_{n2} & \cdots & x_{np} \\
+    \end{bmatrix} \\
+    &= 
+    \begin{pmatrix}
+    y_1 & y_2 & \cdots & y_p
+    \end{pmatrix}
+\end{align*}
+that is we define each $y_i$ as a column.
+
+\section{Projection onto the 1 vector}
+We will also define $1_n$ as a vector
+\begin{align*}
+    1_n = \begin{pmatrix}
+    1 \\ 1 \\ \vdots \\ 1
+    \end{pmatrix}
+\end{align*}
+
+if we project $y_j$ onto $1_n$ we will get
+\begin{align*}
+ \frac{y_j^T 1_n}{1_n^T 1_n} 1_n &= \frac{x_{1j}+x_{2j}+\cdots +x_{nj}}{n} \cdot 1_n   \\
+ &= \overline{x}_j \cdot 1_n
+\end{align*}
+
+
+If we project the $y_i$ onto $1_n$ we get the vector $\overline{x}_j \cdot 1_n$. 
+
+Their difference is $y_j-\overline{x}_j\cdot 1_n$ and is perpendicular to $1_n$.We will call these $d_j$. It can also be called the vector of individual deviations from the mean.
+
+
+\begin{align*}
+    d_j = y_i -\overline{x_j} \cdot 1_n &= \begin{pmatrix}
+    x_{1j} -\overline{x}_j \\
+    x_{2j} -\overline{x}_j \\
+    \vdots \\
+    x_{nj} -\overline{x}_j
+    \end{pmatrix}
+\end{align*}
+
+We can find the length of each $d_j$ and use a clever substitution to get a relationship with our sample deviation.
+\begin{align*}
+    ||d_j||^2&= \displaystyle\sum_{k=1}{n}(x_{kj}-\overline{x}_j)^2 = n \cdot s_j^2
+\end{align*}
+
+This demonstrates that data sets with more length will give more varied data.
+
+If instead we substitute one of the $d_j$'s with a differenta column, we get the sample covariance.
+\begin{align*}
+d^T_i d_j &= \displaystyle\sum_{k=1}{n}(x_{ki}-\overline{x}_i)(x_{kj}-\overline{x}_j) =n\cdot s_{ij}
+\end{align*}
+
+So we also know that the dot product between two vectors is equal to the product of their angles times tha ange between them.
+$d^T_i d_j = ||d_i|| \cdot ||d_j|| cos \big( \sphericalangle (d_i,d_j) \big)$
+
+\begin{align*}
+    \displaystyle\sum_{k=1}^{n} (x_{ki}-\overline{x}_i)(x_{kj}-\overline{x}_j) &= \sqrt{\displaystyle\sum_{k=1}^{n} (x_{ki} -\overline{x}_i)^2} \sqrt{\displaystyle\sum_{k=1}^{n} (x_{kj} -\overline{x}_j)^2} \cdot cos \big( \sphericalangle (d_i,d_j) \big) \\
+    cos \big( \sphericalangle (d_i,d_j) \big) &= \frac{\displaystyle\sum_{k=1}^{n} (x_{ki}-\overline{x}_i)(x_{kj}-\overline{x}_j)}{\sqrt{\displaystyle\sum_{k=1}^{n} (x_{ki} -\overline{x}_i)^2} \sqrt{\displaystyle\sum_{k=1}^{n} (x_{kj} -\overline{x}_j)^2}} \\
+    &= \frac{\cancel{n} \cdot s_{ij}}{\sqrt{s_{ii} \cancel{n}} \sqrt{s_{jj} \cancel{n}}}\\
+    &= r_{ij}
+\end{align*}
+
+If the deviation vectors are orthogonal that indicates that they have zero correlation. If they are perfectly correlated they are colinear. 
+
+\section*{Estimating $\mu$ and $\sigma$ Univariate Case}
+$x_1, x_2, ..., x_n \sim (\mu,\sigma^2)$ Then
+
+$\overline{x} = \frac{\displaystyle\sum^n_{i=1} x_i}{n}$ is an Unbiased estimator of $\mu$
+
+That is the expected value of $\overline{x}$ equals $\mu$
+
+$E(\overline{x}) = \mu$ By the definition of unbiased estimator of $\mu$
+
+\subsection*{Proof}
+\begin{align*}
+E\Big( \frac{x_1 + ... + x_n}{n} \Big) &= \frac{1}{n} \big( E(x_1)+...+E(x_n) \big) \\
+&= \frac{\cancel{n}\mu}{\cancel{n}}\\
+&= \mu
+\end{align*}
+
+\subsection{Variance}
+$VAR(\overline{x} = \frac{\sigma^2}{n})$
+\begin{align*}
+    VAR\Big(\frac{x_1 + ... + x_n}{n}) &=\frac{1}{n^2}\Big( VAR(x_1) + VAR(x_2) + ... +VAR(x_n) \Big) \\
+    &= \frac{n \sigma^2}{n^2} \\
+    &= \frac{ \sigma^2}{n}
+\end{align*}
+
+$x_1, x_2,..., x_n \sim(\mu,\sigma^2)$ Then,
+
+$\hat{\sigma} = s^2 = \frac{\displaystyle\sum_{i=1}^{n}(x_i-\overline{x})^2}{n-1}$
+
+That is the sample variance is calculated by the above formula. The n-1 makes it an unbiased estimator.
+
+$E(s^2) = E(\hat{\sigma^2}) = \sigma^2$
+This is where I suggested a proof strategy and he proceeded to prove that it was a wrong/unintuitive approach.
+
+\subsection{proof}
+\begin{align*}
+    E \Big( \displaystyle\sum_{i=1}^{n} (x_i - \overline{x})^2 \Big) &= E\Big[ \displaystyle\sum^{n}_{i=1} (x_i^2 -2x_i\overline{x} + \overline{x}^2)\Big] \\
+    &= \displaystyle\sum^{n}_{i=1} E(x_i^2) -2 E \Big(\overline{x} \displaystyle\sum^{n}_{i=1} x_i \Big) + nE(\overline{x}^2) \\ 
+    E(x_i^2) &\overset{DEF}{=} VAR(x_i) + \Big( E(x_i) \Big)^2 \\ 
+    &= \sigma^2 + \mu^2 \\
+    VAR(x_i) &= E(x_i^2) - \Big( E(x_i) \Big)^2 \\
+    E \Big( \displaystyle\sum_{i=1}^{n} (x_i - \overline{x})^2 \Big) &= n(\sigma^2 +\mu^2) -2 E \Big(\overline{x} n \overline{x}  \Big) + nE(\overline{x}^2) \\
+    E(\overline{x}^2) &\overset{DEF}{=} VAR(\overline{x}) + E(\overline{x})^2 \\
+    &= \frac{\sigma^2}{n} + \mu^2 \\
+    E \Big( \displaystyle\sum_{i=1}^{n} (x_i - \overline{x})^2 \Big) &= n(\sigma^2 +\mu^2) - nE \Big( \overline{x}^2  \Big)\\
+    &= n(\sigma^2 + \mu^2) - nE(\frac{\sigma^2}{n}+\mu^2) \\
+    &= (n-1)\sigma^2 \Rightarrow \\
+    E \Bigg(\frac{ \displaystyle\sum_{i=1}^{n} (x_i - \overline{x})^2 }{n-1} \Bigg) &= \sigma^2
+\end{align*}
+
+\subsection{Summary}
+So now we know that for any sample regardless of distribution we can find estimates for the mean and the variance using the sample mean and sample variance.
+
+The rest of the class was walking through an example of collecting data and calculating sample statistics.

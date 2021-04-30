@@ -1,0 +1,171 @@
+\chapter{Session 5: September 15, 2020}
+\label{Fifth}
+\section{Partitioning a Matrix}
+We can partition a random vector 
+\begin{equation*}
+\underset{n \times 1}{x} =
+    \begin{pmatrix}
+    x_1\\
+    x_2\\
+    \end{pmatrix}, 
+    \underset{n_1 \times 1}{x_1},
+    \underset{n_2 \times 1}{x_2},
+    n_1 + n_2 = n
+\end{equation*}
+We can write the expected values of each vector
+\begin{equation*}
+    E(x) = \underset{n \times 1}{\mu},\quad
+    E(x_1) = \underset{n_1 \times 1}{\mu_1}, \quad
+    E(x_2) = \underset{n_2 \times 2}{\mu_2}
+\end{equation*}
+We write the covariance matrix like so...
+\begin{align*}
+    \mu =
+    \begin{pmatrix}
+    \mu_1\\
+    \mu_2\\
+    \end{pmatrix}, \\
+    COV(x) = \Sigma, \quad
+    cov(x_1) =\underset{n_1 \times n_1}{\Sigma_{11}},
+    \quad cov(x_2) =\underset{n_2 \times n_2}{\Sigma_{22}}
+\end{align*}
+
+To calculate covariance/variance we do the following
+\begin{align*}
+    COV(x_1,x_1) &= \Sigma_{1,1} = E(x_1x_1^T)-\mu_1^2 \\
+    COV(x_1,x_2) &= \Sigma_{1,2} = E(x_1x_2^T)-\underset{n_1 \times n_2}{\mu_1\mu_2^T} \\       
+    COV(x_2,x_1) &= \Sigma_{2,1} = E(x_2x_1^T)-\underset{n_2 \times n_1}{\mu_2\mu_1^T}\\
+    \text{and} &\quad \Sigma_{12} = \Sigma_{21}^T \\
+    \Sigma = cov(x) &= 
+    \begin{pmatrix}
+    \Sigma_{11} & \Sigma_{12} \\
+    \Sigma_{21} & \Sigma_{22} \\
+    \end{pmatrix}\\
+\end{align*}
+
+\section{Properties of random Vectors}
+We have a random vector x
+\[\textbf(X) \sim (\underset{n \times 1}{\mu} \quad,\quad\underset{n \times n}{\Sigma})\]
+If $\underset{k \times n}{A}$ is a fixed vector with dimensions k x n then for a random vector x, $Ax \sim (A\mu,A\Sigma A^T)$. Remember the fact from baby stats $var(kx)=k^2var(x)$
+
+Proof 
+\begin{align*}
+    E(x) &= \mu \\
+    E(Ax) &= AE(x) = \mu \\
+    COV(x) &= E\big( (Ax)(Ax)^T \big)-E(Ax) E\big((Ax)^T \big) \\
+    &=  E(Axx^TA^T)-(A\mu)(A\mu)^T\\
+    &= AE(xx^T)A^T - A(\mu\mu^T)A^T\\
+    &= A \big[E(xx^T) - (\mu\mu^T)\big]A^T\\
+    &= A\Sigma A^T
+\end{align*}
+
+\section{Matrix Inequalities and Maximization}
+
+\section{Cauchy-Schwarz Inequality}
+Let b and d be px1 vectors
+
+Then
+\begin{align*}
+(b^Td)^2 &\leq (b^Tb)(d^Td)\\(b^Td)^2 &\leq \| b\|^2\| d\|^2 \\ \text{With Equality IFF} \Leftrightarrow\\ \underset{p \times 1}{b} = c\underset{p \times 1}{d}
+\end{align*}
+\subsection{Proof:}
+Consider the vector $b-xd$ where x is a number.
+\begin{align*}
+(b-xd)(b-xd)^T  &= \| b-xd\|^2 \geq 0\\
+(b^T-d^Tx^T)(b-xd) &\geq 0 \\
+b^Tb-b^Txd-d^Tx^Tb+d^Tx^Txd &\geq 0\\
+\|b\|^2 -xb^Td-x^Td^Tb+x^2d^Td &\geq 0\\
+x^2-2(b^Td)x + b^Tb &\geq 0 
+\end{align*}
+The above is a quadratic, so imagine a positive parabola. The discriminant must always be greater than or equal to zero
+\begin{align*}
+D = (2b^Td)^2-(b^Tb)(d^Td) &\leq 0\\
+D = (2b^Td)^2-4(b^Tb)(d^Td) &\leq 0 \\
+(b^Td)^2 &\leq (b^Tb)(d^Td)
+\end{align*}
+proof of the equality iff b = cd for some c if b=cd.
+\begin{equation}
+(b^Td)^2=(b^Tb)(d^Td) \Leftrightarrow \exists c | b=cd
+\end{equation}
+1) if b = cd $\Rightarrow$
+\begin{align*}
+    (cd^Td)^2 &= (cd^Tcd)(d^Td) \\
+    c^2(d^Td)^2 &= c^2(d^d)(d^Td)  
+\end{align*}the reason that this is the only way to get equality is because only the zero vector has zero length. We construct the vector $b-xd$ The only way that we can get zero length is if it is the zero vector and that only occurs when $b=xd$ We can also look at the cosine between the two vectors and see that the cauchy schwarz is only equal if the angle is an integer multiple of pi.
+\subsection{Quadratic Mean-Arithmetic Mean Inequality}
+\begin{align*}
+(b^Td)^2 &\leq(b^Tb)(d^Td)\\
+b^T &= (b_1,...,b_n)\\
+    d^T &= (d_1,...,d_n)\\
+    \Big(\displaystyle\sum_{i=1}^{n}b_id_i\Big)^2 &\leq \Big(\displaystyle\sum_{i=1}^n b_i^2\Big)\Big(\displaystyle\sum_{i=1}^n d_i^2\Big)\\
+    b_i =1, i &=1,...,n \\
+    \Big(\displaystyle\sum_{i=1}^{n}d_i\Big)^2 &\leq n\Big(\displaystyle\sum_{i=1}^n d_i^2\Big)\\
+   \Big(\displaystyle\sum_{i=1}^{n}\frac{d_i}{n}\Big)^2 &\leq \frac{\displaystyle\sum_{i=1}^n d_i^2}{n}\\
+    \displaystyle\sum_{i=1}^{n}\frac{d_i}{n} &\leq \sqrt{\frac{\displaystyle\sum_{i=1}^n d_i^2}{n}}
+\end{align*}
+As you can see the arithemtic mean is always less
+\subsection{Harmonic Mean-Arithmetic Mean Inequality}
+\begin{align*}
+(b^Td)^2 &\leq(b^Tb)(d^Td)\\
+b^T &= (b_1,...,b_n)\\
+    d^T &= (d_1,...,d_n)\\
+    \Big(\displaystyle\sum_{i=1}^{n}b_id_i\Big)^2 &\leq \Big(\displaystyle\sum_{i=1}^n b_i^2\Big)\Big(\displaystyle\sum_{i=1}^n d_i^2\Big)\\
+    b_i =\frac{1}{d_i}, i &=1,...,n \\
+    n^2 &\leq \Big(\displaystyle\sum_{i=1}^n \frac{1}{d_i^2}\Big)\Big(\displaystyle\sum_{i=1}^n d_i^2\Big)\\
+    \text{Let }y_i &= \sqrt{d_i}\\
+    n^2 &\leq \Big(\displaystyle\sum_{i=1}^n \frac{1}{y_i}\Big)\Big(\displaystyle\sum_{i=1}^n y_i\Big)\\
+    \frac{n}{\displaystyle\sum_{i=1}^n \frac{1}{y_i}} &\leq \frac{\displaystyle\sum_{i=1}^n y_i}{n}
+\end{align*}
+As we can see the harmonic mean is always less than the arithmetic mean. 
+
+These two inequalities are just special results of the Cauchy-Schwarz Inequality. We can choose other vectors that will give us interesting results and simplified formulas.
+
+\section{Extended Cauchy Schwarz}
+Let b and d be px1 vectors and B be a positive definite Matrix. Then
+\[(b^Td)^2 \leq (b^TBb)(d^TB^{-1}d)\]
+with equality iff \(b=cB^{-1}d\)
+
+the intuition is that will modify the vectors that we fit into the classical inequality. We are going to use well chosen vectors x and y and apply it.
+
+First we rewrite the inequality. Instead of B we write $B^{\frac{1}{2}}B^{\frac{1}{2}}$. As a hint we can write the extended like so
+
+\begin{align*}
+(b^Td)^2 &\leq (b^TBb)(d^TB^{-1}d)\\
+&\leq (b^TB^\frac{1}{2}B^\frac{1}{2} b)(d^TB^{-\frac{1}{2}}B^{-\frac{1}{2}}d)
+\end{align*}
+This hint combined with the fact that if we insert the Identity matrix nothing changes $b^T d=b^T I d$ 
+This tells us that we might choose the vectors
+$x=b^T B^{\frac{1}{2}}$ and $y=d^T B^{-\frac{1}{2}}$
+
+
+\subsection{Proof:} 
+Define $x=B^{\frac{1}{2}}b$ and $y= B^{-\frac{1}{2}}d$
+
+$\Uparrow$ remember that we can use Spectral Decomposition to construct the 1/2 and 1/2 inverse matrices. Also since B is a symmetric matrix, the  resulting matrix is also symmetric. In statistics, the positive definite matrix will always be symmetric and symmetry is both desired and present.
+
+Now we apply the normal the classical Cauchy Schwarz inequality
+
+\begin{align*}
+(x^Ty)^2 &\leq (x^Tx)(y^Ty) \\
+b^TB^{\frac{1}{2}}T B^{-\frac{1}{2}}d&\leq 
+(x^TB^{\frac{1}{2}}B^{\frac{1}{2}}x)(y^TB^{-\frac{1}{2}}B^{-\frac{1}{2}}y) \\
+(b^Td)^2 &\leq (b^TBb)(d^TB^{-1}d)
+\end{align*}
+
+Equality is attained iff x=cy.
+\begin{align*}
+x &= cy
+B^{\frac{1}{2}}b &= cB^{-\frac{1}{2}}d \\
+b &= cB^{-1}d
+\end{align*}
+\subsection{Maximization Lemma}
+This is a result of the extended Cauchy Schwarz.
+
+Let $\underset{p \times p}{B}$ be a positive definite matrix and $\underset{p \times 1}{d}$ be a given, fixed vector, then for any arbitrary $\underset{p \times 1}{x}\neq 0$ The following result holds the maximum
+
+\[\underset{x\neq 0}{Max} \frac{(x^Td)^2}{x^TBx} = d^TB^{-1}d\]
+
+The above can be though of as a function of the $x_i$'s
+\[f(x_1,...,x_p) = \frac{(\sum x_id_i)^2}{\sum\sum b_{ij}x_i x_j}\]
+
+If you tried to maximize this formula normally, it would be a disaster. This Lemma helps us with that.

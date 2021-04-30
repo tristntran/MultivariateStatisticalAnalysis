@@ -1,0 +1,133 @@
+\chapter{Session 9: September 29, 2020}
+\label{ninth}
+As a reminder from our last lesson, we constructed an identity that lets us calculate the sample mean and variance
+
+$S = \frac{1}{n-1}x^T(I-\frac{1}{n}11^T)x$
+
+Let's continue by defining a matrix D. It's going to keep the main diagonal of S and then throw out everything else.
+
+\begin{align*}
+    D &= \begin{pmatrix}
+    s_{11} & 0 & \cdots & 0 \\
+    0 & s_{22} & \cdots & 0 \\
+    \vdots & \vdots & \ddots & \vdots \\
+    0 & 0 & \cdots & s_{pp} \\
+    \end{pmatrix}\\
+    D^{-\frac{1}{2}} &= \begin{pmatrix}
+    \frac{1}{\sqrt{s_{11}}} & 0 & \cdots & 0 \\
+    0 & \frac{1}{\sqrt{s_{22}}} & \cdots & 0 \\
+    \vdots & \vdots & \ddots & \vdots \\
+    0 & 0 & \cdots & \frac{1}{\sqrt{s_{pp}}} \\
+    \end{pmatrix}\\
+    R &= \begin{pmatrix}
+    1 & \frac{s_{11}}{\sqrt{s_{11}s_{22}}} & \cdots & \frac{s_{1p}}{\sqrt{s_{11}s_{pp}}} \\
+    \frac{s_{12}}{\sqrt{s_{11}s_{22}}}& 1 & \cdots & 1\\
+    \vdots & \vdots & \ddots & \vdots\\
+    \frac{s_{1p}}{\sqrt{s_{11}s_{pp}}}& \frac{s_{2p}}{\sqrt{s_{22}s_{pp}}} & \cdots & 1\\
+    \end{pmatrix}\\
+    R &= D^{-\frac{1}{2}}SD^{-\frac{1}{2}}
+\end{align*}
+
+\section{Review of last time}
+Take $x_1,...,x_n \sim (\mu,\Sigma)$-Random
+
+We take $c_{p\times1}$ is fixed. We showed that $y_1,...,y_n = c^Tx_1,...,c^Tx_n \sim (c^T\mu,c^T\Sigma c)$
+
+we also showed that $\overline{y} = c^T \overline{x}$ and $var(y) = c^TS_xc$
+
+From this point forward we start with chapter 4 material and cover the multivariate normal distribution.
+
+\section{Reviewing Univariate Normal Distribution}
+Lets say that $x\sim N_1(0,\sigma^2),x\in \mathbb{R}$ this means that the pdf of x is $P(X=x)=f(x)= \frac{1}{\sqrt{2\pi}\sigma} e^{\frac{(x-\mu)^2}{2\sigma^2}}$
+
+The cumulative density function, cdf is defined by $P(X\leq x) =F(x) = \displaystyle\int_{-\infty}^xf(t)dt$ this integral has no closed form solution.
+
+If $x\sim N(0,1)$Because the distribution is symmetric we have that $E(x^{2k+1}) = 0$ for all k because of symmetry. 
+If $x_1,...,x_n \sim N(\mu,\sigma^2)$ then
+\begin{align*}
+    \hat\mu_{MLE} &=\overline{x} \\
+    \hat\sigma^2_{MLE} = \frac{\sum (x_i-\overline{x})^2}{n}\\
+    M_x(t)=E[e^{tX}] = e^{\mu t +\frac{1}{2} \sigma^2 t^2}
+\end{align*}
+\todo[inline]{add appendix on MGFs }
+
+\section{Multivariate Normal Distribution}
+\begin{align*}
+    x_{p\times1}=\begin{pmatrix}
+    x_1 \\
+    x_2 \\
+    \vdots \\
+    x_p
+    \end{pmatrix}
+\end{align*}
+We say that x follows a p-Dimensional Normal distribution with mean of $\mu_{p \times 1}$ and covariance matrix of $\Sigma_{p \times p}$ or $x \sim N_p(\mu,\Sigma)$
+
+\begin{align*}
+    f(\Vec{x})= \frac{1}{(2\pi)^{\frac{p}{2}}|\Sigma|^{1/2}}e^\frac{{-(x-\mu)^T\Sigma^{-1}(x-\mu)}}{2}
+\end{align*}
+We can think of the exponent as the generalized distance from x to $\mu$
+\subsection{Bivariate Distribution}
+Let's examine the simplest case of multivariate distributions: the bi-variate case. $x=\begin{pmatrix} x_1 \\ x_2\end{pmatrix},\mu=\begin{pmatrix} \mu_1 \\ \mu_2\end{pmatrix},\Sigma = \begin{pmatrix} \sigma_{11} & \sigma_{12}  \\ \sigma_{12} &\sigma_{22}\end{pmatrix}$
+
+We also know that a couple of well known formulas
+
+\begin{align*}
+    |\Sigma| &= \sigma_{11}\sigma_{22}-\sigma_{12}^2 \\
+    \Sigma^{-1} &= \frac{1}{\sigma{11}\sigma{22}-\sigma{12}^2}
+    \begin{pmatrix}
+    \sigma_{22} & -\sigma_{12} \\
+    -\sigma_{23} & \sigma_{11} \\
+    \end{pmatrix}
+\end{align*}
+
+\todo[inline]{write little thing about determinants of 2x2}
+
+\begin{align*}
+    (x-\mu)^T\Sigma^{-1}(x-\mu) = 
+    \begin{pmatrix} x_1 - \mu_1 & x_2 - \mu_2 \end{pmatrix} 
+    \frac{1}{\sigma{11}\sigma{22}-\sigma{12}^2}
+    \begin{pmatrix}
+    \sigma_{22} & -\sigma{12} \\
+    -\sigma_{12} & \sigma{11} \\
+    \end{pmatrix}
+    \begin{pmatrix} x_1 - \mu_1 \\ x_2 - \mu_2 \end{pmatrix}\\
+    =\frac{\sigma_{22}(x_1-\mu_1)^2+\sigma_{11}(x_2-\mu_2)^2 - 2\sigma_{12}(x_1-\mu_1)(x_2-\mu_2)}{\sigma_{11}\sigma_{22}-\sigma_{12}^2}\\
+    =\frac{\sigma_{22}(x_1-\mu_1)^2+\sigma_{11}(x_2-\mu_2)^2 - 2\rho\sqrt{\sigma_{11}\sigma_{22}}(x_1-\mu_1)(x_2-\mu_2)}{\sigma_{11}\sigma_{22}(1-\rho^2)}\\
+    =\frac{1}{1-\rho^2}\Bigg[\Big( 
+    \frac{x_1-\mu_1}{\sqrt{\sigma_{11}}}
+    \Big)^2
+    +\Big( 
+    \frac{x_2-\mu_2}{\sqrt{\sigma_{22}}}
+    \Big)^2
+    -2\rho\frac{x_1-\mu_1}{\sqrt{\sigma_{11}}}\cdot\frac{x_2-\mu_2}{\sqrt{\sigma_{22}}}
+    \Bigg]
+\end{align*}
+So now we can rewrite our bivariate normal distribution. We break up the generalized distance quadratic term $(x-\mu)^T\Sigma^{-1}(x-\mu)$. We can see that the cause for the distance is the variation that's representedc by the standardized z-scores for $x_1$ and $x_2$ along with the third term that gives an adjusted z-score for the dimension between the x's. We won't actually work with the PDF's in this class because it's super tedious.
+
+We will be able to do a lot of good things with our abbreviated notation. We're not going to look at it in this class like we would in calculus. It's not a function of variables, instead we're going to think of it as a special mathematical object with its own rules and operations.
+
+\section{Areas of Equal Probability}
+Now suppose we want to find all $x\in \mathbb{R}^p$ such that $f(x) = c^2 = const$
+\begin{align*}
+    f(\Vec{x})= \frac{1}{(2\pi)^{\frac{p}{2}}|\Sigma|^{1/2}}e^\frac{{-(x-\mu)^T\Sigma^{-1}(x-\mu)}}{2} =c^2
+\end{align*}
+
+We can say that we want to find all the points that share the same generalized statistical distance from the mean described by the form $(x-\mu)^T\Sigma^{-1}(x-\mu)$. If f(x) is constant. This means that $(x-\mu)^T\Sigma^{-1}(x-\mu)=c_1^2$ where $c_1$ is another constant.
+
+We can use our Algebra skills to solve for $c_1^2$
+\begin{equation*}
+    c_1^2 = -2LN\big(c^2(2\pi)^{p/2}\Sigma^{1/2}\big)
+\end{equation*}
+
+So in the two dimensional case this forms a little ellipse for us that gives us all of the points with equal probability. In the N dimensional case we get a football type shape.
+
+The ellipse will have a center at $\mu$ and axes in the direction of $\Vec{e}_i$ with length $k_1\sqrt{\lambda_i}$ From Chapter 2 of book.
+
+\section{Linear Transformations of Multivariate Normal}
+$x\sim N_p(\mu,\Sigma),a_{p \times 1}$-FIXED
+\subsection{Theorem}
+\begin{equation*}
+    a^Tx=\sum a_ix_i \sim N_1(a^T\mu,a^T\Sigma)
+\end{equation*}
+
+Before we proved that the distribution statistics held. Namely, the mean and variance held with affine transformations; however, the the persistence of the normality is a property unique to the normal distribution. This is why it is such an important distribution in Statistics.

@@ -1,0 +1,120 @@
+\chapter{Session 29: December 8, 2020}
+
+\[e \sim N(0,\sigma^2 I)\]
+\[Y \sim N(Z\beta,\sigma^2 I)\]
+
+But remember that the $\hat{\beta}$ is just a linear combination of Z and Y $(Z^TZ)^{-1}Z^TY$
+
+\[\hat{\beta} \sim N_{p+1} (AZ\beta,A\sigma^2IA^T)\]
+\begin{align*}
+    \hat{\beta} & \sim N_{p+1} (AZ\beta,A\sigma^2IA^T) \\
+    \hat{\beta} & \sim N_{p+1} ((Z^TZ)^{-1}Z^TZ\beta,(Z^TZ)^{-1}Z^T\sigma^2I((Z^TZ)^{-1}Z^T)^T)\\
+    \hat{\beta} & \sim N_{p+1}(\beta,\sigma^2(Z^TZ)^{-1})\\
+    \hat{cov}(\hat{\beta}) &= \hat{\sigma}(Z^TZ)^{-1}
+\end{align*}
+\begin{align*}
+    H_0 &: \beta_1 = 0 &\text{$x_1$ is not important}\\
+    H_A&: \beta_1 \neq 0 \\
+    t &= \frac{\hat{\beta_1}}{\hat{SE}(\hat{\beta}_1)}\sim Z(n-p-1) &\text{t-test for $H_0$}
+\end{align*}
+\section{Building a Multivariate Model}
+a) There are many ways to buld a multivariate model. The first way is to do it based on statistical significance based on stepwise variable selection
+
+b) We can use AIC - Aikake's information criterion. We would choose the model with the smallest AIC.
+
+c) Choose  the model with the highest $R^2$ or $R^2_{adj}$
+
+d) BIC-min
+
+e) best subset regression
+
+Today we will talk about the first 3 methods.
+
+\section{What is R-squared?}
+Remember that when we fit a model, we can estimate a vector for residuals of our model $\hat{e}$. The squared sum of the residuals.
+\[\displaystyle\sum_{i=1}^n\hat{e}_i^2=\hat{e}^T\hat{e}\]
+This represents the total variance of our data with respect the the regression line.Even without a regression line, we can view the variability in the data wihtout the regresison line. The variability with respect to the sample mean.
+\[\displaystyle\sum_{i=1}^n(y_i-\overline{y})^2\]
+
+\[R^2 = 1- \frac{\displaystyle\sum_{i=1}^n\hat{e}_i^2}{\displaystyle\sum_{i=1}^n(y_i-\overline{y})^2}\]
+
+if the model is good, the top term will be small or close to zero and $R^2=1$. in general anything greater than $R^2=0.7$ is excellent, bigger than $0.4$ is average. anything less than $0.4$ is a poor model.
+
+The problem with $R^2$ is that it encourages you to add more variables. To deal with this statisticians have developed the adjusted r-squared $R^2_adj$ to compensate
+
+\[R^2_{adj} = 1 - \frac{(1-R^2)(n-1)}{n-k-1}\]
+where K+1 is the number of variables in the model.
+
+\section{AIC Statistic}
+The AIC statistic is defined as follows $AIC = -2LN(DATA) + 2k$ where k is the number of parameters. The model with the minimum value is the best. Opposed to the model with the highest $R^2$ wins
+
+\section{Missing Important Variables}
+\[\underset{n\times(p+1)}{Z}\]
+
+Imagine that you're missing important variables. They are either hard/impossible to observe or it did not cross your mind. The true necessary data consists of $Z_1$ which you have and $Z_2$ which you are missing.
+
+\[Y=(Z_1,Z_2) \beta +e\]
+
+\begin{align*}
+    \beta = \begin{pmatrix}
+        \beta_1 \\
+        \beta_2
+    \end{pmatrix}
+\end{align*}
+
+The theoretical model is as follows $Y=Z_1\beta_1 + Z_2\beta_2 + e$. We can still forcibly fit a model with only the information we have. $Y=Z_1\beta_1+e$ 
+
+Remember $\hat{\beta}_1 = (Z_1^TZ_1)^{-1}Z_1^TY$ it is both a least squares and maximum likelihood estimator of $\beta_1$. We want to know if this is still good given that we do not know $\beta_2$
+
+\begin{align*}
+    E(\hat{\beta}_1) &= E[(Z_1^TZ_1)^{-1}Z_1^TY] \\
+    &= (Z_1^TZ_1)^{-1}Z_1^TE(Y)  = (Z_1^TZ_1)^{-1}Z_1^T(Z_1\beta_1+Z_2\beta_2) \\
+    &= \beta_1 + (Z_1^TZ_1)^{-1}Z_1^TZ_2\beta_2
+\end{align*}
+So we our estimate includes a bias term which measures how much we ignored. This bias term will only be zero if and only if $Z_1Z_2 \overset{?}{=} 0$ if an only if all columns of $Z_1$ are orthogonal to the columns of $Z_2$.
+
+\section{A Shocking Example of BiasH: Simpson's Paradox}
+
+\url{https://en.wikipedia.org/wiki/Simpson\%27s\_paradox}
+
+At U.C. Berkeley a few years back, somebody brought to the attention to one of the deans that the proportion of female students enrolled was lower than the proportion of male students enrolled. He called all of the department chairs with the intent of finding the perpetrator. It turned out that they did indeed enroll a higher proportion of males than females. He wanted to know what departments were responsible. When they reported the numbers, the situation in every department was reversed. This is in fact possible
+
+This phenomena is called Simpson's Paradox. It's very shocking but can be a menacing component of data analysis.
+
+\section{Residual Analysis of Goodness-Of-Fit}
+\begin{align*}
+    e_1,...,e_n \sim N(0,\sigma^2)\\
+    e_{n\times 1}\sim N_n(0,\sigma^2I_{n\times n})\\
+    \hat{e} = Y-Z\hat{\beta}
+\end{align*}
+
+\[\hat{e} = Y-Z\hat{\beta} = Y-Z(Z^TZ)^{-1}Z^TY = Y-HY=Y-\hat{Y}\]
+
+$H=dZ(Z^TZ)^{-1}Z^T$ is known as the hat matrix. Anything you multiply by this, becomes a hat.
+
+\subsection{Fun with the Hat Matrix}
+\begin{align*}
+    \hat{e}&=(I-H)Y \\
+    cov(\hat{e}) &= cov((I-H)Y) \\
+    &= (I-H)cov(Y)(I-H)^T \\
+    &= cov(Y)(I-H)^2 \\
+    &= \sigma^2(I-H)^2
+\end{align*}
+This matrix is difficult to calculate especially since $(I-H)^2$ is not a diagonal matrix. We estimated independent and identically distributed things, but when we estimate them the estimates are dependent and non-independently distributed. This may seem confusing at first but is explained pretty simply graphically.
+
+The hat matrix is interesting because it projects any vector onto the hyper-plane spanned by the columns of our data. $\hat{Y}=HY$ and $\hat{e} = \sigma^2(I-H)$ and $cov(\hat{e})=\sigma^2 (I-H)$
+
+We will take leverage $h_{ii}$ the ith element on the main diagonal of H and this can help us extrac the variance of the individual ith residual
+$\hat{var}(\hat{e}_i)=\hat{\sigma}^2(1-h_{ii})$
+
+\begin{align*}
+    \hat{\sigma^2} &= \frac{\hat{\varepsilon}^T\hat{\varepsilon}}{n-p-1} \\
+    E(\hat{\sigma}^2) &=\sigma^2\\
+    \hat{e}_i^* &=\frac{\hat{e}_i}{\sqrt{\hat{\sigma}^2(1-h_{ii})}} \quad \text{Studentized-Residuals}
+\end{align*}
+
+Using this we can plot residuals vs model predicted values. This classical plot will show us if the model is good. This would look like a random scatter of points. If you see some corresponding residuals, then the model is inadequate. We can also use our standard tests for normality and test to see if the residuals are normal.
+
+The Durbin-Watson test is a particularly useful one to test for correlation.
+
+data analysis 59:30

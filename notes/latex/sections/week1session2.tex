@@ -1,0 +1,166 @@
+\chapter{Class Session 2: September 3, 2020}
+\label{Review of matrices}
+A matrix is a rectangular array full of numbers. This can be used to represent vectors, data, or a system of equations. For the purpose of statistics arrays are used to contain our data. As explained in  the first session, the rows each represent one observation and the columns represent a different attribute of the observation.
+
+\section{Linear Operations}
+
+ We can multiply any Matrix M by a scalar a resulting in a linear transformation of the matrix.
+
+\begin{equation*}
+\text{if    }M_{n \times p} = 
+    \begin{pmatrix}
+    m_{1,1} & m_{1,2} & \cdots & m_{1,p} \\
+    m_{2,1} & m_{1,2} & \cdots & m_{1,p} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    m_{n,1} & m_{n,2} & \cdots & m_{n,p} \\
+    \end{pmatrix}
+\end{equation*}
+
+\begin{equation*}
+\text{Then    }a \cdot M_{n \times p} = 
+    \begin{pmatrix}
+    a \cdot m_{1,1} & a \cdot m_{1,2} & \cdots & a \cdot m_{1,p} \\
+    a \cdot m_{2,1} & a \cdot m_{1,2} & \cdots & a \cdot m_{1,p} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    a \cdot m_{n,1} & a \cdot m_{n,2} & \cdots & a \cdot m_{n,p} \\
+    \end{pmatrix}
+\end{equation*}
+All linear operations work on matrices, but note that we can only add and subtract matrices A and B if they have the exact same dimensions.
+\begin{equation*}
+    A_{nxp}+ B_{nxp} = 
+    \begin{pmatrix}
+    a_{1,1} & a_{1,2} & \cdots & a_{1,p} \\
+    a_{2,1} & a_{1,2} & \cdots & a_{1,p} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    a_{n,1} & a_{n,2} & \cdots & a_{n,p} \\
+    \end{pmatrix} +
+    \begin{pmatrix}
+    b_{1,1} & b_{1,2} & \cdots & b_{1,p} \\
+    b_{2,1} & b_{1,2} & \cdots & b_{1,p} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    b_{n,1} & b_{n,2} & \cdots & b_{n,p} \\
+    \end{pmatrix}
+\end{equation*}
+If we let A+B = C then 
+\begin{equation*}
+C_{nxp} = 
+    \begin{pmatrix}
+    c_{1,1} & c_{1,2} & \cdots & c_{1,p} \\
+    c_{2,1} & c_{1,2} & \cdots & c_{1,p} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    c_{n,1} & c_{n,2} & \cdots & c_{n,p} \\
+    \end{pmatrix}
+\end{equation*}
+where $c_{i,j}=a_{i,j}+b_{i,j}$
+
+\section{Multiplying and Dividing}
+We can multiply two matrices A and B if and only if A is an $n \times p$ matrix and B is a $p \times m$ matrix. The left matrix must have the a number of rows equal to the number of columns in the right.
+\begin{equation*}
+    A_{n\times p} \cdot B_{n \times p} = 
+    \begin{pmatrix}
+    a_{1,1} & a_{1,2} & \cdots & a_{1,p} \\
+    a_{2,1} & a_{1,2} & \cdots & a_{1,p} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    a_{n,1} & a_{n,2} & \cdots & a_{n,p} \\
+    \end{pmatrix} \cdot
+    \begin{pmatrix}
+    b_{1,1} & b_{1,2} & \cdots & b_{1,m} \\
+    b_{2,1} & b_{1,2} & \cdots & b_{1,m} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    b_{p,1} & b_{p,2} & \cdots & b_{p,m} \\
+    \end{pmatrix}
+\end{equation*}
+
+If we let $A \cdot B = C$ then 
+
+\begin{equation*}
+C_{nxp} = 
+    \begin{pmatrix}
+    c_{1,1} & c_{1,2} & \cdots & c_{1,p} \\
+    c_{2,1} & c_{1,2} & \cdots & c_{1,p} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    c_{n,1} & c_{n,2} & \cdots & c_{n,p} \\
+    \end{pmatrix}
+\end{equation*}
+
+\[c_{ij}=\sum_{k=1}^{p}a_{i,j}\cdot b_{i,j}\]
+
+That is each cell of c is a dot product of a row from A and a column from B.
+In general this system exists without division. It goes against mathematical convention.
+
+\section{Square Matrices}
+A square matrix is a matrix that has dimensions $n \times n$. For every integer value of n there is a special type of square matrix called the identity.
+\begin{equation*}
+I_{nxn} = 
+    \begin{pmatrix}
+    1 & 0 & \cdots & 0 \\
+    0 & 1 & \cdots & 0 \\
+    \vdots & \vdots & \ddots & \vdots \\
+    0 & 0 & \cdots & 1 \\
+    \end{pmatrix}
+\end{equation*}
+
+
+\subsection{Symmetric Matrices}
+A symmetric matrix is a special type of square matrix where $a_{i,j}=a{j,i}$.
+
+\section{Inverse Matrices}
+If we have an A, can we find a B such that:
+\begin{align*}
+    A \cdot B &= I \\
+    B \cdot A &= I
+\end{align*}
+If this B exists then we call it $A^{-1}$.
+It only exists if A is of full rank meaning that it has a non-zero determinant.
+There are several ways to find the inverse of a matrix
+\todo[noline]{add some methods to the appendix}
+\subsection{Diagonal Matrices}
+A diagonal matrix is one such that the diagonal has values, but all other values are 0. These are convenient because the matrix and its inverse are as follows
+
+\begin{equation*}
+A_{nxn} = 
+    \begin{pmatrix}
+    \lambda_1 & 0 & \cdots & 0 \\
+    0 & \lambda_2 & \cdots & 0 \\
+    \vdots & \vdots & \ddots & \vdots \\
+    0 & 0 & \cdots & \lambda_n \\
+    \end{pmatrix}
+\end{equation*}
+
+\begin{equation*}
+A^{-1}_{nxn} = 
+    \begin{pmatrix}
+    \frac{1}{\lambda_1} & 0 & \cdots & 0 \\
+    0 & \frac{1}{\lambda_2} & \cdots & 0 \\
+    \vdots & \vdots & \ddots & \vdots \\
+    0 & 0 & \cdots & \frac{1}{\lambda_n} \\
+    \end{pmatrix}
+\end{equation*}
+
+
+\section{Transpose and Orthogonal matrices}
+A transpose matrix is a matrix that has been flipped across a diagonal. That is if $B = A^{T}$ then $b_{i,j}=a_{j,i}$. If $A^{T}=A^{-1}$ then the matrix is called orthogonal.
+
+
+
+\section{Properties of Matrices}
+
+\subsection{Rank}
+Defined as the the number of linearly independent row or column vectors in a matrix.
+
+\subsection{Nullity}
+Nullity of a matrix is the number vectors in the null space of a matrix.
+
+\subsection{Determinants}
+https://mathinsight.org/determinant\_matrix
+
+\subsection{Eigen Values and Eigen Vectors}
+Let's say that we have a matrix. These matrices represent a line of sorts in an n-dimensional space. Normally we describe vectors as sums of the transformations of the Identity matrix. We call that a basis. Think of the vector <2,3> we can think about that in terms of the i and j vectors. <2,3> = 2i + 3j. 
+
+Eigen values and vectors provide us with a change of base. They provide us with new unit lengthed basis vectors that are in the same direction as our matrix. The eigen values describe the specifics on how the basis was stretched to form our given matrix.
+
+https://lpsa.swarthmore.edu/MtrxVibe/EigMat/MatrixEigen.html
+
+\section{Signal Value Decomposition}
+continued next session.
+

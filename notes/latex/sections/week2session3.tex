@@ -1,0 +1,102 @@
+\chapter{Session 3: September 8, 2020}
+\label{sec:third}
+Today was mostly a continuation of the linear algebra review. As a review we covered that for matrices A and B we can do the following
+\section{Quadratic Form of Matrices}
+We need to remember that multiplying from left and right are different. If we want to square a matrix, we cannot just write \(Ax^2\) since x is an nx1 vector so n*n might not make sense. Instead we need to write it in quadratic form \(x^TAx\) which gives us a scalar. This will give us
+
+\section{Spectral Decomposition SVD of a Symmetric Matrix}
+Spectral Decomposition is a nifty way we can break up a matrix into the sum of vectors. Conveniently, for any given symmetrix matrix meaning \(A_{k \times k}=A^T_{k \times k}\) with eigen values and vectors \((\lambda_1,e_1),(\lambda_2,e_2),(\lambda_3,e_3)...(\lambda_k,e_k)\) then
+\begin{align*}
+    A &= \lambda_1 e_1 e_1^t + \lambda_2 e_2 e_2^t + \lambda_3 e_3 e_3^t + ...+ \lambda_k e_k e_k^t \\
+    A &= \displaystyle\sum^{k}_{i=1}\lambda_i e_i e_i^T
+\end{align*}
+This follows directly from Linear Algebra for the diagonalization of matrices. We are pretty much changing basis in a K dimensional space as described last session.
+
+The new basis of our space are the eigen vectors.
+
+\section{Positive Definite Matrices}
+Def: \(A_{k \times k}\) symmetric matrix is Positive Definite iff \(\underset{1 \times 1}{x^TAx} > 0\) if $x\neq 0$ $x_{k\times 1}$. We can choose any x to fill our needs.
+Remember: \(x^Tx = \| x \| > 0 \) if \(x \neq 0\)
+So  \(x^TAx \approx \| x \| > 0 \) can be thought of as as the vector.
+
+\underline{Generalized Distance:}  Think of it like a distance that picks favorites where not all dimensions are equal. We can imagine how this would be useful in statistics where we might want to weigh our errors by the correlation or covariance  of the data. It's especially useful when we remember that the covariance matrix is always going to be Positive Definite.
+
+\begin{theorem}
+\(\underset{k \times k}{A}\) is a Positive Definite Matrix. $\Leftrightarrow$ $\lambda_1, \lambda_2, ... , \lambda_k > 0$
+\end{theorem}
+
+\subsection{Proof}
+\(\underset{k \times k}{A} \Rightarrow \lambda_i> 0 \forall	i\)
+Let \(\underset{k \times k}{A}\) be a Positive Definite Matrix. 
+\begin{align*}
+Ae_i &= \lambda_i e_i \\
+e_i^TAe_i  &= e_i^T\lambda_ie_i = \lambda \\
+\text{since A is Positive Definite } \lambda \text{ is positive}
+\end{align*}This tells us the maximum and minimum value of the equation
+\(\underset{k \times k}{A} \Leftarrow \lambda_i > 0 \forall	i\)
+
+\begin{align*}
+A &= \displaystyle\sum_{i = 1}^{k}\lambda_i e_ie_i^T \\
+x^T\displaystyle\sum_{i = 1}^{k}e_ie_i^T x &\underset{?}{>} 0 \\
+\text{so we choose x} \neq 0 &\Rightarrow x^TAx > 0 \\
+\displaystyle\sum_{i = 1}^{k}\lambda_i \underset{1\times 1}{\big(x^Te_i\big)}\underset{1\times 1}{\big(e_i^Tx\big) }  &= \displaystyle\sum_{i = 1}^{k}\lambda_i (e_i^Tx)^2 > 0\\
+\end{align*}
+This works by bringing the vector x into the sum. We are allowed to distribute the values. From there we are able to pull out the eigen value $\lambda_i$ to the front  because it is a scalar. We then realize that $x^Te_i$ is a scalar so it and its transpose are equal and scalars. The square of a scalar is positive and the sum of positive things will be positive. Q.E.D
+
+\subsection{Properties of SVD}
+This is something that Cyril described as being almost too cool.
+\begin{align*}
+A &= \displaystyle\sum^{k}_{i=1}\lambda_i e_i e_i^T  \\
+A^n &= \displaystyle\sum^{k}_{i=1}\lambda_i ^n e_i e_i^T
+\end{align*}
+In this class we will be particularly concerned with $A^{\frac{1}{2}}$
+
+\section{Positive Definite Matrix}
+A is a Positive Definite matrix of dimension kxk
+$x^TAx$ defines the distance from the origin to point x. d(0,x)
+What are the points in the space are equidistant from the origin to x, with our new metric?
+\begin{align*}
+A &= \displaystyle\sum_{i = 1}^{k}\lambda_i e_ie_i^T \\
+x^TAx &= \displaystyle\sum_{i = 1}^{k}\lambda_ix^T e_ie_i^Tx=k^2 \\
+\text{Change of variable } y_i &= x^Te_i^Te_ix \\
+\displaystyle\sum_{i=1}^{k}\lambda_i y_i^2 &= k^2 \\
+\text{Remember that an ellipse in 2-D space is } \frac{x^2}{a^2} + \frac{y^2}{b^2} = 1 \\
+\displaystyle\sum_{i=1}^{k}\frac{y_i^2}{\big(\frac{1}{\lambda_i }\big)} &= k^2 \\
+\displaystyle\sum_{i=1}^{k}\frac{y_i^2}{\big(\frac{k^2}{\lambda_i }\big)} &= 1 \\
+\displaystyle\sum_{i=1}^{k}\frac{y_i^2}{\big(\frac{k^2}{\lambda_i }\big)} &= 1 \\
+\displaystyle\sum_{i=1}^{k}\frac{y_i^2}{\big(\frac{k}{\sqrt{\lambda_i} }\big)^2} &= 1
+\end{align*}
+We now have an n-dimensional football looking thing . Think of it as an ellipse that has been rotated and then scaled in each direction by $\frac{k}{\lambda_i}$
+
+\begin{equation*}
+\underset{p \times 1}{x} = 
+    \begin{pmatrix}
+    x_1\\
+    x_2 \\
+    \vdots\\
+    x_n \\
+    \end{pmatrix}
+\end{equation*}
+\begin{align*}
+\mu_i = E(x_i) \int^{\infty}_{-\infty} \underset{\text{weights PDF}}{x_i} \overset{\text{Marginal PDF}}{f_i(x_i)}
+\end{align*}
+\begin{align*}
+f(x_{p\times 1}) &= P(x_1, x_2, ... , x_P) \\
+f_i(x_i) &=\underset{j\neq i}{\int ... \int f(x_1,...,x_p)dx_1,,,dx_p} \\
+\sigma^2 &= \int_{\infty}^{\infty}\big(x_i - \mu_i \big)f_i(x_i)dx_i \\
+cov(x_i,x_j) &= E\Bigg((x_i-\mu_i)(x_j-\mu_j) \Bigg) \\
+&= \int^{\infty}_{-\infty}\int^{\infty}_{-\infty}(x_i-\mu_i)(x_j-\mu_j)f_{ij}(x_i,x_j)dx_idx_j
+\end{align*}
+
+\section{Statistical Independence}
+
+Intuitively statistical independence tells us that an attribute carries independent information and thus contributes more to our model than other variables.
+$f(x_1,x_2) = f(x_1) \cdot f(x_2)$
+Dependence: Sometimes we want variables to be dependent. Usually we want them to be dependent on the observed variable.
+
+If a variable is statistically independent, then its joint probability distribution is the same as the conditional distribution that is: 
+$f(x_1,x_2,...,x_k) = \prod_{i=1}^{k}f_i(x_i)$
+
+$cov(x_1,x_2) = 0 = cor(x_1,x_2)$
+
+If things are independent then there is no correlation; however, zero correlation cannot predict independence. This means that Independence is a stronger condition than zero correlation. We will explore this more in later chapters.

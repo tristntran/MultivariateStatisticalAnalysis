@@ -1,0 +1,94 @@
+\chapter{Session 4: September 10, 2020}
+\label{fourth}
+We learned some useful statistics in the last session. To review we could calculate
+the expected value $E(x_i) = \mu_i$ By using this, we can calculate the variance and covariance.
+
+We note that we can also calculate the trace of an nxn Matrix.
+
+\begin{equation*}
+    \underset{n \times n}{\textbf{A}} =
+    \begin{pmatrix}
+    a_{1,1} & a_{1,2} & \cdots & a_{1,n} \\
+    a_{2,1} & a_{2,2} & \cdots & a_{1,n} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    a_{n,1} & a_{n,2} & \cdots & a_{n,n} \\
+    \end{pmatrix}
+\end{equation*}
+
+\begin{equation*}
+    TR(A) = a_{11}+ a_{22}+..+a_{nn} = \displaystyle\sum_{i=1}^{n}a_{ii}
+\end{equation*}
+
+
+Now take 
+\begin{equation*}
+\underset{n \times 1}{x}, Var(X) = \underset{n \times n}{\Sigma} =
+    \begin{pmatrix}
+    \sigma_{1,1} & \sigma_{1,2} & \cdots & \sigma_{1,n} \\
+    \sigma_{2,1} & \sigma_{2,2} & \cdots & \sigma_{1,n} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    \sigma_{n,1} & \sigma_{n,2} & \cdots & \sigma_{n,n} \\
+    \end{pmatrix}
+\end{equation*}
+
+\[TR(\Sigma) = \sigma_{11}+\sigma_{22}+...+\sigma_{nn}
+= VAR(x_1)+VAR(x_2)+...+VAR(x_n)\]
+The above will be useful later on in the course
+
+\section{Properties of Trace}
+For a constant k and vector A 
+\[TR(kA) = k TR(A)\]
+
+For matrices A and B
+
+\[TR(A \pm B)= TR(A) \pm TR(B)\]
+
+Trace is a linear operator.
+ 
+\[TR(AB) = TR(BA)\]
+
+we can test with 2x2 matrices or do a more formal proof.
+
+Proof in page 97 of book goes through Spectral Decomposition and Single Value Decomposition
+
+\begin{align*}
+TR(B^{-1}AB) &= TR(A) = \displaystyle\sum_{i=0}^{n} \lambda_i \\ \text{Proof: } \Uparrow
+TR(B^{-1}AB) &=TR(B^{-1}(AB)) \\ &=TR(B^{-1}(AB))\\ &=TR\big((AB)B^{-1}\big) \\&=TR(AI)
+\end{align*}
+
+We can choose B such that 
+$B^{-1}AB = lambda matrix = \sum_{i=1}^{n} \lambda_i$
+\begin{equation*}
+B^{-1}AB =
+    \begin{pmatrix}
+    \lambda_{1,1} & 0 & \cdots & 0 \\
+    0 & \lambda_{2,2} & \cdots & 0 \\
+    \vdots & \vdots & \ddots & \vdots \\
+    0 & 0 & \cdots & \lambda_{n,n} \\
+    \end{pmatrix}
+\end{equation*}
+
+
+$TR(AA^T) = \displaystyle\sum_{i=1}^{n} \displaystyle\sum_{j=1}^{n}a_{ij}^2$
+Proof done 58:03 of the recording
+
+\section{Determinants}
+$det(A) = \lambda_1 \lambda_2...\lambda_n = \prod^n_{i=1}\lambda_i$
+
+True because it follows Single Value Decomposition
+
+\begin{align*}
+B^{-1}AB &= \begin{pmatrix}
+\lambda_1 & 0 &\cdots &0\\
+0 & \lambda_2 &\cdots &0\\
+\vdots & \vdots &\ddots & \vdots\\
+0 & 0 &\cdots & \lambda_n\\
+\end{pmatrix} \\
+|B^{-1}AB| &= |B^{-1}||A||B|\\
+\cancel{|B^{-1}|}|A|\cancel{|B|}&=\prod_{i=1}^{n}\lambda_i
+\end{align*}
+
+
+we then went on to do an example of calculating eigenvalues and vectors by hand. Found on page 98
+
+afterwards we did some R code... If i'm not too lazy I'll put it in here.

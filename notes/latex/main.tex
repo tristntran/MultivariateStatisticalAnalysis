@@ -1,0 +1,127 @@
+\documentclass[a4paper, british]{memoir}
+
+\usepackage{style}       % Custom style
+\usepackage{mnfrontpage} % Front page
+\usepackage{kantlipsum}  % Dummy text
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multicol}
+\usepackage{arydshln}
+\usepackage{hyperref}
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{#1}}
+\makeatother
+
+\title{Multivariate Analysis CS-555-Fall2020 Course Notes}
+\subtitle{Taught by Dr. Cyril Rakovski, PhD.}
+\author{Tristan Tran}
+
+
+\includeonly
+{
+    sections/abstract,
+    sections/acknowledgements,
+    sections/week1session1,
+    sections/week1session2,
+    sections/week2session3,
+    sections/week2session4,
+    sections/week3session5,
+    sections/week3session6,
+    sections/week4session7,
+    sections/week4session8,
+    sections/week5session9,
+    sections/week5session10,
+    sections/week6session11,
+    sections/week6session12,
+    sections/week7session13,
+    sections/week7session14,
+    sections/week8session15,
+    sections/week8session16,
+    sections/week9session17,
+    sections/week9session18,
+    sections/week10session19,
+    sections/week10session20,
+    sections/week11session21,
+    sections/week11session22,
+    sections/week12session23,
+    sections/week12session24,
+    sections/week13session25,
+    sections/week13session26,
+    sections/week14session27,
+    sections/week14session28,
+    sections/week15session29,
+    sections/week15session30,
+    sections/appendixA,
+    sections/appendixB,
+    sections/ProbabilityCheatSheet
+}
+
+\begin{document}
+
+    \frontmatter        % Folios in Roman numerals, unnumbered chapters.
+
+    \mnfrontpage
+
+    \include{sections/abstract}
+
+    \include{sections/acknowledgements}
+
+    \cleartorecto
+    \tableofcontents    % Or \tableofcontents*
+    \cleartorecto
+    %\listoffigures      % Or \listoffigures*
+    \cleartorecto
+    %\listoftables       % Or \listoftables*
+
+    \mainmatter         % Folios in Arabic numerals, numbered chapters.
+
+    \include{sections/session1}
+
+    %\part{The First Part}
+
+    \include{sections/week1session1}
+    \include{sections/week1session2}
+    \include{sections/week2session3}
+    \include{sections/week2session4}
+    \include{sections/week3session5}
+    \include{sections/week3session6}
+    \include{sections/week4session7}
+    \include{sections/week4session8}
+    \include{sections/week5session9}
+    \include{sections/week5session10}
+    \include{sections/week6session11}
+    \include{sections/week6session12}
+    \include{sections/week7session13}
+    \include{sections/week7session14}
+    \include{sections/week8session15}
+    \include{sections/week8session16}
+    \include{sections/week9session17}
+    \include{sections/week9session18}
+    \include{sections/week10session19}
+    \include{sections/week10session20}
+    \include{sections/week11session21}
+    \include{sections/week11session22}
+    \include{sections/week12session23}
+    \include{sections/week12session24}
+    \include{sections/week13session25}
+    \include{sections/week13session26}
+    \include{sections/week14session27}
+    \include{sections/week14session28}
+    \include{sections/week15session29}
+    \include{sections/week15session30}
+    
+    
+    \appendix           % "Chapter" is renamed "Appendix"
+    \appendixpage       % Similar to \part*{Appendices}, but appears in TOC.
+    \include{sections/ProbabilityCheatSheet}
+    \include{sections/appendixA}
+    \include{sections/appendixB}
+
+    \backmatter         % Folios in Arabic numerals, unnumbered chapters.
+
+ %   \printbibliography
+
+\end{document}

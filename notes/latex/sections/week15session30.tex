@@ -1,0 +1,131 @@
+\chapter{Session 30: December 10, 2020}
+
+\section{Interpretation with Linear Regression}
+Linear regression is a powerful tool that can help us interpret our data.
+
+\[y_i = \beta_0 + \beta_1 x_{i1} +...+\beta_px_{ip}+e_i\]
+
+each $\beta_j$ is a coefficient of of the covariates. They describe the rate of change of the dependent variable with respect to the changes in independent variables. The intercept is 
+
+\section{Prediction with Linear Regression}
+
+In this case we train a model on an observed data set and use it to predict the dependent values in a new data set.
+
+We can get a new observation with covariates $Z_{new} = 1, Z_{01},...,Z_{0p}$
+
+What will be the model predicted value of Y for the new observation? $Y_new$
+
+\[Y_{new} = Z_{new} \beta + \varepsilon_{new}\]
+
+$\beta$ is fixed and estimated from the previous regression 
+
+$E(Y_{new}) = Z_{new}^T\hat{\beta}$
+
+Our prediction $\hat{Y}_{new} = Z_{new}^T\hat{\beta}$
+Our error in prediction is 
+
+\begin{align*}
+    Y_{new} &= Z_{new}^T\hat{\beta}+\varepsilon_{new}\\
+    \varepsilon_{new} &= Y_{new}- Z^T_{new}\hat{\beta}
+    \\
+    var(\varepsilon_{new})&= var(Y_{new}- Z^T_{new}\hat{\beta})\\
+    &= \sigma^2 + \sigma^2Z_{new}^T(Z^TZ)^{-1}Z_{new}\\
+    \hat{\beta} &\sim N_{p+1}(\beta,\sigma^2(Z^TZ)^{-1})
+    VAR(\hat{\beta}) &= \sigma^2(Z^TZ)^{-1}\\
+    VAR(Z_{new}^T\hat{\beta}) &= Z_{new}^T\sigma^2(Z^TZ)^{-1}Z_{new}
+\end{align*}
+
+My new $1-\alpha$ predictive confidence interval PCI for $Y_{new}$ is 
+\[Z^T_{new}\hat{\beta}\pm t_{1-\alpha/2}(n-p-1)\sqrt{
+\hat{\sigma}^2
+[ 1+Z_{new}^T(Z^TZ)^{-1}Z_{new}]
+}\]
+
+\[\hat{\sigma}^2 = \frac{\sum (y_i-\hat{y}_i)^2}{n-p-1}\]
+
+\begin{align*}
+    Y &= Z\beta + \varepsilon \\
+    \underset{n\times (p+1)}{Z} &=
+    %matrix
+    \left(
+        \begin{array}{c|c|c|c}
+          1 & Z_{11} & \cdots & Z_{1p}\\
+          1 & Z_{21} & \cdots & Z_{2p}\\
+          \vdots & \vdots & \cdots & \vdots\\
+          1 & Z_{21} & \cdots & Z_{np}
+        \end{array}
+    \right)\\
+    &= \left(
+    \begin{array}{c|c|c|c}
+      V_0 & V_1 & \cdots & V_p\\
+    \end{array}
+    \right)
+\end{align*}
+
+So we have the design matrix represented by Z. This is also known as the model matrix. The space that is spanned by the $V_i$ is a plane onto which we wish to project Y. we do this using the Hat matrix $H=Z(Z^TZ)^{-1}Z^T$.
+
+We can show that this hat matrix is a projection matrix that in fact does do this step. 
+
+we want to say $HY=Y proj Y$. This usually appears on the qualifying exam.
+
+We need to rewrite the Hat matrix. The only tool we have is spectral decomposition.
+
+$H=Z(Z^TZ)^{-1}Z^T$
+We will use spectral decomposition on $Z^TZ$
+
+\begin{align*}
+    Z^TZ &= \sum_{i=1}^{p+1}\lambda_1e_ie_i^T\\
+    \lambda_1>\lambda_2>...>
+    \lambda_{p+1} >0\\
+    (Z^TZ)^{-1} &= \sum_{i=1}^{p+1}\lambda_1 ^{-1}e_ie_i^T\\
+    H &= Z \big(\sum_{i=1}^{p+1}\lambda_1e_ie_i^T\big) Z^T \\
+    &= \sum_{i=1}^{p+1}\frac{1}{\lambda_1} \big(Ze_ie_i^T Z^T \big)\\
+    &= \sum_{i=1}^{p+1}
+    \big(\underset{q_i}{\frac{1}{\sqrt{\lambda_1}} Ze_i}\big)
+    \big(
+    \underset{q_i^T}{e_i^T Z^T \frac{1}{\sqrt{\lambda_1}}}
+    \big) \\
+    &=\sum_{i=1}^{p+1}q_iq_i^T
+\end{align*}
+Let's take $\underset{n \times 1}{Y}$ onto the plane spaced by $Q = (q_1,...,q_{p+1})$
+
+\begin{align*}
+    YprojQ &= \sum_{i=1}^{p+1} \frac{q_i^TYq_i}{q_i^Tq_i}\\
+    &= \sum_{i=1}^{p+1} \frac{q_i^TYq_i}{1} &\text{q's are paraorthogonal and length 1}
+    &= \sum_{i=1}^{p+1} {q_i^Tq_i}Y \\
+    &= HY
+\end{align*}
+
+Now we must think why is the space spanned by the q's is also the space that spans the columns of z. Well... $HY = Z\hat{\beta} = \hat{Y}$ This shows that HY is a linear combination of the columns of Z
+
+page 368 of the book for the exact proof.
+
+\section{Review of regression}
+\begin{align*}
+    Y &= Z\beta +\varepsilon \\
+    \hat{\beta} &= (Z^TZ)^{-1}Z^TY \\
+    \hat{Y} = Z \hat{\beta}\\
+    \hat{\varepsilon} = Y-\hat{Y} \\
+    \varepsilon \sim N_n(0,\sigma^2)\\
+    \hat{sigma}^2 &= \frac{\hat{\varepsilon}^T\hat{\varepsilon}}{\underset{\text{Sample size}}{n}\underset{numParams}{p+1}}\\
+    E(\hat{sigma}^2) = \sigma^2 &\text{Unbiased}
+\end{align*}
+
+Why do we need to correct the sample size by the number of parameters to get an unbiased estimator.
+
+for this step we need to use the fact that H is both symmetric and idempotent
+\begin{align*}
+    E(\hat{\varepsilon}^T\hat{\varepsilon})&= E((Y-\hat{Y})^T(Y-\hat{Y}))\\
+    &=E(Y^TY-Y^THY-\cancel{Y^THY}+\cancel{Y^THHY}) \\
+    &=E(Y^T(I-H)Y) \\
+    &= E(TR(Y^T(I-H)Y))\\
+    &= TR(E((I-H)YY^T))\\
+    &= TR((I-H)E(YY^T))\\
+    cov(Y) &= E(YY^T)-E(Y)E(Y^T)\\
+    &= TR((I-H)(cov(Y)+E(Y)E(Y^T)))\\
+    &= TR(\sigma^2(I-H))+TR((I-H)Z\beta(Z\beta)^T))\\
+    &= (n-p-1)\sigma^2-0\\
+    TR((I-H)Z\beta(Z\beta)^T)) &= Z\beta -Z(Z^TZ)^{-1}(Z^TZ)\beta
+\end{align*}
+
+code 1:24

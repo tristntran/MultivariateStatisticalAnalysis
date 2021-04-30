@@ -1,0 +1,218 @@
+\chapter{Session 8: September 24, 2020}
+\label{eight}
+From last class we explored some geometric insights of projections and means. We also had 3 main postulates that we found 
+- $\overline{x}$ is an unbiased estimator of $\mu$
+- $VAR(\overline{x} = \frac{\sigma^2}{n}$
+- $s^2 = \frac{\sum (x-\overline{x})^2}{n-1}$
+
+\section{Multivariate Sample Mean}
+$\underset{p \times 1}{\vec{x_1}}, ..., \underset{p \times 1}{\vec{x_n}} \sim (\underset{p \times 1}{\mu},\underset{p \times p}{\Sigma})$
+\subsection{Proof 1}
+1) $\underset{p \times 1}{\overline{x}}$ is an unbiased estimator of the $\underset{p\times 1}{\mu}$ or
+$E(\overline{x}) = \mu$
+
+Proof is similar to the univariate case since we're only using linear operators.
+
+
+\begin{align*}
+    E(\overline{x}) &= E(\frac{x_1 + ... + x_n}{n} \\
+    &= \frac{1}{n}(E(x_1)+...+E(x_n)) \\
+    &= \frac{n\mu}{n} = \mu
+\end{align*}
+
+\subsection{Proof 2: Multivariate Covariance of the Sample Mean}
+
+2) 
+\begin{align*}
+    \underset{p \times p}{cov(\overline{x})} &= E[(\overline{x}-\mu)(\overline{x}-\mu)^T] \\
+    &= E \Big[\Big(\frac{\sum x_i}{n}-\mu \Big) \Big(\frac{\sum x_j}{n}-\mu \Big)^T \Big] \\
+    &= E \Big[ \Big(\frac{\sum x_i}{n}-\frac{n\mu}{n} \Big) \Big( \frac{\sum x_j}{n}-\frac{n\mu}{n} \Big)^T \Big] \\
+    &=\frac{1}{n^2}E \Big[ \sum \Big(x_i -\mu \Big) \sum \Big(x_j -\mu \Big)  \Big] \\
+    \text{if $i\neq i$ cov = 0} \\
+    &= \frac{1}{n^2}\sum E\big[(x_i-\mu)(x_i-\mu)^T \big]\\
+    &= \frac{1}{n^2}\sum \Sigma\\
+    &= \frac{\Sigma}{n}
+\end{align*}
+
+\subsection{Proof 3: Multivariate Sample Variance}
+
+\begin{align*}
+    \underset{p \times p}{S} &= \sum \frac{(x_i - \overline{x})(x_i - \overline{x})^T}{n-1} \\
+    E(S) &= \Sigma
+\end{align*}
+
+Proof
+\begin{align*}
+    E \big[\sum (x_i - \overline{x})(x_i - \overline{x})^T \big] &= \sum E \big [ (x_i-\overline{x}) x_i^T \big ] + \sum  E \big [ (x_i - \overline{x})(-\overline{x})^T \big ] \\
+    &= \sum E \big [ (x_i-\overline{x}) x_i^T \big ]\\
+    &=  E \big [\sum x_i x_i^T-\overline{x}\sum x_i^T  \big ]\\ \\
+    &= \sum E \big [ x_i x_i^T \big ]- E \big [n\overline{x}\overline{x}^T \big ]\\ \\
+    cov(x_i)= \Sigma &\overset{DEF}{=} E(x_ix_i^T) -\mu\mu^T\\
+    E(x_ix_i^T) &= \Sigma +\mu\mu^T \\ \\
+    cov(\overline{x})= \frac{\Sigma}{n} &\overset{DEF}{=} E(\overline{x} \overline{x}^T) -\mu\mu^T\\    E(\overline{x}\overline{x}^T) &= \frac{\Sigma}{n} +\mu\mu^T\\ \\
+    E\Big[\sum x_i x_i^T-n\overline{x}\overline{x}^T \Big] &= \sum \Big(\Sigma +\mu\mu^T \Big) - \sum \Big( \frac{\Sigma}{n} +\mu\mu^T \Big)\\\\
+    &= (n-1)\Sigma \\
+    E\Big[ \frac{\sum (x_i - \overline{x})(x_i - \overline{x})^T}{n-1} \Big] &= \Sigma
+\end{align*}
+
+\section{Manipulating Data Matrix}
+
+We will manipulate a data matrix using only matrix algebra to get the covariance matrix.
+
+Let our data matrix be the following
+\begin{align*}
+    x &= 
+    \begin{pmatrix}
+    x_{11} & x_{12} & \cdots & x_{1p} \\
+    x_{21} & x_{22} & \cdots & x_{2p} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    x_{n1} & x_{n2} & \cdots & x_{np} \\ \end{pmatrix} \\
+    x^T &= 
+    \begin{pmatrix}
+    x_{11} & x_{12} & \cdots & x_{1p} \\
+    x_{21} & x_{22} & \cdots & x_{2p} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    x_{n1} & x_{n2} & \cdots & x_{np} \\ \end{pmatrix} \\
+    x^T1_n &= 
+    \begin{pmatrix}
+    \displaystyle\sum_{j=1}^n x_{j1}\\
+    \displaystyle\sum_{j=1}^n x_{j2}\\
+    \vdots \\
+    \displaystyle\sum_{j=1}^n x_{jn}\\
+    \end{pmatrix}_{p\times 1} \\
+    \frac{1}{n}x^T1_n &= 
+    \begin{pmatrix}
+    \overline{x}_1\\
+    \overline{x}_2\\
+    \vdots\\
+    \overline{x}_n\\
+    \end{pmatrix}_{p\times 1} \quad= \underset{p\times 1}{\overline{x}} \\
+    \overline{x}^T &=\begin{pmatrix}
+    \overline{x}_1&
+    \overline{x}_2&
+    \cdots&
+    \overline{x}_n
+    \end{pmatrix}_{1\times p} \\
+    1_n\overline{x}^T &= \begin{pmatrix}
+    \overline{x}_1 & \overline{x}_2 & \cdots & \overline{x}_p \\
+    \overline{x}_1 & \overline{x}_2 & \cdots & \overline{x}_p \\
+    \vdots & \vdots & \ddots & \vdots \\
+    \overline{x}_1 & \overline{x}_2 & \cdots & \overline{x}_p \\ \end{pmatrix}_{n\times p}
+\end{align*}
+
+So now we have outlined a process by which we can construct a row matrix that where all the columns are just the means. This will be useful if we ever need to calculate deviations and program these. We can make it so that we don't need loops or decompositions.
+
+\subsection{Deviations matrix}
+Below we will begin a construction of the deviations.
+\begin{align*}
+1_n\overline{x}^T = \frac{1}{n}1_n1_n^T x^T &=
+\begin{pmatrix}
+    \overline{x}_1 & \overline{x}_2 & \cdots & \overline{x}_p \\
+    \overline{x}_1 & \overline{x}_2 & \cdots & \overline{x}_p \\
+    \vdots & \vdots & \ddots & \vdots \\
+    \overline{x}_1 & \overline{x}_2 & \cdots & \overline{x}_p \\ \end{pmatrix}_{n\times p} \\
+    \overline{x}^T &= \frac{1}{n}1_n^T x^T
+    \\
+    x_{n\times p} - \frac{1}{n}1_n1_n^T x^T &=\\
+\begin{pmatrix}
+    x_{11}-\overline{x}_1 & x_{12}-\overline{x}_2 & \cdots & x_{1p}- \overline{x}_p \\
+    x_{21}-\overline{x}_1 & x_{22}-\overline{x}_2 & \cdots & x_{2p}- \overline{x}_p \\
+    \vdots & \vdots & \ddots & \vdots \\
+    x_{n1}-\overline{x}_1 & x_{n2}-\overline{x}_2 & \cdots & x_{np}- \overline{x}_p \\ \end{pmatrix}_{n\times p}
+    \\
+    (x_{n\times p} - \frac{1}{n}1_n1_n^T x^T)^T(x_{n\times p} - \frac{1}{n}1_n1_n^T x^T) 
+\end{align*}
+\begin{align*}
+    &=\\
+    \begin{pmatrix}
+        \displaystyle\sum(x_{i1}-\overline{x}_1)^2 & \displaystyle\sum(x_{i2}-\overline{x}_1)^2 & \cdots & \displaystyle\sum(x_{ip}-\overline{x}_1)^2 \\
+        \displaystyle\sum(x_{i1}-\overline{x}_2)^2 & \displaystyle\sum(x_{i2}-\overline{x}_2)^2 & \cdots & \displaystyle\sum(x_{ip}-\overline{x}_2)^2 \\
+        \vdots & \vdots & \ddots & \vdots \\
+        \displaystyle\sum(x_{i1}-\overline{x}_p)^2 & \displaystyle\sum(x_{i2}-\overline{x}_p)^2 & \cdots & \displaystyle\sum(x_{ip}-\overline{x}_p)^2 \\
+    \end{pmatrix}\\
+    = (n-1)&
+    \begin{pmatrix}
+        S_{11} & S_{12} & \cdots & S_{1p}\\
+        S_{21} & S_{22} & \cdots & S_{2p}\\
+        \vdots & \vdots & \ddots & \vdots \\
+        S_{p1} & S_{p2} & \cdots & S_{pp}\\
+    \end{pmatrix}
+\end{align*}
+So this special matrix we found when squared actual gives us the value (n-1)S.
+
+\subsection{A useful Idempotent Matrix Construction}
+We are now going to take a new matrix. We are multiplying a $p \times 1$ column vector by its tranpose. The result is a $p\times p$ array of all ones. We then divide that by the number n and get the following.
+\begin{align*}
+    \frac{11^T}{n} &= \begin{pmatrix}
+        \frac{1}{n} & \frac{1}{n} & \cdots & \frac{1}{n} \\
+        \frac{1}{n} & \frac{1}{n} & \cdots & \frac{1}{n} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        \frac{1}{n} & \frac{1}{n} & \cdots & \frac{1}{n} \\
+    \end{pmatrix}
+\end{align*}
+So $I-\frac{11^T}{n}$ is the following.
+\begin{align*}
+    \begin{pmatrix}
+        \frac{n-1}{n} & -\frac{1}{n} & \cdots & -\frac{1}{n}\\
+        -\frac{1}{n} & \frac{n-1}{n} & \cdots & -\frac{1}{n}\\
+        \vdots & \vdots & \ddots & \vdots \\ 
+        -\frac{1}{n} & -\frac{1}{n} & \cdots & \frac{n-1}{n}
+    \end{pmatrix}
+\end{align*}
+
+This is an interesting matrix because it is idempotent and symmetric. Let's square the matrix and prove it.
+\subsubsection{Proof}
+\begin{align*}
+    (I-\frac{11^T}{n})(I-\frac{11^T}{n}) &= I-\frac{11^T}{n}-\frac{11^T}{n}+\frac{1}{n^2}(11^T)(11^T) \\
+    \text{Let's take a look at the last term}\\
+    \frac{1}{n^2}(11^T)(11^T) &= \frac{1}{n^2}\begin{pmatrix}
+        n & n & \cdots & n \\
+        n & n & \cdots & n \\
+        \vdots & \vdots & \ddots & \vdots\\
+        n & n & \cdots & n
+    \end{pmatrix}\\
+    &= \frac{1}{n}11^T \rightarrow \\
+    (I-\frac{11^T}{n})(I-\frac{11^T}{n}) &= (I-\frac{11^T}{n})
+\end{align*}
+
+So we're going to use this property to find construct our variance/covariance matrix.
+
+\subsection{Variance Matrix}
+Remember our special identity $(x-\frac{11^Tx}{n})^T(x-\frac{11^Tx}{n}) = (n-1)S$? we're going to rewrite it and manipulate it.
+
+\begin{align*}
+    (x-\frac{11^Tx}{n})^T(x-\frac{11^Tx}{n}) &= (x^T-\frac{x^T11^T}{n})(x-\frac{11^Tx}{n}) \\
+    &= x^T (I-1/n11^T)(I-1/n11^T)x\\
+    &= x^T (I-1/n11^T)x\\
+    &= (n-1)S
+\end{align*}
+
+So now we have an effective method to create this vector in a smooth way without too many expensive calculations or awkward for loops.
+
+\section{Sample Mean and Variance of Linear combinations of x}
+
+\subsection{Sample Mean}
+Let $x_1,x_2,...,x_n \sim (\mu_{p\times 1}, \Sigma_{p\times p})$
+
+We will also call $c_{p\times1}$ to be a fixed vector. such that $c^Tx_i = y_i$
+What is the sample mean and sample variance of the y's?
+
+\begin{align*}
+    \overline{y} &=\frac{\sum y_i}{n}\\
+    &=\frac{\sum c^Tx_i}{n}\\
+    &=\frac{c^T \sum x_i}{n}\\
+    &= c^T\overline{x}
+\end{align*}
+
+\subsection{Sample Variance}
+
+\begin{align*}
+    S_y^2 &= \frac{\sum(y_i-\overline{y})^2}{n-1} \\
+    &= \frac{\sum(c^
+    Tx_i-c^T\overline{x})^2}{n-1}\\
+    &=\frac{\sum(c^T(x_i-\overline{x}))^2}{n-1}\\
+    &=\frac{\sum(c^T(x_i-\overline{x}))(c^T(x_i-\overline{x}))}{n-1}\\
+    &=\frac{\sum c^T(x_i-\overline{x})(x_i-\overline{x})^Tc}{n-1}\\
+    &=\frac{ c^T\sum \big[(x_i-\overline{x})(x_i-\overline{x})^T\big]c}{n-1} \\
+    &= c^TS_xc
+\end{align*}

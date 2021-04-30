@@ -1,0 +1,207 @@
+\chapter{Session 15: October 20, 2020}
+
+so last time, we tested our first multivariate hypothesis
+
+$x_1,x_2,...,x_n \sim N_p(\mu,\Sigma)$
+
+\begin{gather*}
+    H_0: \mu = \mu_0\\
+    H_A : \mu \neq \mu_0, \quad \alpha = 0.05 \\
+    n(\overline{x} - \mu_0)^T S^{-1} (\overline{x} - \mu_0) \sim \frac{p(n-1)}{n-p}F_{p,n-p}
+\end{gather*}
+
+We did tested this with a trivariate hypothesis and data set. very fun stuff...
+
+Imagine that we test this hypothesis, and that we do not reject. That is the end of the story. This means that the vector of values supports the null hypothesis.
+
+If we do end up rejecting the null hypothesis, we have more steps.
+
+\section{Alternative Hypothesis Explained}
+$ H_A : \mu \neq \mu_0, \quad \alpha = 0.05 $
+\begin{gather*}
+    \begin{pmatrix}
+    \mu_1 \\
+    \mu_2 \\
+    \vdots \\
+    \mu_p
+    \end{pmatrix}
+    \neq
+    \begin{pmatrix}
+    \mu_{01}\\
+    \mu_{02} \\
+    \vdots \\
+    \mu_{0p}
+    \end{pmatrix}
+\end{gather*}
+
+When the alternative hypothesis is true, then there are many ways that it can be true. We can compare each mu with its corresponding hypothesis like in univariate. We need to do P independent samples in a t-test with equal variances.
+
+We will use something called the Bonferonni's adjustment for multiple comparisons. We will divide our $\alpha$ by p to get $\alpha* = \alpha/p$
+
+\section{Bonferonni's Inequality}
+To understand the correction method, we must first understand a theorem from baby statistics.
+\begin{gather*}
+    P\big(\bigcap^n_{i=1} A_i\big) \geq 1- P\big(\bigcap^n_{i=1} A_i^C\big) 
+\end{gather*}
+
+That is the probability that all the hypotheses in A are true is greater than the complement of the sum of the probabilities that they are false individually.
+
+\section{Test statistics of linear transformations}
+Remember our test statistic $T^2 = n(\overline{x}-mu_0)^TS^{-1}(\overline{x}-mu_0)$
+
+$x_1,x_2,...,x_n \sim N_p (\mu ,\Sigma)$
+
+\subsection{Define General Linear transformation of the X's}
+Let's say that we want to transform all of the x's. We would do this if we were for instance converting them between units of measure. We will define a general linear transformation of $X$
+
+$\underset{p\times 1}{Y} = \underset{p\times p}{C}\underset{p\times 1}{X} + \underset{p\times 1}{d}$
+
+This gives us a stronger theorem that let's us prove things more generally and not worry about linear transformations.
+
+\begin{gather*}
+    T^2_Y = n(\overline{y}-mu_{y0})^TS^{-1}(\overline{y}-mu_{y0}) 
+\end{gather*}
+
+We want to know if we can use the same test statistic regardless of our transformation. We ahve
+
+\begin{align*}
+    H_0: \mu = \mu_0 &\Rightarrow H_0: c\mu+d = c\mu_0+d\\
+    H_A: \mu \neq c\mu_0+ &\Rightarrow H_0: c\mu+d \neq c\mu_0+d\\
+    \overline{y}= c\overline{x}+d \\
+    S_y = cS_xc^T
+\end{align*}
+using this knowledge, we would like to rewrite the test statistic starting form $T_y$
+\begin{align*}
+    T_y^2 &= n(\overline{y}-mu_{y0})^TS^{-1}(\overline{y}-mu_{y0})\\
+    &= n(c\overline{x} \cancel{d} - c\mu_0-\cancel{d})^T (cS_xc^T)^{-1}(c\overline{x}+\cancel{d} - c\mu_0-\cancel{d})\\
+    &= n(\overline{x} - \mu_0)^T\cancel{c^T(c^T)^{-1}}S^{-1}\cancel{(c)^{-1}c}(\overline{x} - \mu_0)\\
+    &= n(\overline{x} - \mu_0)^T S^{-1} (\overline{x} - \mu_0) = T^2
+\end{align*}
+we just proved that applying a linear transformation of x, we do nothing to the $T^2$ statistic.
+
+\section{Likelihood Ratio Test}
+Let's start with the basics. Fairy tales start "Once upon a time." Models in this class start 
+\begin{gather*}
+x_1,x_2,...,x_n \sim N_p(\mu,\Sigma)
+    H_0: \mu = \mu_0\\
+    H_A: \mu \neq \mu_0\\
+\end{gather*}
+We now define the likelihood ratio
+
+\begin{gather*}
+    \frac{max_{H_0}L(\mu,\Sigma)}{max_{H_A}L(\mu,\Sigma)} = \Lambda \\
+    -2LN\Lambda \sim \chi^2(*)
+\end{gather*}
+
+where $-2LN\Lambda$ is our test statistic and * is the difference in the dimensions of the spaces the parameters roam under $H_A$ and $H_0$.
+
+This is a completely different approach but produces an identical result.
+
+\subsection{Definition of Likelihood Ratio}
+The likelihood of the data is defined as below
+
+\begin{gather*}
+    max_{H_0}L(\mu,\Sigma) = max_{H_0}\displaystyle\prod f(x=x_i | \mu_0,\Sigma)=  max_{H_0} (2\pi)^{-np/2} |\Sigma_0 |^{-n/2} e^{-\displaystyle\sum_{i=1}^{p}(x_i) (x_i-\mu_0)^T \Sigma (x_i-\mu_0)/2}
+\end{gather*}
+
+\begin{gather*}
+    max_{H_A}L(\mu,\Sigma) = max_{H_A}\displaystyle\prod f(x=x_i | \mu_0,\Sigma) = max_{H_A} (2\pi)^{-np/2} |\Sigma|^{-n/2} e^{-\displaystyle\sum_{i=1}^{p}(x_i) (x_i-\mu)^T \Sigma (x_i-\mu)/2}
+\end{gather*}
+
+\subsection{Derivation of Wilk's Likelihood}
+Plugging this information into our original expression we have
+\begin{gather*}
+    \frac{max_{H_0}L(\mu,\Sigma)}{max_{H_A}L(\mu,\Sigma)} = 
+    \frac{\cancel{(2\pi)^{-np/2}} |\hat{\Sigma}|^{n/2}}
+    {\cancel{(2\pi)^{-np/2}}|\hat{\Sigma_0}|^{n/2}} \cdot \frac{\cancel{e^{-np/2}}}{\cancel{e^{-np/2}}} \\
+    \hat{\Sigma} = \sum(x_i-\overline{x})^T(x_i-\overline{x})/n\\
+    \hat{\Sigma_0} = \sum_{i=1}^n(x_i-\mu_0)(x_i=\mu_0)^T/n
+\end{gather*}
+
+Our simplified ratio $\frac{|\hat{\Sigma}|}{|\hat{\Sigma_0}|}$ is called Wilk's Lambda = $\Lambda^{2/n}$.
+The rejection region of this test statistic will be for large values.
+
+We might be worried that you have two competing test methods. We will now prove that they are the same
+
+\subsection*{proof}
+Theroem: $x_1,x_2,...,x_n\sim N_p(\mu,\Sigma)$ we want to test 
+\begin{gather*}
+    H_0: \mu = \mu_0
+    H_A: \mu \neq \mu_0
+\end{gather*}
+Then the $T^2$ Test and the LR tests are equivalent.
+
+\begin{gather*}
+    \Lambda^{2/n} = (1+\frac{T^2}{n-1})^{-1} \\
+    \Lambda^{2/n} = \frac{\hat{\Sigma}}{\hat{\Sigma_0}}\\
+    T^2 = n(\overline{x}-\mu_0)^TS^{-1}(\overline{x}-\mu_0)
+\end{gather*}
+
+so our challenge is connecting two determinants with a quadratic form. Our answer is singular value decomposition.
+
+We need to construct a $(p+1) \times (p+1)$ matrix.
+
+\begin{gather*}
+A = 
+\left(
+    \begin{array}{c;{2pt/2pt}c}
+        \displaystyle\sum_{i=1}^n(x_i-\overline{x})(x_i-\overline{x})^T & \sqrt{n}(\overline{x}-\mu_0) \\ \hdashline[2pt/2pt]
+        \sqrt{n}(\overline{x}-\mu_0)^T & -1
+    \end{array}
+\right) \\
+A = \begin{pmatrix}
+\underset{p \times p}{A_{11}} & 
+\underset{p \times 1}{A_{12}}
+\\\underset{1 \times p}{A_{21}} & \underset{p \times p}{A_{22}}
+\end{pmatrix} \\
+|A| = |A_{22}| |A_{11}-A_{12}A_{22}^{-1}A_{21}| = |A_{11}||A_{22}-A_{21}A_{11}^{-1}A_{12}| \\
+-1 \cdot \big |\displaystyle \sum_{j=1}^n(x_j-\overline{x})(x_j-\overline{x}) + (\overline{x}-\mu_0)(\overline{x}-\mu_0)^T \big | \\
+= \big| \displaystyle\sum_{i=1}^n (x_j - \overline{x})(x_j - \overline{x}) \big| \big| -1- n(\overline{x}-\mu_0)\Big( \sum (x_j-\overline{x})(x_j-\overline{x})\Big)^{-1}(\overline{x}-\mu_0) \big|
+\end{gather*}
+
+Claim
+\begin{gather*}
+  \big |\displaystyle \sum_{j=1}^n(x_j-\overline{x})(x_j-\overline{x}) + (\overline{x}-\mu_0)(\overline{x}-\mu_0)^T \big | = \sum(x_j-\mu_0)(x_j-\mu_0)^T\\
+  \sum(x_j-\mu_0)(x_j-\mu_0)^T = \sum(x_j - \overline{x} + \overline{x} + \mu_0)(x_j- \overline{x} + \overline{x}+ \mu_0)^T \\
+  =\sum(x_j-\overline{x})(x_j-\overline{x})^T + n(\overline{x}-\mu_0)(\overline{x}-\mu_0)^T
+\end{gather*}
+Our trick was adding and subtrating x bar and then grouping them in pairs before distributing. The square terms come out and the cross terms are equal to zero.
+
+but that equals $n\hat{\Sigma}_0$
+
+and the term from above $\displaystyle\sum_{i=1}^n (x_j - \overline{x})(x_j - \overline{x}) = n\hat{\Sigma}$
+
+So we can rewrite the equation above as follows
+\begin{gather*}
+(-1)|n \hat{\Sigma}_0|= |n \hat{\Sigma}| | -1 -n(\overline{x} -\mu_0)^T \Big( \sum (x_j-\overline{x})(x_j-\overline{x}) \Big)^{-1} (\overline{x} -\mu_0)|
+\end{gather*}
+
+Now notice that the monstrosity on the right side looks pretty familiar.
+
+$T^2 = n(\overline{x}-\mu_0)^T(x_j-\overline{x})/(n-1) \Big)^{-1}(\overline{x}-\mu_0)$
+
+all we need to do is introduce that n-1 term inside.
+
+\begin{gather*}
+|\hat{\Sigma}_0|= |\hat{\Sigma}| | 1 + \frac{n-1}{n-1}n(\overline{x} -\mu_0)^T \Big( \sum (x_j-\overline{x})(x_j-\overline{x}) \Big)^{-1} (\overline{x} -\mu_0)|\\|\hat{\Sigma}_0|=
+| \hat{\Sigma}| | 1 + \frac{1}{n-1}n(\overline{x} -\mu_0)^T \Big( \sum (x_j-\overline{x})(x_j-\overline{x}) /(n-1)\Big)^{-1} (\overline{x} -\mu_0)| \\
+|\hat{\Sigma}_0|=
+| \hat{\Sigma}|\Big(1 + \frac{T^2}{n-1})
+\end{gather*}
+in the end we got do two things. 1. we brough the n-1 inside of the determinant to simplify it a little. 2. we got rid of the determinant signs since it is a one dimensional object. Other than that it's just recognizing the $T^2$ statistic and substituting.
+
+So we showed a one-to-one monotonic relationship between the hotelling's $T^2$ and the likelihood ratio.
+
+\section{Confidence Regions}
+Imagine you want to find a $(1-\alpha)\cdot 100\%$ Confidence region for $\underset{p\times 1}{\mu}$
+
+$\x_1,\x_2,..., x_n \sim N_p(\mu,\Sigma)$
+By definition our T statistic follows the following behavior.
+\begin{gather*}
+    n(\overline{x}-\mu)^TS^{-1}(\overline{x}-\mu) \sim \frac{(n-1)p}{n-p}\cdot F_{p,n-p}(1-\alpha) \Rightarrow\\
+    P \Bigg(n(\overline{x}-\mu)^TS^{-1}(\overline{x}-\mu) \leq \frac{(n-1)p}{n-p}\cdot F_{p,n-p}(1-\alpha)\Bigg) = 1-\alpha
+\end{gather*}
+
+So all x's that satisfy this inequality listed above, will comprise the desired $(1-\alpha)\cdot 100\%$ Confidence region for $\underset{p\times 1}{\mu}$.
+
+This creates an ellipsoid in a p-dimensional space centered at $\overline{x}$ with axes that are tilted in the directions of the eigenvectors of the Sample Variance matrix. Just like what we did in the beginning of the class.

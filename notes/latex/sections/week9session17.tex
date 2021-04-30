@@ -1,0 +1,159 @@
+\chapter{Session 17: October 27, 2020}
+\section{Comparison of Several Multivariate Means}
+Now that we are running comparisons with multiple samples, the complexity increases a bit, but the machinery stays the same.
+
+One sample Paired t-Test
+
+Imagine we have a 1 dimensional normal sample
+\[x_1,x_2,...,x_n \sim N_1(\mu_1,\sigma_1^2)\]
+
+\[y_1,y_2,...,y_n \sim N_1(\mu_1,\sigma_2^2)\]
+
+Usually we test the hypothesis
+\begin{gather*}
+    H_0: \mu_1=\mu_2 \\
+    H_A : \mu_1 \neq \mu_2 \alpha = 0.05
+\end{gather*}
+
+That is, we would be testing the hypothesis that there was no effect of the treatment.
+
+So these are the same people measured twice. We want to know whether or not the mean scores change after a treatment. This treatment can be time passing by, or it can be some kind of intervention. Usually they are taught something or they were given something to change them.
+
+So to take care of this what we do is try and define a sample of differences
+$d_i = y_i -x_i$
+\[d_1,d_2,...,d_n \sim N_1(\mu_d,\sigma_d^2)\]
+
+\begin{gather*}
+    H_0: \mu_d = 0 \\
+    H_A: \mu_d \neq 0\\
+    t = \frac{\overline{d}}{\frac{s_d}{\sqrt{n}}}\sim t(n-1)
+\end{gather*}
+
+ So we want to  write a $(1-\alpha)\cdot 100\%$ CI for $\mu_2-\mu_1$ and it's going to be $\big(\overline{d}-t_{1-\alpha/2}(n-1)\frac{s_d}{\sqrt{n}},\overline{d}+t_{1-\alpha/2}(n-1)\frac{s_d}{\sqrt{n}}\big)$
+ 
+ So we are going to write it out exactly like before
+ \(x_1,x_2,...,x_n \sim N_p(\mu_1,\Sigma_1)\) and 
+ \(y_1,y_2,...,y_n \sim N_p(\mu_1,\Sigma_1)\) So this would be observing several different people at different timepoints. Now all the variables are random vectors instead. Maybe it's the same people measured twice on P variables.
+ \begin{gather*}
+    H_0: \mu_1=\mu_2 \\
+    H_A : \mu_1 \neq \mu_2 \alpha = 0.05
+\end{gather*}
+
+So we're still going to form these pair-wise differences:
+\[D_1 = y_1-x_1, D_2 = y_2-x_2,...,D_n = y_n-x_n \sim N_p(\mu_D,\Sigma_D)\]
+\begin{gather*}
+    H_0: \mu_D = 0\\
+    H_A:\mu_D \neq 0
+\end{gather*}
+This pair-wise reduces our problem to a one sample problem. This is Chapter 5 material.
+$T^2 = n(\overline{D}-0)^TS^{-1}(\overline{D}-0)\sim \frac{(n-1)p}{n-p}\cdot F_{p,n-p}$
+
+So the $(1-\alpha)100\%$ CR for $\mu_D=\mu_2-\mu_1$ We have 3 constructions for this from chapter 5. The ellipse, the projection onto the eigenvectors and the bonferonni confidence intervals.
+
+\subsection{Bonferonni Simultaneous Confidence Intervals}
+
+\[\mu_D = (\mu_{D1}, \mu_{D2}, ..., \mu_{Dp})\]
+\[\mu_{Di}\in I_i: (\overline{D}-t_{1-\frac{\alpha}{2p}}\frac{s_{ii}}{\sqrt{n}},\overline{D}+t_{1-\frac{\alpha}{2p}}\frac{s_{ii}}{\sqrt{n}})\]
+We will then see if our mean vector is in the cartesian product of these intervals.
+
+\section{Repeated Measures Design for Comparing Treatments}
+So what we did was improve the t-tests to increase the numbers of observation per treatment. We want to further generalize this. We wan to be able to do things for multiple timepoints and still have one thing
+
+\[x_{11},x_{12},...,x_{1n}\]
+\[x_{21},x_{22},...,x_{2n}\]
+\[x_{q1},x_{q2},...,x_{qn}\]
+
+We are taking univariate measurements at multiple timepoints.
+
+\begin{gather*}
+    x_j = \begin{pmatrix}
+    x_{j1}\\
+    x_{j2}\\
+    \vdots
+    \\
+    x_{jq}
+    \end{pmatrix}
+\end{gather*}
+
+This is a longitudinal study. All observations in the subject j are represented as above.
+
+We are interested in if the mean changes over time or over the course of the treatment.
+\begin{gather*}
+    H_0: \mu_1=\mu_2=...=\mu_q\\
+    H_A:\mu_i \neq \mu_j for i\neq j
+\end{gather*}
+Rewrite
+\begin{gather*}
+    H_0: \mu_1-\mu_2 = \mu_1-\mu_3 = ...=\mu_1-\mu_q \\
+    H_A: \mu_1 - \mu_i \neq \mu_1-\mu_j\\
+    H_0: \begin{pmatrix}
+    \mu_1-\mu_2 \\
+    \mu_1-\mu_3\\
+    \vdots \\
+    \mu_1 - \mu_q
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+    0 \\
+    0\\
+    \vdots\\
+    0
+    \end{pmatrix}\\
+    H_A:\begin{pmatrix}
+    \mu_1-\mu_2 \\
+    \mu_1-\mu_3\\
+    \vdots \\
+    \mu_1 - \mu_q
+    \end{pmatrix}
+    \neq
+    \begin{pmatrix}
+    0 \\
+    0\\
+    \vdots\\
+    0
+    \end{pmatrix}\\
+\end{gather*}
+
+We are now going to rewrite it as a product of matrices
+
+\begin{gather*}
+    H_0: \begin{pmatrix}
+    1 & -1 & 0 & \cdots & 0 \\
+    1 & 0 & -1 & \cdots & 0 \\
+    \vdots & \vdots & \vdots & \ddots & \vdots \\
+    1 & 0 & 0 & \cdots & 0
+    \end{pmatrix}_{(q-1)\times q}
+    \begin{pmatrix}
+    \mu_1 \\
+    \mu_2 \\
+    \vdots \\
+    \mu_q
+    \end{pmatrix}_{q \times 1}
+    =
+    \begin{pmatrix}
+    \mu_1 - \mu_2 \\
+    \mu_1 - \mu_3 \\
+    \vdots
+    \\
+    \mu_1 - \mu_q
+    \end{pmatrix}_{(q-1)\times 1}
+\end{gather*}
+
+\[x_1,xc2,...,x_n \sim N_q(\mu,\Sigma)\]
+We can just take this to be 
+\begin{gather*}
+    H_0: C\mu =0 \\
+    H_A: C \mu \neq 0
+\end{gather*}
+\[Cx_1,Cx_2,...,Cx_n \sim N_{q-1}(C\mu,C\Sigma C^T)=N_{q-1}(\mu_y,\Sigma_y)\]
+so now we have a new random sample of transformed variables and we can just use the techniques from number 5. Plug it into a t-test and be done.
+
+\[T^2 = n(\overline{y}-0)^T(S_y)^{-1}(\overline{y}-0) \sim \frac{(n-1)(q-1)}{n-q+1}F_{q-1,n-q+1}\]
+
+But remember, $y_i = Cx_i$, $overline{y}=C\overline{x}$, and $S_y = CS_x C^T$, so $T^2 = n(C\overline{x})^T(C S_x C^T)^{-1}C(overline{x})$
+
+But remember, we can just use the same $T^2$ statistic as before. We just need to use the new Distribution though.
+
+This comes up pretty frequently in data analysis
+
+Check zoom for code notes.

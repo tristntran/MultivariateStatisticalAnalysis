@@ -1,0 +1,177 @@
+\chapter{Session 28: December 3, 2020}
+
+\section{Multivariate Linear Regression}
+There are books on regression only that span 7-800 pages, but the book only has one chapter. It's pretty good still.
+
+Linear regression is a statistical tool that allows you to estimate the importance of a bunch of variables with respect to an outcome variable of interest. 
+
+Some goals of this are to describe the importance of predicting or changing the outcome variable of interest. 
+
+We want to understand how a bunch of variables affect a variable that is a primary interest. If you have access to a bunch of variables then you can easily collect them, put them in a model and predict a highly interesting variable. We might try to predict stocks, weather, or something else.
+
+We call this outcome variable the dependent variable. This needs to be a continuous variable or else our technique will not work.
+\begin{equation*}
+    \begin{pmatrix}
+    y_1 \\ y_2 \\ \vdots \\ y_n
+    \end{pmatrix}
+\end{equation*}
+
+We call the data covariates, predictors and independent variables
+\begin{equation*}
+\begin{pmatrix}
+    x_{11} & x_{12} & \cdots & x_{1p} \\
+    x_{21} & x_{22} & \cdots & x_{2p} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    x_{n1} & x_{n2} & \cdots & x_{np} \\
+\end{pmatrix}
+\end{equation*}
+
+Our goal is to express each $y_i$ as a linear combination of the covariates.
+
+\[y_i = \beta_0+ \beta_1 x_{1i}+ \beta_2 x_{1i} + ...+\beta_p x_{1i}\]
+
+This can be written a bit more succinctly as a matrix multiplication. Notice how the $\beta$'s are shared by every observation. Since they are all shared, this fit is impossible. We need to add error terms.
+
+\[y_i = \beta_0+ \beta_1 x_{1i}+ \beta_2 x_{1i} + ...+\beta_p x_{1i} +e_i\]
+
+Each subject will have its own error term $e_i$
+
+\[\underset{n\times 1}{Y} =\underset{n\times (p+1)}{Z}\underset{(p+1)\times 1}{\beta} + \underset{n\times 1}{e}\]
+
+\begin{align*}
+   \underset{n\times 1}{Y} = \begin{pmatrix}
+    y_1 \\ y_2 \\ \vdots \\ y_n
+    \end{pmatrix} &
+    \underset{n\times (p+1)}{Z} = 
+    \begin{pmatrix}
+    1 & x_{11} & x_{12} & \cdots & x_{1p} \\
+    1 & x_{21} & x_{22} & \cdots & x_{2p} \\
+    \vdots & \vdots & \vdots & \ddots & \vdots \\
+    1 & x_{n1} & x_{n2} & \cdots & x_{np} \\
+\end{pmatrix}
+\\
+\underset{(p+1)\times 1}{\beta} = \begin{pmatrix}
+    \beta_0 \\ \beta_1 \\ \beta_2 \\ \vdots \\ \beta_p
+    \end{pmatrix} &
+\underset{n\times 1}{e} = \begin{pmatrix}
+    e_1 \\ e_2 \\ \vdots \\ e_n
+    \end{pmatrix}
+\end{align*}
+
+In this model, the Z and $\beta$ matrices are fixed while the e is random.
+\[e_i \sim N(0,\sigma_e^2)\] 
+in the univariate case so
+\[e \sim N_n(0,\sigma_e^2I_{n \times n})\] 
+
+This is called a homoscedasticity of error terms meaning that they are all uncorrelated and have the same distribution.
+
+\[Y \sim N_n(Z\beta , \sigma^2 I)\]
+
+Let's talk about what is known and unknown.
+
+Y is known and collected
+
+Z is known and observed
+
+B and $\sigma^2$ are unknowns and desirable.
+
+So we have the p+1 $\beta$ terms to estimate and one $\sigma$ term. We need to estimate a total p+2 terms.
+
+We will aim to learn how to estimate the vector and parameter as well as what to do once they are estimated.
+
+\section{Estimating The Coefficients: Beta}
+
+Imagine a scatter plot. We will try to write the equation of a line that best represents the relationship in the variables of the plot. Our objective is to minimize the sum of the distances between the line and the points.
+
+\[Y = Z \beta + e\]
+
+\[\displaystyle\sum_{i=1}^n(y_i - b_0 - b_1x_{i1}-...-b_px_{ip})^2 = SS(b)\]
+
+This is a measure of how well a model with $\beta = b$ fits the data. This is known as the sums of squares. If we minimize SS(b), we will build the best model.
+
+This can be written as the following.
+\[SS(b) = (Y-Zb)^T(Y-Zb)\]
+
+\begin{align*}
+Y-Z\beta = \begin{pmatrix}
+y_1 - b_0 - b_1x_{11}-...-b_px_{1p} \\
+y_2 - b_0 - b_1x_{21}-...-b_px_{2p}\\
+\vdots \\
+y_n - b_0 - b_1x_{n1}-...-b_px_{np}
+\end{pmatrix}
+\end{align*}
+
+\subsection{Theorem}
+The vector that minimizes $SS(b)$ is $\hat{\beta} = (Z^TZ)^{-1}Z^TY$
+
+That is this estimator of $\beta$ are the coefficients to the hyper-plane that fits the model as close to the plot as possible. 
+
+\subsubsection{Proof}
+Show
+\[SS(b) = (Y-Zb)^T(Y-Zb) \geq SS(\hat{\beta})\]
+
+For this proof we Add and subtract $Z\hat{\beta}$ to introduce the term to our math,
+commute and associate them so that we create a multiplication of binomials. We multiply and distribute (FOIL) the binomials created to get four terms. The first term is clearly $SS(\hat{\beta}$. The fourth terms represents the length of a vector, while the second and third terms are each zero. Since the square of a vector's length is always non-negative $\geq 0$ we can now say we have proven our theorem.
+
+
+\begin{align*}
+    SS(b) &= (Y-Zb)^T(Y-Zb)\\
+    &= (Y-Zb+Z\hat{\beta}-Z\hat{\beta})^T(Y-Zb+Z\hat{\beta}-Z\hat{\beta})\\
+    &= \Big[(Y-Z\hat{\beta})+(Z\hat{\beta}-Zb)\Big]^T
+    \Big[(Y-Z\hat{\beta})+(Z\hat{\beta}-Zb)\Big] \\
+    &= (Y-Z\hat{\beta})^T(Y-Z\hat{\beta})
+    +(Y-Z\hat{\beta})^T(Z\hat{\beta}-Zb)
+    +(Z\hat{\beta}-Zb)^T(Y-Z\hat{\beta})
+    +(Z\hat{\beta}-Zb)^T(Z\hat{\beta}-Zb)\\
+    &= SS(\hat{\beta}) + \|Z\hat{\beta}-Zb \|^2 \Rightarrow\\
+    SS(b) &= SS(\hat{\beta}) + \|Z\hat{\beta}-Zb \|^2 \Rightarrow\\
+    SS(b) &\geq SS(\hat{\beta})
+\end{align*}
+
+Now this is only true if we can show that the second and third terms are zero. Since they are transposes of one anther we need only show that $(Y-Z\hat{\beta})^T(Z\hat{\beta}-Zb) =0$. We claimed that $\hat{\beta} = (Z^TZ)^{-1}Z^TY$, but never used it. This definition ensures that the two vectors $(Y-Z\hat{\beta})^T$ and $(Z\hat{\beta}-Zb)$ are orthogonal and thus their product is 0.
+
+\begin{align*}
+  (Y-Z\hat{\beta})^T(Z\hat{\beta}-Zb) &= (Y-Z\hat{\beta})^T Z(\hat{\beta}-b)\\
+  &= (Y-Z(Z^TZ)^{-1}Z^TY)^T Z(\hat{\beta}-b)\\
+  &= (Y^T -Y^TZ(Z^TZ)^{-1}Z^T)Z(\hat{\beta}-b)\\
+  &= (Y^TZ -Y^TZ \cancel{(Z^TZ)^{-1}(Z^TZ)})(\hat{\beta}-b)\\
+  &= (Y^T-Y^T)Z(\hat{\beta}-b)\\
+  &= 0_n^T  (\hat{\beta}-b) = 0
+\end{align*}
+
+We are now done estimating $\beta$, but we are not done with estimation. We still need to estimate $\sigma^2$
+
+\section{Estimating Variance of the residuals}
+By estimating $\hat{\beta}$ we can estimate the model predicted values $\hat{Y} = Z\hat{\beta}$ from there we can get the estimated residuals $\hat{\varepsilon} = Y-\hat{Y}$ and estimate their variance.
+
+\[\varepsilon_1,\varepsilon_2,..., \varepsilon_n \sim N(0,\sigma^2)\]
+
+We can reasonably estimate $\sigma^2$ by calculating the sample variance $\hat{\sigma}^2 = \frac{\sum (\hat{\varepsilon_i}-\overline{\varepsilon})^2}{n-1} = \frac{\hat{\varepsilon}^T\hat{\varepsilon}}{n-1}$, but that would be incorrect. We actually need to adjust the denominator to include the number of variables we estimated to get the model coefficients. our modified sample variance is now $\hat{\sigma}^2=\frac{\hat{\varepsilon}^T\hat{\varepsilon}}{n-p-1}$
+
+There is one important thing that maybe we have missed.
+\section{One More Thing}
+Remember linear regression is defined $Y = Z\beta + e$. Our assumption is that the error terms are normally distributed so
+\[e \sim N(0,\sigma^2 I)\]
+\[Y \sim N(Z\beta,\sigma^2 I)\]
+
+But remember that the $\hat{\beta}$ is just a linear combination of Z and Y $(Z^TZ)^{-1}Z^TY$
+
+\[\hat{\beta} \sim N_{p+1} (AZ\beta,A\sigma^2IA^T)\]
+\begin{align*}
+    \hat{\beta} & \sim N_{p+1} (AZ\beta,A\sigma^2IA^T) \\
+    \hat{\beta} & \sim N_{p+1} ((Z^TZ)^{-1}Z^TZ\beta,(Z^TZ)^{-1}Z^T\sigma^2I((Z^TZ)^{-1}Z^T)^T)\\
+    \hat{\beta} & \sim N_{p+1}(\beta,\sigma^2(Z^TZ)^{-1})\\
+    \hat{cov}(\hat{\beta}) &= \hat{\sigma}(Z^TZ)^{-1}
+\end{align*}
+
+What is very important is that we have determined that $\hat{\beta}$ is an unbiased estimator of the true coefficients that we are after. We can also use this to determine the covariance of $\hat{\beta}$. We can also use this to determine which coefficients are important. That is we can determine which variables are statistically significant predictors of Y.
+
+\section{Hypothesis Testing in Linear Regression}
+\begin{align*}
+    H_0 &: \beta_1 = 0 &\text{$x_1$ is not important}\\
+    H_A&: \beta_1 \neq 0 \\
+    t &= \frac{\hat{\beta_1}}{\hat{SE}(\hat{\beta}_1)}\sim Z(n-p-1) &\text{t-test for $H_0$}
+\end{align*}
+
+Rewatch video for the R-code
+

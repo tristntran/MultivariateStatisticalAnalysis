@@ -1,0 +1,106 @@
+\chapter{Session 22: November 12, 2020}
+\section{ANOVA and MANOVA}
+\section{ANOVA}
+Anova stands for Univariate Analysis of Variance. We are going to start with a one-way ANOVA. It is a generalization of two sample t-test with equal variances to a model with more than two samples.
+
+Let's say that we have g samples.
+
+\[x_{11},...,x_{2n_1}\sim N_1(\mu,\sigma^2)\]
+\[x_{g1},...,x_{gn_2}\sim N_1(\mu_g,\sigma^2)\]
+
+First thing we must do is test that all the variances are equal. We call this the hypothesis of homogeneity.
+
+You need to test all g samples for normality using Kramer von Mises or Shapiro-Wilkes. 
+
+You can then use one of the following Bartlett's test or Levene's Test for normality.
+
+Once you determine that the variance is homogenous, you can now compare all the means and see if they are equal. Even though we are calling it Analysis of Variance, we are really interested in comparing the means.
+
+\begin{gather*}
+    H_0: \mu_1 = \mu_2 =...=\mu_g \\
+    H_A: \mu_i \neq \mu_j\\
+    F = \frac{
+    \displaystyle\sum_{i=1}^{g} n_i (\overline{x}_i-\overline{x})^2/(g-1)
+    }{\displaystyle\sum_{i=1}^g\displaystyle\sum_{j=1}^{n_i}(x_{ij}-\overline{x}_i)^2/(n_1+n_2+...+n_g)}\\
+    \sim F_{g-1,n_1+n_2+...+n_g-g}
+\end{gather*}
+we skipped the derivation for this, but let's see where we get the degrees of freedom.
+
+let's define a matrix v such that
+\begin{gather*}
+    v = \begin{pmatrix}
+    \overline{x}_1-\overline{x} 
+    \\ \vdots\\
+    \overline{x}_1-\overline{x}\\
+    \overline{x}_2-\overline{x}
+    \\ \vdots\\
+    \overline{x}_2-\overline{x}
+    \\ \vdots \\
+    \overline{x}_g-\overline{x}
+    \\ \vdots \\
+    \overline{x}_g-\overline{x}
+    \end{pmatrix}
+\end{gather*}
+each \(\overline{x}_i\) appears $n_i$ times.
+
+Remember we have a sum on top of our statistic.
+
+\[\displaystyle\sum_{i=1}^{y}n_i(\overline{x}_i-\overline{x})^2 = v^Tv\] 
+
+let's consider g different vectors with 1 in the positions of the $x_i$'s and 0 elsewhere. We can see that v is a linear combination of these vectors. we can see that this vector cannot roam more than a g dimensional space, since it is a linear combination of g vecotrs. 
+
+Now the degrees of freedom for the top is g-1 because if you do $1^Tv$ you would get $\overline{x}-\overline{x}=0$ thus the degrees of freedom of this vector is g-1. Since this result restricts one of the dimensions because the vector v is orthogonal to $1^T$
+
+Now we can test this global hypothesis that all the means are the same versus the alternative that they are not.
+
+If $F \leq F_{1-\alpha}(g-1,n_1+...+n_g-g)$ if we fail to reject, we end the analysis right here.
+
+Else $F > F_{1-\alpha}(g-1,n_1+...+n_g-g)$ we reject $H_0$ in favor of $H_A$. Usually this is the exciting part of the analysis. We know that one of the means is not like the rest, but you do not know where the differences are.
+\subsection{First Approach finding where differences Lie}
+To figure this out we can get all possible pairs and compare every mean using multiple two sample t-tests with equal variances.
+
+there will be ${g \choose 2}$ = $\frac  {g(g-1)}{2}$, t-tests
+
+all of them have to be tested at Bonferonni corrected p-values $p-value_i\cdot g\choose 2$
+This is not in the book. which Dr. Rakovski thinks is a mistake.
+
+\subsection{Tukey's Honest Significance Difference Test}
+The second method is called Tukey's test.
+
+\section{MANOVA}
+We could reduce this problem into multiple ANOVA tests using Bonferonni, but let's show the theory anyways.
+We still have g groups but now they are p dimensional normal. 
+Now we have g samples of $n_i$ observations that are each p dimensional normal random vectors.
+\[x_{11},...,x_{1n_1}\sim N_p(\mu_1,\Sigma)\]
+\[x_{21},...,x_{2n_2}\sim N_p(\mu_2,\Sigma)\]
+\[x_{g1},...,x_{gn_g}\sim N_p(\mu_g,\Sigma)\]
+
+\begin{gather}
+    H_0: \mu_1=\mu_2=...=\mu_g\\
+    H_A: \exists i,j| \mu_i\neq \mu_j 
+\end{gather}
+
+To test our hypothesis we will generate the Wilk's Lamda test statistic
+
+\begin{gather*}
+    \Lambda^* = \frac
+    {|
+    \displaystyle\sum_{i=1}^g
+    \displaystyle\sum_{j=1}^{n_i}(x_{ij}-\overline{x}_i)(x_{ij}-\overline{x}_i)^T|
+    }
+    {|\displaystyle\sum_{i=1}^g
+    \displaystyle\sum_{j=1}^{n_i} (x_{ij}-\overline{x}
+    )(x_{ij}-\overline{x}
+    )^T|
+    }
+\end{gather*}
+The lambda is a bit difficult to calculate and after you calculate it there are different cases.
+
+\subsection{P=2,g>2}
+\[p>2,g\geq 2, \Big ( \frac{\sum n_i - g-1}{g-1} \Big ) \Big (\frac{1-\sqrt{\Lambda^*}}{\sqrt{\Lambda^*}} \Big )\sim F_{2(g-1),2(\sum n_i-g-1)}\]
+\subsection{p>1,g=3}
+\[p>2,g\geq 2, \Big( \frac{\sum n_i - p-2}{p} \Big) \Big( \frac{1-\sqrt{\Lambda^*}}{\sqrt{\Lambda^*}} \Big)\sim F_{2p,2(\sum n_i-p-2)}\]
+
+Moral of the story is that the multivariate case is complicated. There is no one test statistic that will work and there are many different factors to consider.
+
+We then did some code here. Look at the notes for guidance.

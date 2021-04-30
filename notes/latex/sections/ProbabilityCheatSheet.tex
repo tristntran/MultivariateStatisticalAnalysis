@@ -1,0 +1,57 @@
+\chapter{Univariate Probability Cheat Sheet}
+
+\section{General Terms}
+\begin{tabular}{@{}ll@{}}
+\verb!Random Variable! & Represented by capital X \\
+\verb!Probability!  & P(X=x)
+= f(x) \\
+\verb!Probability Density Function! & $f(x)$\\
+\verb!Expected Value E(X)! $\mu$  & $\mu = \int_{-\infty}^{\infty}xf(x)dx$ \\
+Sum of all values times their probabilities.\\ Weighted average.
+\\\\
+\verb!Variance Var(x)! $\sigma^2$ & $VAR(X)=E(X^2)-E(X)^2$ \\
+\verb!Covariance Var(x)!$\sigma^2_{ij}$ & $COV(X,Y) = E(XY)-E(X)E(Y)$\\
+\verb!Sample!  & $x_1,...,x_n$ \\
+\verb!Sample Mean!  & $\displaystyle\sum_{i=1}^{n}\frac{x_i}{n}$ \\
+\verb!Sample Variance!  &  
+$\displaystyle\sum_{i=1}^{n} \frac{(x-\overline{x})^2}{n}$\\
+\verb!MLE!-Maximum Likelihood Estimator  & Definition of an estimation technique\\
+\verb!Unbiased Estimator!  & Definition of an estimation technique. $E(\hat \mu) = \mu$\\
+\verb!Normal Distribution!  & bell curve\\
+\end{tabular}
+
+\section{Properties of Expected Value}
+Remember that Expected Value is a linear operator.
+
+\begin{tabular}{@{}ll@{}}
+\verb!E(aX)!  & $E(aX)=aE(X)=a\mu$\\
+\verb!E(X+c)!  & $E(X+c)=E(X)+c=\mu+c$\\
+\verb!E(aX+c)!  & $aE(X+c)=aE(X)+c=a\mu+c$\\
+\verb!E(X+Y)! &  $E(X+Y) = E(X)+E(Y)$
+\end{tabular}
+
+\section{Properties of Variance}
+Remember that variance is represented by $\sigma^2$ so it will behave like a quadratic.
+
+\begin{tabular}{@{}ll@{}}
+\verb!alternate VAR(X)!  & $E[(x-\mu)^2]$\\
+\verb!VAR(aX)!  & $VAR(aX)=a^2VAR(X)=a^2\sigma^2$\\
+\verb!VAR(X+c)!  & $VAR(X+c)=VAR(X)=\sigma^2$\\
+\verb!VAR(aX+c)!  & $aVAR(X+c)=a^2VAR(X)=a^2\sigma^2$\\
+\verb!VAR(X+Y)! & $VAR(X+Y) = VAR(X)+VAR(Y)+2COV(X,Y)$
+\end{tabular}
+
+\section{Properties Normal Distribution}
+Let $x\sim N(\mu,\sigma^2)$
+\\ \\
+\begin{tabular}{@{}ll@{}}
+\verb!Sums!  & Large sans-serif font.\\
+\verb!Linear Transform!    & Default is two-sided. \\
+\verb!Covariance Var(x)! & No \verb!\part! or \verb!\chapter! divisions. \\
+\verb!Sample!  & Letter (?). \\
+\verb!Sample Mean!  & Letter (?). \\
+\verb!Sample Variance!  & Large sans-serif font.\\
+\verb!MLE!  & Large sans-serif font.\\
+\verb!Unbiased Estimator!  & Large sans-serif font.\\
+\verb!Normal Distribution!  & Large sans-serif font.\\
+\end{tabular}

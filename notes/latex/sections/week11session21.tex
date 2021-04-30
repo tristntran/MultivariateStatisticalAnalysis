@@ -1,0 +1,134 @@
+\chapter{Session 21: November 10, 2020}
+
+\section*{Profile Analysis}
+We have p measurements and they can be tests.
+Given to two people or more groups of people. We want to know if the average of the group responses are "similar" We are going to define three major hypothesis and go from there.
+
+\subsection*{1. Are The Profiles Parallel?}
+
+In real live the plots won't look perfectly parallel, but we want to know if they are significantly parallel. (Close enough) so that the differences from being parallel can be explained by sampling variation.
+
+*maybe go back for the notes later...
+
+We basically take the value of means for each group and connect them to be a piece-wise linear graph.
+
+\[\mu_1^T = (\mu_{11},\mu_{12},...,\mu_{1n})\]
+\[\mu_2^T = (\mu_{21},\mu_{22},...,\mu_{2n})\]
+ith person from from the first group
+\[x_{1i}= (x_{1i1},x_{1i2},...,x_{1ip})\]
+ith person from the second group
+\[x_{2i}= (x_{2i1},x_{2i2},...,x_{2ip})\]
+\[x_{11},x_{12},...,x_{1n_1}\sim N(\mu_1,\Sigma_1)\]
+\[x_{21},x_{22},...,x_{2n_2}\sim N(\mu_2,\Sigma_2)\]
+\begin{gather*}
+    H_{01}: \text{Profiles are Parallel}
+    H_{A1}:\text{Profiles are not Parallel}
+\end{gather*}
+
+\begin{gather*}
+    H_{01}: \mu_{1i}-\mu_{1i-1}=\mu_{2i}-\mu_{2i-1} i \in \{2,3,...,p\} 
+\end{gather*}
+That is the slopes between any two points are equal between the two groups. Let's rewrite this as a matrix
+
+\begin{gather*}
+    H_{01} : \begin{pmatrix}
+    \mu_{12}=\mu_{11}\\
+    \mu_{13}=\mu_{12}\\
+    \vdots \\
+    \mu_{1p}=\mu_{1(p-1)}
+    \end{pmatrix}=
+    \begin{pmatrix}
+    \mu_{22}=\mu_{21}\\
+    \mu_{23}=\mu_{22}\\
+    \vdots \\
+    \mu_{2p}=\mu_{2(p-1)}
+    \end{pmatrix}
+\end{gather*}
+We can also rewrite this as a product of matrices
+\begin{gather*}
+H_{01}: c\mu_1 = c\mu_2 \\
+c_{(p-1)\times p} = \begin{pmatrix}
+-1 & 1 & 0 & 0 & \cdots & 0 & 0 \\
+0 & -1 & 1 & 0 & \cdots & 0 & 0 \\
+\vdots & \vdots & \vdots & \vdots & \ddots &\vdots & \vdots \\
+0 & 0 & 0 & 0 & \cdots & -1 & 1 \\
+\end{pmatrix}
+\end{gather*}
+c is the contrast matrix that we design  to show the above relationships between the $\mu$'s
+
+\[x_{11},...,x_{1n_1}\sim N_p(\mu_1,\Sigma)\]
+\[x_{21},...,x_{2n_1}\sim N_p(\mu_2,\Sigma)\]
+
+\begin{gather*}
+    H_{01}: c\mu_1 = c\mu_2 \\
+    H_{A1}: c\mu_1 \neq c\mu_2
+\end{gather*}
+\[cx_{11},...,cx_{1n_1s}\sim N_{p-1}(c\mu_1,c\Sigma c^T)\]
+\[cx_{21},...,cx_{2n_1s}\sim N_{p-1}(c\mu_2,c\Sigma c^T)\]
+
+now our problem is a simple two sample t-test with equal variances.
+$\Sigma$ needs to be estimated, so we will use $S_{pooled} = \frac{(n_1-1)s_1 + (n_2-1)s_2}{n_1+n_2-2}$ so we get
+
+\[y_{11},...,y_{1n_1}\sim N_{p-1}(c\mu_1,c\Sigma c^T)\]
+\[y_{21},...,y_{2n_2}\sim N_{p-1}(c\mu_2,c\Sigma c^T)\]
+\[T^2 = (\overline{y_1}-\overline{y_2})\Big[(\frac{1}{n_1}+\frac{1}{n_2}) c S_{pooled}c^T
+\Big]^{-1} (\overline{y_1}-\overline{y_2})\sim \frac{(n_1+n_2-2)(p-1)}{n_1+n_2-p}F_{(p-1)(n_1+n_2-p)}\]
+\[T^2 = (c\overline{x}_1-c\overline{x}_2)^T\Big[(\frac{1}{n_1}+\frac{1}{n_2}) c S_{pooled}c^T
+\Big]^{-1} (c\overline{x}_1-c\overline{x}_2)\sim \frac{(n_1+n_2-2)(p-1)}{n_1+n_2-p}F_{(p-1)(n_1+n_2-p)}\]
+
+In modeling you would describe this as there being a main effect by group but there is no group effect by question.
+
+\subsection*{2. Are the Parallel Profiles of the Two groups Identical}
+If the profiles are parallel, we want to know if they are identical or on top of each other. That is are they Coincident profiles? 
+If the distance between the two profiles is zero then we would do the following.
+
+We could use the testing methods that we already know, but that doesn't take advantage of the fact that they are parallel.
+
+\begin{gather*}
+    H_{02}: 1^T\mu_1 = 1^T\mu_2 \\
+    H_{A2}: 1^T\mu_2 \neq 1^T\mu_2
+\end{gather*}
+
+$1^T$ adds up all the elements of the vector.
+
+\[1^Tx_{11},...,1^Tx_{1n_1}\sim N_1(1^T\mu_1,1^T\Sigma 1)\]
+\[1^Tx_{21},...,1^Tx_{2n_2}\sim N_1(1^T\mu_2,1^T\Sigma 1)\]
+
+\begin{gather*}
+    T^2 = (1\overline{x}_1 - 1^T\overline{x}_2)^T \Big [ 
+(\frac{1}{n_1} + \frac{1}{n_2})1^T S_{pooled}1
+\Big]
+(1\overline{x}_1 - 1^T\overline{x}_2)\\
+\sim
+\frac{\cancel{(n_1+n_2-2)}1}{\cancel{n_1+n_2-1-1}}F_{1,n_1+n_2-2}
+\end{gather*}
+Which is why we can indeed use a univariate approach to this because the univariate t-statistic will follow the same distribution.
+\subsection{3. Are the Coincident Profiles Level}
+
+That is to say, we want to know if the coincident profiles are level, meaning that there is no effect from question to question.
+
+\begin{gather*}
+    H_{03}: \mu_1 = \mu_2 =...=\mu_p \\
+    H_{A3}: \mu_i \neq \mu_j
+\end{gather*}
+
+\begin{gather*}
+    H_{03}\mu_2-\mu_1 = \mu_2-\mu_1 = ... =\mu_p-\mu_{p-1}
+\end{gather*}
+So we can get the same contrast matrix as earlier
+
+\begin{gather*}
+    H_{03}: c\mu = 0
+    H_{A3}: c\mu\neq 0
+\end{gather*}
+so there is no difference between 
+\[x_{11},...,x_{1n_1},x_{21},...,x_{2n_2}\sim N_p(\mu,\Sigma)\]
+\[cx_{11},...,cx_{1n_1},cx_{21},...,cx_{2n_2}\sim N_{p-1}(c\mu,c\Sigma c^T)\]
+We can now create a test statistic.
+\[T^2 = (n_1+n_2)(c\overline{x})^T(cSc^T)^{-1}(c\overline{x})\sim 
+\frac{(n_1+n_2-1)(p-1)}{n_1+n_2-(p-1)}
+F_{p-1,n_1+n_2-p+1}
+\]
+Notice that now that we have established that they are coincident and thus have the same variance and are part of the same population, we no longer need to pool.
+
+This profile analysis is a baby version of longitudinal analysis so it leads to deep results.

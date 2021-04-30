@@ -1,0 +1,157 @@
+\chapter{Session 24: November 19, 2020}
+
+\[x = (x_1,...,x_p) \quad cov(x) = \Sigma\]
+
+let's take a random vector x with a covariance matrix $\Sigma$ 
+
+any time you analyze data you have to think if your variables work best for your analysis or if you need to manipulate them to suit your needs. The same question stands when we decide to use principal components.
+
+If $\Sigma$ is a diagonal matrix, then there is no point in principal components. We will see that the principal components will be exactly the same as the original variables.
+
+\[(x_1,x_2,...,x_p) = x\]
+\[y_1 = e^tx_1,...,y_p = e^T_px\]
+
+\section{Correlation of Principal Components}
+\[COR(y_i,x_k) = \frac{e_{ik}\sqrt{\lambda_i}}{\sqrt{\sigma_{ii}}}\]
+
+$\lambda_i$ - the ith largest eigenvalue
+
+$\sigma_{ii} = var(x_i)$ the ith element of the main diagonal of $\Sigma$ 
+
+$e_{ik}$ the kth component of the ith eigenvector.
+
+our first goal is to rewrite $x_k$ as $v^Tx$ for some v
+
+Imagine the vector with 1 in the kth position (0,0,...,1,..,0) an 0 elsewhere. Let's call this vector $w_k$ We know that
+
+\begin{gather*}
+    w_k^T v = \begin{pmatrix}
+    0 & \cdots &1 &\cdots &0
+    \end{pmatrix}
+    \begin{pmatrix}
+    x_1 \\ x_2 \\ \vdots \\ x_p
+    \end{pmatrix} = x_k
+\end{gather*}
+
+Dr. Rakovski uses $y_k$, but I find that confusing since the principal components are $Y$.
+
+\begin{align*}
+    cov(y_i,x_k) &= cov(e_i^T x,w_k^T x)\\
+    &= e_i^T cov(x,x) w_k\\
+    &= e_i^T \Sigma w_k\\
+    &= w_k^T\lambda_i \Sigma \\
+    &= \lambda_i w_k^Te_{i}\\
+    &= \lambda_i e_{ik}\\
+    COR(y_i,x_k) &= \frac{cov(y_i,x_k)}{\sqrt{VAR(Y_i)VAR(X_k)}}\\
+    &= \frac{\lambda_i e_{ik}}{\sqrt{\lambda_i \sigma_{kk}}}\\
+    &= \frac{e_{ik} \sqrt{\lambda_i}}{\sqrt{ \sigma_{kk}}}
+\end{align*}
+If we feel passionate about some of the original variables, we can choose the principal components that are highly correlated with the original variables. The idea is to reduce our problem to two components if possible, so that we can graph and explain them.
+
+\subsection{Sidenote}
+
+When you have raw data, you can extract principal components from either the correlation matrix or the covariance matrix.
+
+It is at first tempting to say it doesn't matter. Since correlation is just a rescaled covariance matrix.
+
+Both are used in real life; however, the choice does matter since they produce different results.
+
+The correlation matrix is re-scaled to the point where all of the data will have the same value for the main diagonal: 1. This is a loss of information because we don't have any way to construct a covariance matrix from the correlation matrix.
+
+Having the the correlations with a main diagonal values of 1; that can be good for some machine learning methods.
+
+\section{Two Extreme Cases of Principal Component Analysis}
+\subsection{Original Variables are Uncorrelated}
+\[x_1,x_2,...,x_p\] are uncorrelated
+\begin{gather*}
+\Sigma
+\begin{pmatrix}
+\sigma_{11} & 0 & \cdots & 0\\
+ 0& \sigma_{22} & \cdots & 0\\
+ \vdots & \vdots & \ddots & \vdots \\
+ 0 & 0 & \cdots & \sigma_{pp}
+\end{pmatrix}\\
+\lambda_i = \sigma_i,...,\lambda_p = \sigma_p \\
+e_1 = (1,0,0,...,0)\\
+e_2 = (0,1,0,...,0)\\
+e_p = (0,0,0,...,1)\\
+y_i = e_i^Tx = x_i
+\end{gather*}
+So if things are uncorrelated, then there is no need to do anything new with principal component analysis.
+
+\subsection{Original Variables are Highly Correlated}
+
+This is where principal component analysis really shines.
+\begin{align*}
+    \Sigma &= \begin{pmatrix}
+        \sigma^2 & \rho\sigma^2 & \cdots & \rho \sigma^2\\
+        \rho\sigma^2 & \sigma^2 & \cdots & \rho \sigma^2\\
+        \vdots & \vdots & \ddots & \vdots \\
+        \rho\sigma^2 & \rho\sigma^2 & \cdots &  \sigma^2\\
+    \end{pmatrix}\\
+    &= \sigma^2 \begin{pmatrix}
+        1 & \rho & \cdots & \rho \\
+        \rho & 1 & \cdots & \rho \\
+        \vdots & \vdots & \ddots & \vdots \\
+        \rho & \rho & \cdots &  1\\
+    \end{pmatrix}\\
+    &= \sigma^2 \varrho
+\end{align*}
+
+In this specific case there is no difference between the correlation 
+
+To find the eigenvalues
+we solve
+\[|\varrho - \lambda I| = 0\]
+\begin{align*}
+    \begin{vmatrix}
+    1-\lambda & \rho & \cdots & \rho \\
+    \rho & 1-\lambda & \cdots & \rho \\
+    \vdots & \vdots & \ddots & \vdots \\
+    \rho & \rho & \cdots & 1-\lambda \\
+    \end{vmatrix} &= 0
+\end{align*}
+if we add all the other columns to the first column we get the following
+\begin{align*}
+    \begin{vmatrix}
+    1-\lambda + (p-1)\rho & \rho & \cdots & \rho \\
+    1-\lambda + (p-1)\rho & 1-\lambda & \cdots & \rho \\
+    \vdots & \vdots & \ddots & \vdots \\
+    1-\lambda + (p-1)\rho & \rho & \cdots & 1-\lambda \\
+    \end{vmatrix} & = 0
+\end{align*}
+
+Now if we have a row that is all the same, we can take it outside of the determinant
+\begin{align*}
+    \Big(1-\lambda + (p-1)\rho \Big)
+    \begin{vmatrix}
+    1 & \rho & \cdots & \rho \\
+    1& 1-\lambda & \cdots & \rho \\
+    \vdots & \vdots & \ddots & \vdots \\
+    1 & \rho & \cdots & 1-\lambda \\
+    \end{vmatrix} & = 0
+\end{align*}
+From here we know that one of the eigenvalues is $1+(p-1)\rho$
+
+
+We are now going to take our first column, multiplying it by $-\rho$ and adding it to the rest of the columns
+
+\begin{align*}
+    \Big(1-\lambda + (p-1)\rho \Big)
+    \begin{vmatrix}
+    1 & 0 & \cdots & 0\\
+    1& 1-\lambda - \rho & \cdots & 0 \\
+    \vdots & \vdots & \ddots & \vdots \\
+    1 & 0 & \cdots & 1-\lambda - \rho \\
+    \end{vmatrix} & = 0
+\end{align*}
+
+This is now a upper triangular matrix, so the determinant of this matrix will be the product of the main diagonal. The determinant is $(1-\lambda -p)^{p-1}$
+
+This means $\lambda_2 = \lambda_3=...=\lambda_p = 1-\rho$
+
+\[y_1=e_1^Tx=\displaystyle\sum \frac{x_i}{\sqrt{p}} \approx \overline{x}\]
+
+\[\frac{\lambda_1}{\lambda_1+\lambda_2+...+\lambda_p}= \frac{1+(p-1)\rho}{TR(|\rho|)} = \frac{1+(p-1)\rho}{p}\]
+
+in this extreme case a single principal component replaces all of the variables.

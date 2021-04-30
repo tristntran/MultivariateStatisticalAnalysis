@@ -1,0 +1,194 @@
+\chapter{Session 18: October 29, 2020}
+
+So in the last class we used the manipulation introduction of contrast matrices to convert multivariate hypothesis into a univariate model by cleverly using our notation and by observing the distributions of the contrasts.
+
+Sometimes we call what we did in the last class a repeated measurement analysis of variance.
+
+\section{Comparing Mean Vectors from Two Populations}
+
+\[x_1,x_2,...,x_n \sim N_p(\mu_1,\Sigma_1)\]
+
+\[y_1,y_2,...,y_n \sim N_p(\mu_2,\Sigma_2)\]
+
+\begin{gather*}
+    H_0 : \mu_1 = \mu_2\\
+    H_A : \mu_1 \neq \mu_2
+\end{gather*}
+
+In the univariate case (p=1), we have to set up our model
+
+\[x_1,x_2,...,x_n \sim N_p(\mu_1,\sigma_1)\]
+
+\[y_1,y_2,...,y_n \sim N_p(\mu_2,\sigma_2)\]
+
+\begin{gather*}
+    H_0 : \mu_1 = \mu_2\\
+    H_A : \mu_1 \neq \mu_2
+\end{gather*}
+
+Now this is different than our one sample problems. We have to deal with the variances. Before we deal with the means, we must do preliminary tests with our variances to see if they are equal or not.
+
+\subsection{Univariate Preliminary tests of the Variances}
+
+\begin{gather*}
+    H_0 : \sigma_1 = \sigma_2\\
+    H_A : \sigma_1 \neq \sigma_2
+\end{gather*}
+
+Our test statistic will be a ratio of the sample variances
+
+\[F = \frac{s_1^2}{s_2^2}\sim F(n_1-1,n_2-2)\]
+\subsubsection{Variances are the same S Pooled}
+if we fail to reject $H_0: \sigma_1 = \sigma_2$, then we will estimate the common variance via a Pooled estimator
+
+\[s^2_{Pooled} = \frac{s^2_1(n_1-1)-s^2_2(n_2-1)}{n_1+n_2-2}\]
+
+\[t = \frac{\overline{x}
+-\overline{y}}{s^2_{pooled}(\frac{1}{n_1}+\frac{1}{n_2})}\sim t_(n_1+n_2-2)\]
+
+Now the variances are different and we can no longer pool them together. Instead we need to use a different test statistic.$\sigma_1\neq\sigma_2$
+\subsubsection{Variances are different: Welch's t-Test Approximation}
+\[t=\frac{\overline{x}
+-\overline{y}}{\sqrt{\frac{s^2_x}{n_1} + \frac{s^2_y}{n_2}}}\sim t(\nu)\]
+$\nu$ is a weird statistic used for the degrees of freedom
+
+"It's weird but it works" - Dr. Cyril Rakovski, PhD.
+\[\nu = \frac{  
+\frac{s_1^2}{n_1} +\frac{s_2^2}{n_2}
+}{
+\frac{s_1^4}{n_1^2(n_1-1)} +\frac{s_2^4}{n_2^2(n_2-1)}
+}\]
+
+\subsection{Multivariate Case}
+\[x_1,x_2,...,x_n \sim N_p(\mu_1,\Sigma_1)\]
+\[y_1,y_2,...,y_n \sim N_p(\mu_2,\Sigma_2)\]
+
+\begin{gather*}
+    H_0 : \mu_1 = \mu_2\\
+    H_A : \mu_1 \neq \mu_2
+\end{gather*}
+\begin{align*}
+    s_x &= \frac{\displaystyle\sum_{i=1}^{n_1} (x_i-\overline{x})(x_i-\overline{x})^T}{n_1-1}\\
+    s_y &= \frac{\displaystyle\sum_{i=1}^{n_2} (y_i-\overline{y})(y_i-\overline{y})^T}{n_2-1}
+\end{align*}
+\subsubsection{Variances are the same: S Pooled}
+
+\begin{align*}
+    S_{pooled}&= \frac{s_x(n_1-1) + s_y(n_2-1)}{n_1+n_2-2} \\
+    &= \Bigg(
+    \frac{n_1-1}{n_1+n_2-2}
+    \Bigg) s_x +
+    \Bigg(
+    \frac{n_1-1}{n_1+n_2-2}
+    \Bigg)s_y
+\end{align*}
+We assume the distributions of x and y to be p dimensional normal.
+\[\overline{x} \sim N_p(\mu_1,\frac{\Sigma_1}{n_1})\]
+\[\overline{y} \sim N_p(\mu_2,\frac{\Sigma_2}{n_2})\]
+
+From that we can determine that the distribution of their linear combination is as follows
+\[\overline{x} -\overline{y} \sim N_p(\mu_1-\mu_2,\Sigma(\frac{1}{n_1}+\frac{1}{n_2}))\]
+
+If we were to subtract the vector $\mu_1 -\mu_2$ we get
+\[\overline{x} -\overline{y} - (\mu_1-\mu_2) \sim N_p(0,\Sigma(\frac{1}{n_1}+\frac{1}{n_2}))\]
+Since $\mu_1-\mu_2 =0$ under the null...
+\[\overline{x} -\overline{y} - \overset{H_0}{\sim} N_p(0,\Sigma(\frac{1}{n_1}+\frac{1}{n_2}))\]
+
+\[T^2 = (\overline{x}-\overline{y})^T[\Sigma(\frac{1}{n_1} + \frac{1}{n_2})]^{-1}(\overline{x}-\overline{y}) \sim \chi_p^2\]
+
+Now our problem is that our test statistic has an unknown: $\Sigma$. Good thing we have an estimator ready: $S_{pooled}$
+
+
+\[T^2 = (\overline{x}-\overline{y})^T \Big[
+S_{pooled} \bigg(\frac{1}{n_1} + \frac{1}{n_2}
+\bigg) \Big]
+(\overline{x}-\overline{y})\sim \frac{(n_1+n_2-2)p}{n_1+n_2-p-1}F_{p,n_1+n_2-p-1}\]
+
+\subsubsection{Variances are not the same: M-Box Test}
+
+\[x_1,x_2,...,x_n \sim N_p(\mu_1,\Sigma_1)\]
+\[y_1,y_2,...,y_n \sim N_p(\mu_2,\Sigma_2)\]
+
+\[\Sigma_1 \neq \Sigma_2\]
+
+\begin{gather*}
+    H_0 : \mu_1 = \mu_2\\
+    H_A : \mu_1 \neq \mu_2
+\end{gather*}
+
+1. Hope that the $n_1, n_2$ the sample sizes are Large $(\geq 30)$, but hopefully a lot more.
+\[\overline{x} -\overline{y} - (\mu_1-\mu_2) \sim N_p(0,\Sigma(\frac{1}{n_1}+\frac{1}{n_2}))\]
+Since $\mu_1-\mu_2 =0$ under the null...
+\[\overline{x} -\overline{y} - \overset{H_0}{\sim} N_p(0,\Sigma(\frac{1}{n_1}+\frac{1}{n_2}))\]
+
+\[\overline{x} \sim N_p(\mu_1,\frac{\Sigma_1}{n_1})\]
+\[\overline{y} \sim N_p(\mu_2,\frac{\Sigma_2}{n_2})\]
+
+\[\overline{x} -\overline{y} \sim N_p(\mu_1-\mu_2,(\frac{\Sigma_1}{n_1}+\frac{\Sigma_2}{n_2}))\]
+
+\[\overline{x} -\overline{y} \overset{H_0}{\sim} N_p(\mu_1-\mu_2,(\frac{\Sigma_1}{n_1}+\frac{\Sigma_2}{n_2}))\]
+\[T^2 = (\overline{x}-\overline{y})^T
+\Bigg[
+\frac{\Sigma_1}{n_1}+\frac{\Sigma_2}{n_2}
+\Bigg]^{-1}
+(\overline{x}-\overline{y}) \sim \chi_p^2\]
+
+\[\overline{x} -\overline{y} \overset{H_0}{\sim} N_p(\mu_1-\mu_2,(\frac{\Sigma_1}{n_1}+\frac{\Sigma_2}{n_2}))\]
+\[T^2 = (\overline{x}-\overline{y})^T
+\Bigg[
+\frac{s_1}{n_1}+\frac{s_2}{n_2}
+\Bigg]^{-1}
+(\overline{x}-\overline{y}) \sim \chi_p^2\]
+In large sample sizes, the sample variances are proper estimators so you can get away with it and it is provable by theorem. The exact distribution is chi-square infinity, but it becomes very close.
+
+2. Unequal variances with small sample size. You kinda do the same test statistic, because there's nothing else. 
+We still construct our $T^2$
+
+\[T^2 = (\overline{x}- \overline{y})^T 
+(\frac{s_x}{n_1}+ \frac{s_y}{n_2})^{-1}
+(\overline{x}- \overline{y}) \sim \frac{\nu p}{\nu-p+1} F_{\nu,\nu-p+1}
+\]
+$\nu$ is a pretty annoying variable that comes from page 294 of the book I'm pretty sure the form below is not correct, because Dr. Rakovski did not seem confident on this one in class.
+
+\[\nu = \frac{p+p^2}
+{
+\displaystyle\sum_{i=1}^{2}\frac{1}{n_i} 
+\Bigg[
+TR \Big(
+\frac{1}{n_i} s_i (\frac{1}{n_1}s_1 +\frac{1}{n_2}s_2)^{-1}
+\Big)
+\Bigg]^2
+}\]
+
+Now we want to talk about constructing confidence intervals. This is a less interesting story.
+
+\section{Constructing Confidence Intervals}
+\[x_1,x_2,...,x_n \sim N_p(\mu_1,\Sigma_1)\]
+\[y_1,y_2,...,y_n \sim N_p(\mu_2,\Sigma_2)\]
+Our assumptions are the same. We are now going to construct a confidence region for the diference of the means $\mu_1-\mu_2$
+
+\[\overline{x} -\overline{y} \sim N_p(\mu_1-\mu_2,(\frac{\Sigma_1}{n_1}+\frac{\Sigma_2}{n_2}))\]
+
+\[T^2 = (\overline{x}-\overline{y})^T
+\Bigg[
+\frac{\Sigma_1}{n_1}+\frac{\Sigma_2}{n_2}
+\Bigg]^{-1}
+(\overline{x}-\overline{y}) \sim \chi_p^2\]
+\subsection{Variances are the same}
+\[(\overline{x}-\overline{y}-(\mu_1-\mu_2))^T \Big[
+S_{pooled} \bigg(\frac{1}{n_1} + \frac{1}{n_2}
+\bigg) \Big]
+(\overline{x}-\overline{y} -(\mu_1-\mu_2)) \leq \frac{(n_1+n_2-2)p}{n_1+n_2-p-1}F_{p,n_1+n_2-p-1} (1-\alpha)\]
+
+so we can construct an ellipsoid for this centered at $\overline{x}-\overline{y}$ It will be along the eigenvalue of $S_pooled$
+
+the rest of these are demonstrated by the last session's notes.
+
+our bonferroni test statistic is
+
+\[ \Bigg( 
+\overline{x}_i - \overline{y}_i
+\pm
+t_{1-\frac{\alpha}{2p}}(n_1+n_2 -2)\sqrt{(s_{ii})_{pooled} \big(\frac{1}{n_1}+\frac{1}{n_2} \big)}
+\Bigg )
+\]

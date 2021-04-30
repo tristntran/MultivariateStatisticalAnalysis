@@ -1,0 +1,182 @@
+\chapter{Session 6: September 17, 2020}
+\label{sixth}
+\section{Recap of Last Session}
+Review of last session, we introduced 
+\begin{align*}
+    x &\sim (\mu,\Sigma)\\
+    Ax &\sim (A\mu,A\Sigma A^T) \\
+    x = 
+    \begin{pmatrix}
+    x_1\\
+    x_2
+    \end{pmatrix}&,
+    x \sim (\mu, \Sigma) \\
+    \mu = 
+    \begin{pmatrix}
+    \mu_1\\
+    \mu_2
+    \end{pmatrix}
+    &,
+    E(x_1) = \mu_1, E(x_2) = \mu_2\\
+    \Sigma &= \begin{pmatrix}
+    \Sigma_{11} & \Sigma_{12} \\
+    \Sigma_{21} & \Sigma_{22} \\
+    \end{pmatrix}
+    cov(x_1) = \Sigma_{11}, cov(x_2) = \Sigma_{22}\\
+    cov(x_1,x_2)=\Sigma_{12} &= \Sigma_{21} = cov(x_2,x_1)
+\end{align*}
+
+We also introduced a handful of results related to the Cauchy-Schwarz inequality.
+
+\section{Maximization Lemma}
+This is a result of the extended Cauchy Schwarz.
+
+Let $\underset{p \times p}{B}$ be a positive definite matrix and $\underset{p \times 1}{d}$ be a given, fixed vector, then for any arbitrary $\underset{p \times 1}{x}\neq 0$ The following result holds the maximum
+
+\[\underset{x\neq 0}{Max} \frac{(x^Td)^2}{x^TBx} = d^TB^{-1}d\]
+
+The above can be though of as a function of the $x_i$'s
+\[f(x_1,...,x_p) = \frac{(\sum x_id_i)^2}{\sum\sum b_{ij}x_i x_j}\]
+
+If you tried to maximize this formula normally, it would be a disaster. This Lemma helps us with that. It's not nice to prove with calculus. Instead we are going to use the Cauchy-Schwarz to verify this
+
+\begin{align*}
+    (x^Td)^2 &\leq x^TBx(d^TBd) \\
+    x^TBx &\leq 0 \quad \text{Since B is positive def. and x $\neq$ 0}\\
+    \Rightarrow \frac{(x^Td)^2}{x^TBx}
+    &\leq d^TB^{-1}d \\
+    \text{Equality iff }\quad x &= cd
+\end{align*}
+
+\section{Quadratic Form}
+Quadratic form is defined as showm below. It is a 1 dimensional scalar object. It can be written as the sum, but we prefer the matrix notation.
+\begin{equation*}
+    \underset{1 \times 1}{x^TBx} = \displaystyle\sum_{j=1}^{p}\displaystyle\sum_{i=1}^{p}b_{ij}x_ix_j
+\end{equation*}
+If B is positive definite and $x\neq 0$ then the quadratic form will always be positve
+\begin{align*}
+    \underset{1 \times 1}{x^TBx} &> 0\\
+    \underset{1 \times 1}{x^TBx} &> \alpha \quad \forall x \neq 0 
+\end{align*}
+Take $k\cdot x$ where k is a constant
+\begin{equation*}
+    (kx)^TB(kx) = k^2(fx^TBx) =k^2\alpha
+\end{equation*}
+If we let k go to $\pm \infty$, the quadratic form will trend towards $\infty$. This makes sense since the quadratic form is just a distance taken from the origin and we are just shrinking and stretching the distances
+
+\section{Maximization of Quadratic Forms for points on the Unit Sphere}
+
+Let B - P.D. Matrix wwith dimensions p x p with 
+
+Eigenvalues $\lambda_1,\lambda_2,...,\lambda_p >0$
+
+and with Corresponding Eigenvectors $e_1,e_2,...,e_p$
+
+Then
+
+\begin{align*}
+    &(1) \underset{x\neq 0}{Max}\frac{x^TBx}{x^Tx} = \lambda_1 \quad & equality\Leftrightarrow x=e_1 \\
+    &(2) \underset{x\neq 0}{Min}\frac{x^TBx}{x^Tx} = \lambda_p \quad & equality\Leftrightarrow x=e_p\\
+    &(3) \underset{x\perp e_1,...,e_k}{Max}\frac{x^TBx}{x^Tx} = \lambda_p \quad & equality\Leftrightarrow x=e_k+1
+\end{align*}
+
+\subsection{Explaining 3}
+
+Imagine we have a 3 dimensional space. The maximum in all 3 dimensions $\underset{x\epsilon \R^3}{Max}\frac{x^TBx}{x^Tx} = \lambda_1$. If we restrict our space and take its projection only onto the two lower eigen vectors $e_2,e_3$ The maximum on that plane is $\underset{x\perp e_1}{Max}\frac{x^TBx}{x^Tx} = \lambda_2$ if we further restrict it to only be along the eigen value of $e_3$ our maximum becomes$\underset{x\perp e_1,e_2}{Max}\frac{x^TBx}{x^Tx} = \lambda_3$
+
+This works when you have too many eigen vectors and you want to restrict your answer by ignoring some of them.
+
+We eliminate the orthogonal space in order.
+
+\subsection{Proof of 1 Maximum}
+Proof of $\Rightarrow$. If B is P.D. then the maximum is attained at$\lambda_1$ so we can represent P
+\begin{align*}
+    \frac{x^TBx}{x^Tx} &= \frac{x^TB^{\frac{1}{2}}B^{\frac{1}{2}}x}{x^Tx} \\
+    \underset{p \times p}{P} &= \begin{pmatrix}
+    e_1 & e_2 & ...& e_p \\
+    \end{pmatrix}\\
+     B &= P \Lambda P^T \quad &\text{Single Value Decomposition}\\
+     \Lambda &= \begin{pmatrix}
+    \lambda_1 & 0 & \cdots & 0 \\
+    0 & \lambda_2 & \cdots & 0 \\
+    \vdots & \vdots & \ddots & \vdots \\
+    0 & 0 & \cdots & \lambda_p \\
+    \end{pmatrix}\\
+    B^{\frac{1}{2}} &= P\Lambda^{\frac{1}{2}}P^T \\
+    \frac{x^TBx}{x^Tx} &= \frac{x^TP\Lambda^{\frac{1}{2}}P^TP\Lambda^{\frac{1}{2}}P^Tx}{x^Tx} \\
+    P^T &= P^{-1} &\text{P is orthogonal}\\
+    \frac{x^TBx}{x^Tx} &= \frac{x^TP\Lambda^{\frac{1}{2}}\Lambda^{\frac{1}{2}}P^Tx}{x^TPP^Tx}\\ \\
+    y &=P^Tx &\text{Change of Variables}\\ \\
+    \frac{x^TBx}{x^Tx} &= \frac{y^T\Lambda y}{y^Ty}\\
+    &= \frac{\displaystyle\sum_{i=1}^{n} \lambda_i y_i}{\sum{y_i^2}} \\
+\end{align*}
+
+so we have 
+\begin{equation*}
+    \frac{x^TBx}{x^Tx} =
+    \frac{y^T\Lambda y}{y^Ty} = 
+    \frac{\displaystyle\sum_{i=1}^{n} \lambda_i y_i}{\sum{y_i^2}} \overset{?}{\leq} \lambda_1
+\end{equation*}
+Remember that $\lambda_1 \geq \lambda_2 \geq ... \geq \lambda_p$ so $\Rightarrow$
+
+\begin{align*}
+\frac{\sum \lambda_iy^2_i}{\sum y_i^2} &\leq \frac{\sum \lambda_1y^2_i}{\sum y_i^2} \\
+&= \lambda_1\frac{\cancel{\sum y^2_i}}{\cancel{\sum y^2_i}} =\lambda_1
+\end{align*}
+We can do this because we replaced all the smaller eigenvalues with a greater eigenvalue $\lambda_1$ creating a theoretical upper limit. Now we need to prove that this upper limit is attained. Let's test the following
+
+\begin{equation*}
+    \frac{e_1^(TBe_1)}{e^Te_1} = 
+    e^T\lambda_1e_1 = \lambda_1
+\end{equation*}
+so we observe that the value is actually obtained for the corresponding eigenvector. Now we need the reverse direction
+
+\subsection{Proof of 2 Minimum Value}
+For this we will make the same substitutions and change of variables to get the form below:
+\begin{equation*}
+    \frac{x^TBx}{x^Tx} =
+    \frac{y^T\Lambda y}{y^Ty} = 
+    \frac{\displaystyle\sum_{i=1}^{n} \lambda_i y_i}{\sum{y_i^2}} \overset{?}{\geq} \lambda_p
+\end{equation*}
+should be exactly the same as our previous result except instead of substituting the first eigenvalue, we substitute the last
+
+\begin{align*}
+\frac{\sum \lambda_iy^2_i}{\sum y_i^2} &\geq \frac{\sum \lambda_py^2_i}{\sum y_i^2} \\
+&\geq \lambda_p\frac{\cancel{\sum y^2_i}}{\cancel{\sum y^2_i}} =\lambda_p
+\end{align*}
+We plug in $x = e_p$ to achieve the smallest value.
+\begin{equation*}
+    \frac{e_p^T(Be_p)}{e_p^Te_p} = 
+    e_p^T\lambda_pe_p = \lambda_p
+\end{equation*}
+
+\subsection{Proof of 3 Max of perpendicular subspace}
+
+
+\begin{equation*}
+    \underset{x\perp e_1,...,e_k}{Max}\frac{x^TBx}{x^Tx} = \lambda_{k+1} \quad | "=" x=e_{k+1}
+\end{equation*}
+
+Remember that we made a change of variables from the original equation to get the new one
+
+\begin{align*}
+    y = P^Tx &, x=Py \Downarrow\\
+    \frac{y^T\Lambda y}{y^Ty}\\
+    y= \begin{pmatrix}
+    e^T_1 \\
+    e^T_2 \\
+    \vdots \\
+    e^T_p \\
+    \end{pmatrix} &, x= 
+    \begin{pmatrix}
+    0 \\
+    \vdots \\
+    0 \\
+    e_{k+1} \\
+    \vdots \\
+    e^T_p \\
+    \end{pmatrix} \Rightarrow \\
+    \frac{y^T\Lambda y}{y^Ty} &= \frac{\displaystyle\sum_{i=k+1}^{p} \lambda_py^2_i}{\displaystyle\sum_{i=k+1}^{p} y_i^2} \\
+&\leq \lambda_{k+1}\frac{\cancel{\sum y^2_i}}{\cancel{\sum y^2_i}} =\lambda_{k+1}
+\end{align*}
+Since we take x to be strictly orthogonal to the first k vectors all those terms are 0 and we can rewrite the sum starting at k+1. The largest eigenvalue multiplied by a nonzero then becomes $\lambda_{k+1}$ and the rest is identical to the other proofs.

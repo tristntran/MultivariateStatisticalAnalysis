@@ -1,0 +1,89 @@
+\chapter{Session 13: October 13, 2020}
+\section{Recap}
+\(B_{p\times p}, b>0\), Then
+\begin{align*}
+    \frac{1}{|\Sigma|^b}e^{TR(\Sigma^{-1}B)/2}\leq
+    \frac{1}{|B|}(2b)^{pb}e^{-pb}
+\end{align*}
+For all Positive Definite matrices $\Sigma_{p \times p}$ and equality iff $\Sigma = \frac{1}{2b}B$
+
+So as a reminder of last time we have this identity above. We want to use eigenvalue properties as a tool to process this information more efficiently. Our trick was that we assigned
+$\eta_1,...,\eta_p$ as the eigenvectors of $B^{1/2}\Sigma^{-1}B^{1/2}$ We know that this is positive definite because Sigma is positive definite which means $y^TB^{1/2}\Sigma^{-1}B^{1/2}y > 0 \forall y$  
+
+We identified two very nice properties of the trace and identity using $\eta$ and this lead us to a new identity namely
+
+\begin{gather*}
+    TR(B^{1/2}\Sigma B^{1/2}) =TR(\Sigma B) \\
+    B^{-1/2}\Sigma^{-1} B^{-1/2} \\
+    = |B^{-1/2}||\Sigma^{-1}||B^{-1/2}| 
+    = \frac{|B|}{|\Sigma|}
+    = \prod \eta_i \rightarrow\\ \frac{1}{|\Sigma|} = \frac{\prod \eta_i}{|B|}
+\end{gather*}
+Using these we rewrite the left side as the following
+
+
+\begin{align*}
+    \displaystyle\prod_{i=1}^p \frac{e^{-\eta_i/2}\eta_i^b}{|B|}
+\end{align*}
+but B is fixed, so we are able to ignore it. To maximize this function we need only maximize the numerator
+\[f(\eta_i)=e^{-\eta_i/2}\eta_i^b\]
+
+Now we just need to maximize the contributions of each eta.
+
+So now that we have a product of things that we can maximize. and if we maximize the value individual pieces, we will maximize the value of the sum.
+
+\section{Maximization}
+$f(x) = e^{-x/2}x^b - MAX$
+
+\begin{align*}
+f'(x) &= -\frac{1}{2}e^{-x/2}x^b +be^{-x/2}x^{b-1}    \\
+&= e^{-x/2}x^{b-1}(-\frac{x}{2} +b)
+\end{align*}
+
+We then set it to 0.
+
+\[0 = e^{-x/2}x^{b-1}(-\frac{x}{2} +b)\]
+We can then see that $x=2b$ as the critical value that gives us the maximum. We could be more rigorous and take the second derivative, but this is not a calculus class.
+
+\section{Backplug}
+
+\begin{align*}
+    \frac{1}{|\Sigma|^b}e^{TR(\Sigma^{-1}B)/2} &\leq
+    \frac{1}{|B|}(2b)^{pb}e^{-pb}\\
+    \frac{1}{|\Sigma|^b}e^{TR(\Sigma^{-1}B)/2} &= \displaystyle\prod_{i=1}^p \frac{e^{-\eta_i/2}\eta_i^b}{|B|}
+\end{align*}
+is maximized when $\eta_1=\eta_2 = ... \eta_p =2b$
+This means we can actually immediate find the maximum by plugging in our maximizing value.
+
+\begin{align*}
+    max\displaystyle\prod_{i=1}^p  \frac{e^{-\eta_i/2}\eta_i^b}{|B|} = \displaystyle\prod_{i=1}^p 
+    \frac{e^{-b}(2b)^b}{|B|}
+\end{align*}
+Now we need to find out what that B is going to be in our original proof. Remember our original goal was to show that the maximum likelihood estimators of mean and variance/covariance are our sample formulas.
+
+\begin{gather*}
+    L(\mu,\Sigma) = (2\pi)^{-np/2}|\Sigma|^{-n/2}e^{-(
+    TR \big(\Sigma^{-1} \sum(x_j-\overline{x})(x_j-\overline{x})^T \big)
+    +
+    (\overline{x}-\mu)^T\Sigma^{-1} n (\overline{x}-\mu))
+    }
+\end{gather*}
+So we can actually see that based on our original function, the B that we need is going to be the matrix $(x_j-\overline{x})(x_j-\overline{x})^T$. The only difference between the form we have and the theorem we just proved is the term $(\overline{x}-\mu)^T\Sigma^{-1} n (\overline{x}-\mu)$
+
+We have to maximize this, to maximize the likelihood, because it has a negative sign attached to it.
+This is going to be maximized only when $\overline{x} = \hat \mu$. With that in mind that part of the exponent disappears  and we only need to do maximize our matrix with respect to Sigma.
+
+\begin{gather*}
+    L(\Sigma) = (2\pi)^{-np/2}|\Sigma|^{-n/2}e^{-
+    TR \big(\Sigma^{-1} \sum(x_j-\overline{x})(x_j-\overline{x})^T \big)
+    }
+\end{gather*}
+
+If we ignore all the constants we can see that we just need to make our choice in sigma. The thing that will maximize our based on our opening theorem will be 
+$\hat \Sigma = \frac{1}{2b}B$
+But remember that $b=\frac{n}{2},B=\sum(x_j-\overline{x})(x_j-\overline{x})^T$ so...
+\begin{equation}
+    \hat\Sigma = \frac{1}{n}\sum(x_j-\overline{x})(x_j-\overline{x})^T
+\end{equation}
+
+From this point forward we played around with the iris data set and the MVN package in R. The actual implementation is trivial and can be found in the homework.
